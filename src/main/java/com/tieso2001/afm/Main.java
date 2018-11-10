@@ -1,7 +1,7 @@
-package com.tieso2001.mod;
+package com.tieso2001.afm;
 
-import com.tieso2001.mod.proxy.CommonProxy;
-import com.tieso2001.mod.util.Reference;
+import com.tieso2001.afm.proxy.CommonProxy;
+import com.tieso2001.afm.util.Reference;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;

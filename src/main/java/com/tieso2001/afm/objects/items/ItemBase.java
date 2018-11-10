@@ -1,8 +1,8 @@
-package com.tieso2001.mod.objects.items;
+package com.tieso2001.afm.objects.items;
 
-import com.tieso2001.mod.Main;
-import com.tieso2001.mod.init.ItemInit;
-import com.tieso2001.mod.util.IHasModel;
+import com.tieso2001.afm.Main;
+import com.tieso2001.afm.init.ItemInit;
+import com.tieso2001.afm.util.IHasModel;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 

@@ -1,4 +1,4 @@
-package com.tieso2001.mod.util;
+package com.tieso2001.afm.util;
 
 public interface IHasModel {
     public void registerModels();

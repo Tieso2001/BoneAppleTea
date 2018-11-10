@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "modm:items/corn"
+    "layer0": "afm:items/corn"
   }
 }

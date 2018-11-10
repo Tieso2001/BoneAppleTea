@@ -1,4 +1,4 @@
-package com.tieso2001.mod.proxy;
+package com.tieso2001.afm.proxy;
 
 import net.minecraft.item.Item;
 

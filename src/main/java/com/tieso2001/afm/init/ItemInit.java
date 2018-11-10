@@ -1,6 +1,6 @@
-package com.tieso2001.mod.init;
+package com.tieso2001.afm.init;
 
-import com.tieso2001.mod.objects.items.ItemBase;
+import com.tieso2001.afm.objects.items.ItemBase;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
-package com.tieso2001.mod.util.handlers;
+package com.tieso2001.afm.util.handlers;
 
-import com.tieso2001.mod.init.ItemInit;
-import com.tieso2001.mod.util.IHasModel;
+import com.tieso2001.afm.init.ItemInit;
+import com.tieso2001.afm.util.IHasModel;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
