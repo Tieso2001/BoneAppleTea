@@ -1,7 +1,9 @@
 package com.tieso2001.afm.util.handlers;
 
+import com.tieso2001.afm.init.BlockInit;
 import com.tieso2001.afm.init.ItemInit;
 import com.tieso2001.afm.util.IHasModel;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -13,8 +15,12 @@ public class RegistryHandler {
 
     @SubscribeEvent
     public static void onItemRegister(RegistryEvent.Register<Item> event) {
-
         event.getRegistry().registerAll(ItemInit.ITEMS.toArray(new Item[0]));
+    }
+
+    @SubscribeEvent
+    public static void onBlockRegister(RegistryEvent.Register<Block> event) {
+        event.getRegistry().registerAll(BlockInit.BLOCKS.toArray(new Block[0]));
     }
 
     @SubscribeEvent
@@ -23,6 +29,12 @@ public class RegistryHandler {
             if (item instanceof IHasModel) {
 
                 ((IHasModel) item).registerModels();
+            }
+        }
+
+        for (Block block : BlockInit.BLOCKS) {
+            if (block instanceof IHasModel) {
+                ((IHasModel) block).registerModels();
             }
         }
     }
