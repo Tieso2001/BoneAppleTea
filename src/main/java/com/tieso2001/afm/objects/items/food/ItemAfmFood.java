@@ -22,3 +22,4 @@ public class ItemAfmFood extends ItemFood implements IHasModel {
         Main.proxy.registerItemRenderer(this, 0, "inventory");
     }
 }
+

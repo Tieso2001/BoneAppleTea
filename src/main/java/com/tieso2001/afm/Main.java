@@ -1,7 +1,10 @@
 package com.tieso2001.afm;
 
+import com.tieso2001.afm.init.ItemInit;
 import com.tieso2001.afm.proxy.CommonProxy;
 import com.tieso2001.afm.util.Reference;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -26,7 +29,7 @@ public class Main {
 
     @EventHandler
     public static void init(FMLInitializationEvent event) {
-
+        MinecraftForge.addGrassSeed(new ItemStack(ItemInit.CORN_KERNELS), 1);
     }
 
     @EventHandler
