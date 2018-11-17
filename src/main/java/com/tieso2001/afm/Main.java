@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION)
 public class Main {
@@ -30,6 +31,7 @@ public class Main {
     @EventHandler
     public static void init(FMLInitializationEvent event) {
         MinecraftForge.addGrassSeed(new ItemStack(ItemInit.CORN_KERNELS), 1);
+        GameRegistry.addSmelting(new ItemStack(ItemInit.CORN_KERNELS), new ItemStack(ItemInit.POPCORN), 0.35F);
     }
 
     @EventHandler
