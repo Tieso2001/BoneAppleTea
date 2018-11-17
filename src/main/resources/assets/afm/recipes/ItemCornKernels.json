@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "afm_food",
+  "ingredients": [
+    {
+      "item": "afm:corn"
+    }
+  ],
+  "result": {
+    "item": "afm:corn_kernels",
+    "count": 4
+  }
+}
