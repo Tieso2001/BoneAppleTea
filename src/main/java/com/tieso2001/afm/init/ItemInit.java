@@ -13,4 +13,5 @@ public class ItemInit {
     //Food
     public static final Item CORN = new ItemAfmFood("corn", 4, false);
     public static final Item CORN_KERNELS = new ItemCornKernels("corn_kernels", 1, false);
+    public static final Item POPCORN = new ItemAfmFood("popcorn", 2, false);
 }
