@@ -32,6 +32,7 @@ public class Main {
     public static void init(FMLInitializationEvent event) {
         MinecraftForge.addGrassSeed(new ItemStack(ItemInit.CORN_KERNELS), 1);
         GameRegistry.addSmelting(new ItemStack(ItemInit.CORN_KERNELS), new ItemStack(ItemInit.POPCORN), 0.35F);
+        GameRegistry.addSmelting(new ItemStack(ItemInit.CORN), new ItemStack(ItemInit.CORN_ON_THE_COB), 0.35F);
     }
 
     @EventHandler

@@ -11,7 +11,8 @@ public class ItemInit {
     public static final List<Item> ITEMS = new ArrayList<Item>();
 
     //Food
-    public static final Item CORN = new ItemAfmFood("corn", 4, false);
+    public static final Item CORN = new ItemAfmFood("corn", 3, false);
     public static final Item CORN_KERNELS = new ItemCornKernels("corn_kernels", 1, false);
     public static final Item POPCORN = new ItemAfmFood("popcorn", 2, false);
+    public static final Item CORN_ON_THE_COB = new ItemAfmFood("corn_on_the_cob", 5, false);
 }
