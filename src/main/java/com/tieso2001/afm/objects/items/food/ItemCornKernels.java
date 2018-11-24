@@ -5,7 +5,6 @@ import com.tieso2001.afm.init.BlockInit;
 import com.tieso2001.afm.init.ItemInit;
 import com.tieso2001.afm.util.IHasModel;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -24,7 +23,7 @@ public class ItemCornKernels extends ItemFood implements IHasModel, IPlantable {
         super(amount, isWolfFood);
         setUnlocalizedName(name);
         setRegistryName(name);
-        setCreativeTab(CreativeTabs.FOOD);
+        setCreativeTab(Main.afmtab);
 
         ItemInit.ITEMS.add(this);
     }
