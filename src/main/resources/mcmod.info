@@ -2,8 +2,8 @@
 {
   "modid": "afm",
   "name": "Awesome Farm Mod",
-  "description": "A mod about farming",
-  "version": "0.0.1",
+  "description": "A mod about farming and food",
+  "version": "1.0.0a1",
   "mcversion": "1.12.2",
   "url": "",
   "updateUrl": "",
