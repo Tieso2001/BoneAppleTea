@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import java.util.Set;
 
 public class ItemMortar extends ItemTool implements IHasModel {
-    private static String name = "Mortar and Pessle";
+    private static String name = "Mortar and Pestle";
 
     public ItemMortar(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
         super(attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn);
