@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "afm:mortar_and_pestle"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    }
+  ],
+  "result":
+  {
+    "item": "minecraft:red_mushroom",
+    "count": 1
+  }
+}
