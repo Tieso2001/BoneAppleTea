@@ -3,6 +3,7 @@ package com.tieso2001.afm.init;
 import com.tieso2001.afm.objects.items.food.ItemAfmFood;
 import com.tieso2001.afm.objects.items.food.ItemCornKernels;
 import com.tieso2001.afm.objects.items.tools.ItemMortar;
+import com.tieso2001.afm.objects.items.tools.ItemYeast;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;
@@ -10,6 +11,9 @@ import java.util.List;
 
 public class ItemInit {
     public static final List<Item> ITEMS = new ArrayList<Item>();
+
+    //Items
+    public static final Item YEAST = new ItemYeast("yeast");
 
     //Food
     public static final Item CORN = new ItemAfmFood("corn", 3, false);
