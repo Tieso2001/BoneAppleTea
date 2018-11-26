@@ -2,6 +2,7 @@ package com.tieso2001.afm.init;
 
 import com.tieso2001.afm.objects.items.food.ItemAfmFood;
 import com.tieso2001.afm.objects.items.food.ItemCornKernels;
+import com.tieso2001.afm.objects.items.item.ItemPotatoMush;
 import com.tieso2001.afm.objects.items.item.ItemYeast;
 import com.tieso2001.afm.objects.items.tools.ItemMortar;
 import net.minecraft.item.Item;
@@ -14,6 +15,7 @@ public class ItemInit {
 
     //Items
     public static final Item YEAST = new ItemYeast("yeast");
+    public static final Item POTATO_MUSH = new ItemPotatoMush("potato_mush");
 
     //Food
     public static final Item CORN = new ItemAfmFood("corn", 3, false);
