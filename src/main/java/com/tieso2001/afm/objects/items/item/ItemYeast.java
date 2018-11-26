@@ -1,4 +1,4 @@
-package com.tieso2001.afm.objects.items.tools;
+package com.tieso2001.afm.objects.items.item;
 
 import com.tieso2001.afm.Main;
 import com.tieso2001.afm.init.ItemInit;
