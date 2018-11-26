@@ -3,36 +3,20 @@ package com.tieso2001.afm.objects.items.tools;
 import com.tieso2001.afm.Main;
 import com.tieso2001.afm.init.ItemInit;
 import com.tieso2001.afm.util.IHasModel;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.Set;
-
-public class ItemMortar extends ItemTool implements IHasModel {
+public class ItemMortar extends Item implements IHasModel {
     private static String name = "Mortar and Pestle";
 
-    public ItemMortar(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
-        super(attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn);
-
-        setUnlocalizedName(name);
-        setRegistryName(name);
-        setCreativeTab(Main.afmtab);
-        setNoRepair();
-
-        ItemInit.ITEMS.add(this);
-    }
-
-    public ItemMortar(ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
-        super(materialIn, effectiveBlocksIn);
-
+    public ItemMortar(String name) {
         setUnlocalizedName(name);
         setRegistryName(name);
         setCreativeTab(Main.afmtab);
