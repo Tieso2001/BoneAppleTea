@@ -12,9 +12,6 @@ public class ItemYeast extends Item implements IHasModel {
         setRegistryName(name);
         setCreativeTab(Main.afmtab);
 
-        setMaxStackSize(1);
-        setMaxDamage(15);
-
         ItemInit.ITEMS.add(this);
     }
 
