@@ -25,12 +25,20 @@ public class ItemMortar extends ItemTool implements IHasModel {
         setUnlocalizedName(name);
         setRegistryName(name);
         setCreativeTab(Main.afmtab);
+        setNoRepair();
 
         ItemInit.ITEMS.add(this);
     }
 
     public ItemMortar(ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
         super(materialIn, effectiveBlocksIn);
+
+        setUnlocalizedName(name);
+        setRegistryName(name);
+        setCreativeTab(Main.afmtab);
+        setNoRepair();
+
+        ItemInit.ITEMS.add(this);
     }
 
     @Override
