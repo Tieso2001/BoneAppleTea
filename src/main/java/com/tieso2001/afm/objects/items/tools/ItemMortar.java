@@ -14,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemMortar extends Item implements IHasModel {
-    private static String name = "Mortar and Pestle";
 
     public ItemMortar(String name) {
         setUnlocalizedName(name);

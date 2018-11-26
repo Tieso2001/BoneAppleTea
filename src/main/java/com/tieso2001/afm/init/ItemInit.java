@@ -18,5 +18,5 @@ public class ItemInit {
     public static final Item CORN_ON_THE_COB = new ItemAfmFood("corn_on_the_cob", 5, false);
 
     //Tools
-    public static final Item MORTAR = new ItemMortar("Mortar and Pestle");
+    public static final Item MORTAR = new ItemMortar("mortar_and_pestle");
 }
