@@ -1,6 +1,7 @@
 package com.tieso2001.afm.objects.items.tools;
 
 import com.tieso2001.afm.Main;
+import com.tieso2001.afm.init.ItemInit;
 import com.tieso2001.afm.util.IHasModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -16,9 +17,16 @@ import net.minecraft.world.World;
 import java.util.Set;
 
 public class ItemMortar extends ItemTool implements IHasModel {
+    private static String name = "Mortar and Pessle";
 
     public ItemMortar(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
         super(attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn);
+
+        setUnlocalizedName(name);
+        setRegistryName(name);
+        setCreativeTab(Main.afmtab);
+
+        ItemInit.ITEMS.add(this);
     }
 
     public ItemMortar(ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
