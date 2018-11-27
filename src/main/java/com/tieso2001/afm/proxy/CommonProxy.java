@@ -1,6 +1,5 @@
 package com.tieso2001.afm.proxy;
 
-import com.tieso2001.afm.init.BlockInit;
 import com.tieso2001.afm.objects.blocks.TileFermenter;
 import com.tieso2001.afm.util.Reference;
 import net.minecraft.block.Block;
@@ -15,7 +14,6 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        event.getRegistry().register(BlockInit.FERMENTER);
         GameRegistry.registerTileEntity(TileFermenter.class, Reference.MOD_ID + "_fermenter");
     }
 

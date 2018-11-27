@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class BlockFermenter extends Block implements IHasModel, ITileEntityProvider {
+
     public BlockFermenter(String name, Material material) {
         super(material);
         setUnlocalizedName(name);
