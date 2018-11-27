@@ -10,4 +10,5 @@ public class BlockInit {
     public static final List<Block> BLOCKS = new ArrayList<Block>();
 
     public static final Block CORN_PLANT = new BlockCornPlant("corn_plant");
+    public static final Block FERMENTER = new BlockCornPlant("fermenter");
 }
