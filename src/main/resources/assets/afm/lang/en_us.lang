@@ -1,3 +1,4 @@
+# Items
 item.corn.name=Corn
 item.corn_kernels.name=Corn Kernels
 item.popcorn.name=Popcorn
@@ -6,7 +7,9 @@ item.mortar_and_pestle.name=Mortar and Pestle
 item.yeast.name=Yeast
 item.potato_mush.name=Potato Mush
 
+# Blocks
 tile.corn_plant.name=Corn Plant
 tile.fermenter.name=Fermenter
 
+# Creative Tabs
 itemGroup.afmtab=AwesomeFarmMod
