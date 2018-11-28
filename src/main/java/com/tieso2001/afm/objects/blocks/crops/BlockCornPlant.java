@@ -1,4 +1,4 @@
-package com.tieso2001.afm.objects.blocks;
+package com.tieso2001.afm.objects.blocks.crops;
 
 import com.tieso2001.afm.init.BlockInit;
 import com.tieso2001.afm.init.ItemInit;

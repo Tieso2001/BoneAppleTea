@@ -1,4 +1,4 @@
-package com.tieso2001.afm.objects.blocks;
+package com.tieso2001.afm.objects.blocks.machines;
 
 import com.tieso2001.afm.Main;
 import com.tieso2001.afm.init.BlockInit;

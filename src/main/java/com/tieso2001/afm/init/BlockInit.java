@@ -1,7 +1,7 @@
 package com.tieso2001.afm.init;
 
-import com.tieso2001.afm.objects.blocks.BlockCornPlant;
-import com.tieso2001.afm.objects.blocks.BlockFermenter;
+import com.tieso2001.afm.objects.blocks.crops.BlockCornPlant;
+import com.tieso2001.afm.objects.blocks.machines.BlockFermenter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 

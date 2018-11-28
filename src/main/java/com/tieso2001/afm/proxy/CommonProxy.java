@@ -1,6 +1,6 @@
 package com.tieso2001.afm.proxy;
 
-import com.tieso2001.afm.objects.blocks.TileFermenter;
+import com.tieso2001.afm.objects.blocks.machines.TileFermenter;
 import com.tieso2001.afm.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
