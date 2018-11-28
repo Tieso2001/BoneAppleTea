@@ -7,5 +7,6 @@ item.yeast.name=Yeast
 item.potato_mush.name=Potato Mush
 
 tile.corn_plant.name=Corn Plant
+tile.fermenter.name=Fermenter
 
 itemGroup.afmtab=AwesomeFarmMod
