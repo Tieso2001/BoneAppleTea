@@ -3,7 +3,6 @@ package com.tieso2001.afm.objects.blocks.machines;
 import com.tieso2001.afm.util.Reference;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
-import scala.tools.nsc.backend.icode.TypeKinds;
 
 public class GuiFermenter extends GuiContainer {
 
@@ -23,6 +22,13 @@ public class GuiFermenter extends GuiContainer {
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         mc.getTextureManager().bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        renderHoveredToolTip(mouseX, mouseY);
     }
 }
 
