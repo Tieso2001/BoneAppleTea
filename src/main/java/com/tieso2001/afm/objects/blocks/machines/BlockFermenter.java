@@ -4,6 +4,7 @@ import com.tieso2001.afm.Main;
 import com.tieso2001.afm.init.BlockInit;
 import com.tieso2001.afm.init.ItemInit;
 import com.tieso2001.afm.util.IHasModel;
+import com.tieso2001.afm.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -11,10 +12,12 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -64,6 +67,19 @@ public class BlockFermenter extends Block implements IHasModel, ITileEntityProvi
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileFermenter();
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (worldIn.isRemote) {
+            return true;
+        }
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (!(te instanceof TileFermenter)) {
+            return false;
+        }
+        playerIn.openGui(Main.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        return true;
     }
 
     @Override

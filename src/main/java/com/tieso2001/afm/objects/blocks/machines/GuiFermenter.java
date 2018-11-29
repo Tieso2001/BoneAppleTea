@@ -7,8 +7,8 @@ import scala.tools.nsc.backend.icode.TypeKinds;
 
 public class GuiFermenter extends GuiContainer {
 
-    public static final int WIDTH = 180;
-    public static final int HEIGHT = 152;
+    public static final int WIDTH = 176;
+    public static final int HEIGHT = 166;
 
     private static final ResourceLocation background = new ResourceLocation(Reference.MOD_ID, "textures/gui/fermenter.png");
 

@@ -2,6 +2,7 @@ package com.tieso2001.afm;
 
 import com.tieso2001.afm.init.ItemInit;
 import com.tieso2001.afm.proxy.CommonProxy;
+import com.tieso2001.afm.proxy.GuiHandler;
 import com.tieso2001.afm.tabs.AfmTab;
 import com.tieso2001.afm.util.Reference;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION)
@@ -34,6 +36,7 @@ public class Main {
 
     @EventHandler
     public static void init(FMLInitializationEvent event) {
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         MinecraftForge.addGrassSeed(new ItemStack(ItemInit.CORN_KERNELS), 1);
         GameRegistry.addSmelting(new ItemStack(ItemInit.CORN_KERNELS), new ItemStack(ItemInit.POPCORN), 0.35F);
         GameRegistry.addSmelting(new ItemStack(ItemInit.CORN), new ItemStack(ItemInit.CORN_ON_THE_COB), 0.35F);
