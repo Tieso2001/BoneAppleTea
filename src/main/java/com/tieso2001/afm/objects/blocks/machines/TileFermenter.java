@@ -1,13 +1,18 @@
 package com.tieso2001.afm.objects.blocks.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.SlotFurnaceFuel;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+
+import javax.annotation.Nonnull;
 
 public class TileFermenter extends TileEntity {
 
@@ -19,16 +24,21 @@ public class TileFermenter extends TileEntity {
     public static final int OUTPUT_SLOTS = 1;
     public static final int SIZE = INPUT_SLOTS + OUTPUT_SLOTS;
 
-    // Input slot
-    private ItemStackHandler itemInputHandler = new ItemStackHandler(ITEM_SLOT) {
+    // Fuel slot
+    private ItemStackHandler fuelInputHandler = new ItemStackHandler(FUEL_SLOT) {
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+            return TileEntityFurnace.isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack);
+        }
+
         @Override
         protected void onContentsChanged(int slot) {
             TileFermenter.this.markDirty();
         }
     };
 
-    // Fuel slot
-    private ItemStackHandler fuelInputHandler = new ItemStackHandler(FUEL_SLOT) {
+    // Input slot
+    private ItemStackHandler itemInputHandler = new ItemStackHandler(ITEM_SLOT) {
         @Override
         protected void onContentsChanged(int slot) {
             TileFermenter.this.markDirty();
@@ -51,17 +61,17 @@ public class TileFermenter extends TileEntity {
         }
     };
 
-    private CombinedInvWrapper inputHandler = new CombinedInvWrapper(itemInputHandler, fuelInputHandler, bucketInputHandler);
+    private CombinedInvWrapper inputHandler = new CombinedInvWrapper(fuelInputHandler, itemInputHandler, bucketInputHandler);
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputHandler, outputHandler);
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        if (compound.hasKey("itemsIn")) {
-            itemInputHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsIn"));
-        }
         if (compound.hasKey("fuelIn")) {
             fuelInputHandler.deserializeNBT((NBTTagCompound) compound.getTag("fuelIn"));
+        }
+        if (compound.hasKey("itemsIn")) {
+            itemInputHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsIn"));
         }
         if (compound.hasKey("bucketIn")) {
             bucketInputHandler.deserializeNBT((NBTTagCompound) compound.getTag("bucketIn"));
@@ -74,8 +84,8 @@ public class TileFermenter extends TileEntity {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setTag("itemsIn", itemInputHandler.serializeNBT());
         compound.setTag("fuelIn", fuelInputHandler.serializeNBT());
+        compound.setTag("itemsIn", itemInputHandler.serializeNBT());
         compound.setTag("bucketIn", bucketInputHandler.serializeNBT());
         compound.setTag("itemsOut", outputHandler.serializeNBT());
         return compound;
