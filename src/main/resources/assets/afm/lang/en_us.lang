@@ -1,15 +1,23 @@
 # Items
+item.barley.name=Barley
+item.barley_seeds.name=Barley Seeds
+item.potato_mush.name=Potato Mush
+item.yeast.name=Yeast
+
+# Food
 item.corn.name=Corn
 item.corn_kernels.name=Corn Kernels
-item.popcorn.name=Popcorn
 item.corn_on_the_cob.name=Corn on the Cob
+item.popcorn.name=Popcorn
+
+# Tools
 item.mortar_and_pestle.name=Mortar and Pestle
-item.yeast.name=Yeast
-item.potato_mush.name=Potato Mush
 
 # Blocks
-tile.corn_plant.name=Corn Plant
+tile.barley.name=Barley
 tile.fermenter.name=Fermenter
+tile.corn_plant.name=Corn Plant
+
 
 # Creative Tabs
 itemGroup.afmtab=AwesomeFarmMod
