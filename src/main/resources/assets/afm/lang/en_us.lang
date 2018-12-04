@@ -16,7 +16,7 @@ item.mortar_and_pestle.name=Mortar and Pestle
 # Blocks
 tile.barley.name=Barley
 tile.fermenter.name=Fermenter
-tile.corn_plant.name=Corn Plant
+tile.corn.name=Corn
 
 
 # Creative Tabs

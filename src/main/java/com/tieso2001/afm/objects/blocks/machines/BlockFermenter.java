@@ -4,7 +4,6 @@ import com.tieso2001.afm.Main;
 import com.tieso2001.afm.init.BlockInit;
 import com.tieso2001.afm.init.ItemInit;
 import com.tieso2001.afm.util.IHasModel;
-import com.tieso2001.afm.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;

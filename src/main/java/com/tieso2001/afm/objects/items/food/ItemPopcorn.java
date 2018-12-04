@@ -5,9 +5,9 @@ import com.tieso2001.afm.init.ItemInit;
 import com.tieso2001.afm.util.IHasModel;
 import net.minecraft.item.ItemFood;
 
-public class ItemAfmFood extends ItemFood implements IHasModel {
+public class ItemPopcorn extends ItemFood implements IHasModel {
 
-    public ItemAfmFood(String name, int amount, boolean isWolfFood) {
+    public ItemPopcorn(String name, int amount, boolean isWolfFood) {
         super(amount, isWolfFood);
         setUnlocalizedName(name);
         setRegistryName(name);

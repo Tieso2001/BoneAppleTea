@@ -1,6 +1,6 @@
 {
     "parent": "block/crop",
     "textures": {
-        "crop": "afm:blocks/corn_plant1"
+        "crop": "afm:blocks/corn_stage_5"
     }
 }

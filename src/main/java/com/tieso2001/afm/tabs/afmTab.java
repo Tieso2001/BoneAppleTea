@@ -4,8 +4,8 @@ import com.tieso2001.afm.init.ItemInit;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
-public class AfmTab extends CreativeTabs {
-    public AfmTab(String label) {
+public class afmTab extends CreativeTabs {
+    public afmTab(String label) {
         super("afmtab");
     }
 

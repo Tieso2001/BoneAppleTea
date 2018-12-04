@@ -6,9 +6,9 @@ import com.tieso2001.afm.util.IHasModel;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemMortar extends Item implements IHasModel {
+public class ItemMortarAndPestle extends Item implements IHasModel {
 
-    public ItemMortar(String name) {
+    public ItemMortarAndPestle(String name) {
         setUnlocalizedName(name);
         setRegistryName(name);
         setCreativeTab(Main.afmtab);
@@ -19,7 +19,6 @@ public class ItemMortar extends Item implements IHasModel {
         ItemInit.ITEMS.add(this);
     }
 
-
     @Override
     public boolean hasContainerItem(ItemStack stack) {
         return true;
@@ -27,7 +26,7 @@ public class ItemMortar extends Item implements IHasModel {
 
     @Override
     public ItemStack getContainerItem(ItemStack itemStack) {
-        ItemStack stack = new ItemStack(ItemInit.MORTAR, 1);
+        ItemStack stack = new ItemStack(ItemInit.MORTAR_AND_PESTLE, 1);
         stack.setItemDamage(itemStack.getItemDamage() + 1);
         return stack;
     }
@@ -36,6 +35,4 @@ public class ItemMortar extends Item implements IHasModel {
     public void registerModels() {
         Main.proxy.registerItemRenderer(this, 0, "inventory");
     }
-
-
 }

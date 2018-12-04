@@ -3,7 +3,7 @@ package com.tieso2001.afm;
 import com.tieso2001.afm.init.ItemInit;
 import com.tieso2001.afm.proxy.CommonProxy;
 import com.tieso2001.afm.proxy.GuiHandler;
-import com.tieso2001.afm.tabs.AfmTab;
+import com.tieso2001.afm.tabs.afmTab;
 import com.tieso2001.afm.util.Reference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -24,7 +24,7 @@ public class Main {
     @Instance
     public static Main instance;
 
-    public static final CreativeTabs afmtab = new AfmTab("afmtab");
+    public static final CreativeTabs afmtab = new afmTab("afmtab");
 
     @SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.COMMON_PROXY_CLASS)
     public static CommonProxy proxy;
