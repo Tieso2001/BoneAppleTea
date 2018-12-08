@@ -14,11 +14,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemBucket;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidUtil;
 
 import javax.annotation.Nullable;
 
@@ -73,11 +76,17 @@ public class BlockFermenter extends Block implements IHasModel, ITileEntityProvi
         if (worldIn.isRemote) {
             return true;
         }
-        TileEntity te = worldIn.getTileEntity(pos);
-        if (!(te instanceof TileFermenter)) {
-            return false;
+
+        if (FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing)) {
+            worldIn.notifyBlockUpdate(pos, state, state, 3);
         }
-        playerIn.openGui(Main.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        else {
+            TileEntity te = worldIn.getTileEntity(pos);
+            if (!(te instanceof TileFermenter)) {
+                return false;
+            }
+            playerIn.openGui(Main.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        }
         return true;
     }
 

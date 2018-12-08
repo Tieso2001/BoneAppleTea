@@ -1,20 +1,28 @@
 package com.tieso2001.afm.objects.blocks.machines;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-public class TileFermenter extends TileEntity {
+public class TileFermenter extends TileEntity implements ITickable {
 
     public static final int ITEM_SLOT = 1;
     public static final int FUEL_SLOT = 1;
@@ -23,6 +31,37 @@ public class TileFermenter extends TileEntity {
     public static final int INPUT_SLOTS = ITEM_SLOT + FUEL_SLOT + BUCKET_SLOT;
     public static final int OUTPUT_SLOTS = 1;
     public static final int SIZE = INPUT_SLOTS + OUTPUT_SLOTS;
+
+    public static final int MAX_CONTENTS = 5000;
+
+    private FluidTank fermenter = new FluidTank(MAX_CONTENTS) {
+        @Override
+        protected void onContentsChanged() {
+            IBlockState state = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos, state, state, 3);
+            markDirty();
+        }
+    };
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound nbtTag = super.getUpdateTag();
+        NBTTagCompound tankNBT = new NBTTagCompound();
+        fermenter.writeToNBT(tankNBT);
+        nbtTag.setTag("fermenter", tankNBT);
+        return nbtTag;
+    }
+
+    @Nullable
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 1, getUpdateTag());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+        fermenter.readFromNBT(packet.getNbtCompound().getCompoundTag("fermenter"));
+    }
 
     // Fuel slot
     private ItemStackHandler fuelInputHandler = new ItemStackHandler(FUEL_SLOT) {
@@ -95,9 +134,16 @@ public class TileFermenter extends TileEntity {
         return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 
+    public FluidTank getTank() {
+        return fermenter;
+    }
+
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return true;
+        }
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return true;
         }
         return super.hasCapability(capability, facing);
@@ -115,9 +161,17 @@ public class TileFermenter extends TileEntity {
             else {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(outputHandler);
             }
-
+        }
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fermenter);
         }
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public void update() {
+        if (!world.isRemote) {
+        }
     }
 }
 
