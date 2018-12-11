@@ -78,7 +78,7 @@ public class BlockFermenter extends Block implements IHasModel, ITileEntityProvi
         }
 
         if (FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing)) {
-            worldIn.notifyBlockUpdate(pos, state, state, 3);
+            return true;
         }
         else {
             TileEntity te = worldIn.getTileEntity(pos);
