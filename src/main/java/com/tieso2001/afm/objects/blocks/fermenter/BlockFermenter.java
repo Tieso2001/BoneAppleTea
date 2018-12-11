@@ -1,4 +1,4 @@
-package com.tieso2001.afm.objects.blocks.machines;
+package com.tieso2001.afm.objects.blocks.fermenter;
 
 import com.tieso2001.afm.Main;
 import com.tieso2001.afm.init.BlockInit;
@@ -14,8 +14,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemBucket;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;

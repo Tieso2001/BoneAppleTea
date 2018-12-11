@@ -1,4 +1,4 @@
-package com.tieso2001.afm.objects.blocks.machines;
+package com.tieso2001.afm.objects.blocks.fermenter;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

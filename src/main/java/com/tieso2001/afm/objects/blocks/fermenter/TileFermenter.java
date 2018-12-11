@@ -1,5 +1,6 @@
-package com.tieso2001.afm.objects.blocks.machines;
+package com.tieso2001.afm.objects.blocks.fermenter;
 
+import com.tieso2001.afm.init.ItemInit;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.SlotFurnaceFuel;
@@ -12,8 +13,9 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -34,7 +36,16 @@ public class TileFermenter extends TileEntity implements ITickable {
 
     public static final int MAX_CONTENTS = 5000;
 
-    private FluidTank fermenter = new FluidTank(MAX_CONTENTS) {
+    private FluidTank fermenterInput = new FluidTank(MAX_CONTENTS) {
+        @Override
+        protected void onContentsChanged() {
+            IBlockState state = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos, state, state, 3);
+            markDirty();
+        }
+    };
+
+    private FluidTank fermenterOutput = new FluidTank(MAX_CONTENTS) {
         @Override
         protected void onContentsChanged() {
             IBlockState state = world.getBlockState(pos);
@@ -47,7 +58,8 @@ public class TileFermenter extends TileEntity implements ITickable {
     public NBTTagCompound getUpdateTag() {
         NBTTagCompound nbtTag = super.getUpdateTag();
         NBTTagCompound tankNBT = new NBTTagCompound();
-        fermenter.writeToNBT(tankNBT);
+        fermenterInput.writeToNBT(tankNBT);
+        fermenterOutput.writeToNBT(tankNBT);
         nbtTag.setTag("fermenter", tankNBT);
         return nbtTag;
     }
@@ -60,7 +72,8 @@ public class TileFermenter extends TileEntity implements ITickable {
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-        fermenter.readFromNBT(packet.getNbtCompound().getCompoundTag("fermenter"));
+        fermenterInput.readFromNBT(packet.getNbtCompound().getCompoundTag("fermenter"));
+        fermenterOutput.readFromNBT(packet.getNbtCompound().getCompoundTag("fermenter"));
     }
 
     // Fuel slot
@@ -134,8 +147,12 @@ public class TileFermenter extends TileEntity implements ITickable {
         return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 
-    public FluidTank getTank() {
-        return fermenter;
+    public FluidTank getInputTank() {
+        return fermenterInput;
+    }
+
+    public FluidTank getOutputTank() {
+        return fermenterOutput;
     }
 
     @Override
@@ -163,7 +180,10 @@ public class TileFermenter extends TileEntity implements ITickable {
             }
         }
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fermenter);
+            if (fermenterOutput.getFluidAmount() > 0) {
+                return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fermenterOutput);
+            }
+            else return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fermenterInput);
         }
         return super.getCapability(capability, facing);
     }
@@ -171,6 +191,21 @@ public class TileFermenter extends TileEntity implements ITickable {
     @Override
     public void update() {
         if (!world.isRemote) {
+            ItemStack input = inputHandler.extractItem(1, 1, true);
+            ItemStack output = outputHandler.insertItem(0, new ItemStack(ItemInit.BARLEY), true);
+            if (input.getItem() == ItemInit.YEAST) {
+                if (fermenterInput.getFluidAmount() >= 1000) {
+                    if (output.isEmpty()) {
+                        if (fermenterOutput.canFillFluidType(new FluidStack(FluidRegistry.LAVA, 1000))) {
+                            inputHandler.extractItem(1, 1, false);
+                            outputHandler.insertItem(0, new ItemStack(ItemInit.BARLEY), false);
+                            fermenterInput.drain(1000, true);
+                            fermenterOutput.fill(new FluidStack(FluidRegistry.LAVA, 1000), true);
+                            markDirty();
+                        }
+                    }
+                }
+            }
         }
     }
 }
