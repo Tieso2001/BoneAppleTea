@@ -38,10 +38,6 @@ public class Main {
     public static void init(FMLInitializationEvent event) {
         proxy.init(event);
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-        MinecraftForge.addGrassSeed(new ItemStack(ModItems.BARLEY_SEEDS), 1);
-        MinecraftForge.addGrassSeed(new ItemStack(ModItems.CORN_KERNELS), 1);
-        GameRegistry.addSmelting(new ItemStack(ModItems.CORN_KERNELS), new ItemStack(ModItems.POPCORN), 0.35F);
-        GameRegistry.addSmelting(new ItemStack(ModItems.CORN), new ItemStack(ModItems.CORN_ON_THE_COB), 0.35F);
     }
 
     @EventHandler
