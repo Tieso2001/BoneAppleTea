@@ -1,4 +1,4 @@
-package com.tieso2001.afm.objects.items.food;
+package com.tieso2001.afm.object.items.food;
 
 import net.minecraft.item.ItemFood;
 

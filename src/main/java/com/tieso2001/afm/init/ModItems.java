@@ -1,21 +1,16 @@
 package com.tieso2001.afm.init;
 
 import com.tieso2001.afm.Main;
-import com.tieso2001.afm.objects.items.food.*;
-import com.tieso2001.afm.objects.items.item.ItemBarley;
-import com.tieso2001.afm.objects.items.item.ItemBarleySeeds;
-import com.tieso2001.afm.objects.items.item.ItemPotatoMush;
-import com.tieso2001.afm.objects.items.item.ItemYeast;
-import com.tieso2001.afm.objects.items.tools.ItemMortarAndPestle;
-import com.tieso2001.afm.util.Reference;
+import com.tieso2001.afm.object.items.food.*;
+import com.tieso2001.afm.object.items.item.ItemBarley;
+import com.tieso2001.afm.object.items.item.ItemBarleySeeds;
+import com.tieso2001.afm.object.items.item.ItemPotatoMush;
+import com.tieso2001.afm.object.items.item.ItemYeast;
+import com.tieso2001.afm.object.items.tools.ItemMortarAndPestle;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ModItems {
 

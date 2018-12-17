@@ -1,4 +1,4 @@
-package com.tieso2001.afm.tabs;
+package com.tieso2001.afm.tab;
 
 import com.tieso2001.afm.init.ModItems;
 import net.minecraft.creativetab.CreativeTabs;

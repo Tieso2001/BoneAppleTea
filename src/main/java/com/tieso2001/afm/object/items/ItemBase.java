@@ -1,4 +1,4 @@
-package com.tieso2001.afm.objects.items;
+package com.tieso2001.afm.object.items;
 
 import net.minecraft.item.Item;
 

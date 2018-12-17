@@ -1,4 +1,4 @@
-package com.tieso2001.afm.objects.blocks.fermenter;
+package com.tieso2001.afm.object.blocks.fermenter;
 
 import com.tieso2001.afm.Main;
 import net.minecraft.block.Block;

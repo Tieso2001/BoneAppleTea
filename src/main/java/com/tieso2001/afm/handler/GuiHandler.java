@@ -1,8 +1,8 @@
 package com.tieso2001.afm.handler;
 
-import com.tieso2001.afm.objects.blocks.fermenter.ContainerFermenter;
-import com.tieso2001.afm.objects.blocks.fermenter.GuiFermenter;
-import com.tieso2001.afm.objects.blocks.fermenter.TileFermenter;
+import com.tieso2001.afm.object.blocks.fermenter.ContainerFermenter;
+import com.tieso2001.afm.object.blocks.fermenter.GuiFermenter;
+import com.tieso2001.afm.object.blocks.fermenter.TileFermenter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

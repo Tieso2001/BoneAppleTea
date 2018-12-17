@@ -3,7 +3,7 @@ package com.tieso2001.afm;
 import com.tieso2001.afm.init.ModItems;
 import com.tieso2001.afm.proxy.CommonProxy;
 import com.tieso2001.afm.handler.GuiHandler;
-import com.tieso2001.afm.tabs.afmTab;
+import com.tieso2001.afm.tab.afmTab;
 import com.tieso2001.afm.util.Reference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;

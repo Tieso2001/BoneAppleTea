@@ -1,4 +1,4 @@
-package com.tieso2001.afm.objects.items.item;
+package com.tieso2001.afm.object.items.item;
 
 import com.tieso2001.afm.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;

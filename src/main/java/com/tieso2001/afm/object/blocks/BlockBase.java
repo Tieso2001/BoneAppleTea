@@ -1,6 +1,5 @@
-package com.tieso2001.afm.objects.blocks;
+package com.tieso2001.afm.object.blocks;
 
-import com.tieso2001.afm.Main;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 

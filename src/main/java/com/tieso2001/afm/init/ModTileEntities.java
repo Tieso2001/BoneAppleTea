@@ -1,6 +1,6 @@
 package com.tieso2001.afm.init;
 
-import com.tieso2001.afm.objects.blocks.fermenter.TileFermenter;
+import com.tieso2001.afm.object.blocks.fermenter.TileFermenter;
 import com.tieso2001.afm.util.Reference;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 

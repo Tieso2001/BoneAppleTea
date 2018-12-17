@@ -1,4 +1,4 @@
-package com.tieso2001.afm.objects.items.tools;
+package com.tieso2001.afm.object.items.tools;
 
 import com.tieso2001.afm.init.ModItems;
 import net.minecraft.item.Item;
