@@ -15,9 +15,9 @@ item.mortar_and_pestle.name=Mortar and Pestle
 
 # Blocks
 tile.barley.name=Barley
-tile.fermenter.name=Fermenter
 tile.corn.name=Corn
+tile.fermenter.name=Fermenter
 
 
 # Creative Tabs
-itemGroup.afmtab=AwesomeFarmMod
+itemGroup.tabafm=AwesomeFarmMod

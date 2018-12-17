@@ -44,7 +44,7 @@ public class ModBlocks {
 
         if (registerItem) {
             registerItemBlock(block);
-            block.setCreativeTab(Main.afmtab);
+            block.setCreativeTab(Main.AFM);
         }
 
     }

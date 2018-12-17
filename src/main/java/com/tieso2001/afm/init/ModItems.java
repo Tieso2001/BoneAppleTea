@@ -67,7 +67,7 @@ public class ModItems {
     }
 
     public static void registerItem(Item item) {
-        item.setCreativeTab(Main.afmtab);
+        item.setCreativeTab(Main.AFM);
         ForgeRegistries.ITEMS.register(item);
     }
 
