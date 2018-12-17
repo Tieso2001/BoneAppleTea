@@ -1,6 +1,6 @@
 package com.tieso2001.afm;
 
-import com.tieso2001.afm.init.ItemInit;
+import com.tieso2001.afm.init.ModItems;
 import com.tieso2001.afm.proxy.CommonProxy;
 import com.tieso2001.afm.proxy.GuiHandler;
 import com.tieso2001.afm.tabs.afmTab;
@@ -30,22 +30,23 @@ public class Main {
     public static CommonProxy proxy;
 
     @EventHandler
-    public static void PreInit(FMLPreInitializationEvent event) {
-
+    public static void PreInit(FMLPreInitializationEvent preEvent) {
+        proxy.preInit(preEvent);
     }
 
     @EventHandler
     public static void init(FMLInitializationEvent event) {
+        proxy.init(event);
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-        MinecraftForge.addGrassSeed(new ItemStack(ItemInit.BARLEY_SEEDS), 1);
-        MinecraftForge.addGrassSeed(new ItemStack(ItemInit.CORN_KERNELS), 1);
-        GameRegistry.addSmelting(new ItemStack(ItemInit.CORN_KERNELS), new ItemStack(ItemInit.POPCORN), 0.35F);
-        GameRegistry.addSmelting(new ItemStack(ItemInit.CORN), new ItemStack(ItemInit.CORN_ON_THE_COB), 0.35F);
+        MinecraftForge.addGrassSeed(new ItemStack(ModItems.BARLEY_SEEDS), 1);
+        MinecraftForge.addGrassSeed(new ItemStack(ModItems.CORN_KERNELS), 1);
+        GameRegistry.addSmelting(new ItemStack(ModItems.CORN_KERNELS), new ItemStack(ModItems.POPCORN), 0.35F);
+        GameRegistry.addSmelting(new ItemStack(ModItems.CORN), new ItemStack(ModItems.CORN_ON_THE_COB), 0.35F);
     }
 
     @EventHandler
-    public static void PostInit(FMLPostInitializationEvent event) {
-
+    public static void PostInit(FMLPostInitializationEvent postEvent) {
+        proxy.postInit(postEvent);
     }
 
 }

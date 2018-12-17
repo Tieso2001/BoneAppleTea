@@ -1,9 +1,6 @@
 package com.tieso2001.afm.objects.items.item;
 
-import com.tieso2001.afm.Main;
-import com.tieso2001.afm.init.BlockInit;
-import com.tieso2001.afm.init.ItemInit;
-import com.tieso2001.afm.util.IHasModel;
+import com.tieso2001.afm.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,19 +14,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
-public class ItemBarleySeeds extends Item implements IHasModel, IPlantable {
+public class ItemBarleySeeds extends Item implements IPlantable {
 
     public ItemBarleySeeds(String name) {
         setUnlocalizedName(name);
         setRegistryName(name);
-        setCreativeTab(Main.afmtab);
-
-        ItemInit.ITEMS.add(this);
-    }
-
-    @Override
-    public void registerModels() {
-        Main.proxy.registerItemRenderer(this, 0, "inventory");
     }
 
     @Override
@@ -38,7 +27,7 @@ public class ItemBarleySeeds extends Item implements IHasModel, IPlantable {
         IBlockState state = worldIn.getBlockState(pos);
 
         if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, stack) && state.getBlock().canSustainPlant(state, worldIn, pos, EnumFacing.UP, this) && worldIn.isAirBlock(pos.up())) {
-            worldIn.setBlockState(pos.up(), BlockInit.BARLEY.getDefaultState());
+            worldIn.setBlockState(pos.up(), ModBlocks.BARLEY.getDefaultState());
             stack.shrink(1);
             return EnumActionResult.SUCCESS;
         } else return EnumActionResult.FAIL;
@@ -51,8 +40,9 @@ public class ItemBarleySeeds extends Item implements IHasModel, IPlantable {
 
     @Override
     public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
-        return BlockInit.BARLEY.getDefaultState();
+        return ModBlocks.BARLEY.getDefaultState();
     }
+
 }
 
 

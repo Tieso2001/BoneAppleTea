@@ -88,5 +88,6 @@ public class ContainerFermenter extends Container {
     public boolean canInteractWith(EntityPlayer playerIn) {
         return te.canInteractWith(playerIn);
     }
+
 }
 

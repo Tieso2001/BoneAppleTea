@@ -1,23 +1,29 @@
 package com.tieso2001.afm.proxy;
 
-import com.tieso2001.afm.objects.blocks.fermenter.TileFermenter;
-import com.tieso2001.afm.util.Reference;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.tieso2001.afm.init.ModBlocks;
+import com.tieso2001.afm.init.ModItems;
+import com.tieso2001.afm.init.ModTileEntities;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod.EventBusSubscriber
 public class CommonProxy {
 
-    @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        GameRegistry.registerTileEntity(TileFermenter.class, Reference.MOD_ID + "_fermenter");
+    public void preInit(FMLPreInitializationEvent preEvent) {
+        ModBlocks.init();
+        ModItems.init();
+
+        ModBlocks.register();
+        ModItems.register();
+        ModTileEntities.register();
     }
 
-    public void registerItemRenderer(Item item, int meta, String id) {
+    public void init(FMLInitializationEvent event) {
+
+    }
+
+    public void postInit(FMLPostInitializationEvent postEvent) {
+
     }
 
 }

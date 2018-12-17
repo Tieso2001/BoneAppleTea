@@ -1,7 +1,7 @@
 package com.tieso2001.afm.objects.blocks.crops;
 
-import com.tieso2001.afm.init.BlockInit;
-import com.tieso2001.afm.init.ItemInit;
+import com.tieso2001.afm.init.ModBlocks;
+import com.tieso2001.afm.init.ModItems;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -26,18 +26,16 @@ public class BlockCorn extends BlockCrops {
     public BlockCorn(String name) {
         setUnlocalizedName(name);
         setRegistryName(name);
-
-        BlockInit.BLOCKS.add(this);
     }
 
     @Override
     protected Item getSeed() {
-        return ItemInit.CORN_KERNELS;
+        return ModItems.CORN_KERNELS;
     }
 
     @Override
     protected Item getCrop() {
-        return ItemInit.CORN;
+        return ModItems.CORN;
     }
 
     @Override

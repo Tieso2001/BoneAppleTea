@@ -1,22 +1,16 @@
 package com.tieso2001.afm.objects.items.tools;
 
-import com.tieso2001.afm.Main;
-import com.tieso2001.afm.init.ItemInit;
-import com.tieso2001.afm.util.IHasModel;
+import com.tieso2001.afm.init.ModItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemMortarAndPestle extends Item implements IHasModel {
+public class ItemMortarAndPestle extends Item {
 
     public ItemMortarAndPestle(String name) {
         setUnlocalizedName(name);
         setRegistryName(name);
-        setCreativeTab(Main.afmtab);
-
         setMaxStackSize(1);
         setMaxDamage(15);
-
-        ItemInit.ITEMS.add(this);
     }
 
     @Override
@@ -26,13 +20,9 @@ public class ItemMortarAndPestle extends Item implements IHasModel {
 
     @Override
     public ItemStack getContainerItem(ItemStack itemStack) {
-        ItemStack stack = new ItemStack(ItemInit.MORTAR_AND_PESTLE, 1);
+        ItemStack stack = new ItemStack(ModItems.MORTAR_AND_PESTLE, 1);
         stack.setItemDamage(itemStack.getItemDamage() + 1);
         return stack;
     }
 
-    @Override
-    public void registerModels() {
-        Main.proxy.registerItemRenderer(this, 0, "inventory");
-    }
 }

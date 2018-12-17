@@ -1,6 +1,6 @@
 package com.tieso2001.afm.tabs;
 
-import com.tieso2001.afm.init.ItemInit;
+import com.tieso2001.afm.init.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
@@ -11,6 +11,6 @@ public class afmTab extends CreativeTabs {
 
     @Override
     public ItemStack getTabIconItem() {
-        return new ItemStack(ItemInit.CORN);
+        return new ItemStack(ModItems.CORN);
     }
 }

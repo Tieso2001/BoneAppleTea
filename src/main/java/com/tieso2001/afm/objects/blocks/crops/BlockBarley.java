@@ -1,7 +1,6 @@
 package com.tieso2001.afm.objects.blocks.crops;
 
-import com.tieso2001.afm.init.BlockInit;
-import com.tieso2001.afm.init.ItemInit;
+import com.tieso2001.afm.init.ModItems;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -25,18 +24,16 @@ public class BlockBarley extends BlockCrops {
     public BlockBarley(String name) {
         setUnlocalizedName(name);
         setRegistryName(name);
-
-        BlockInit.BLOCKS.add(this);
     }
 
     @Override
     protected Item getSeed() {
-        return ItemInit.BARLEY_SEEDS;
+        return ModItems.BARLEY_SEEDS;
     }
 
     @Override
     protected Item getCrop() {
-        return ItemInit.BARLEY;
+        return ModItems.BARLEY;
     }
 
     @Override

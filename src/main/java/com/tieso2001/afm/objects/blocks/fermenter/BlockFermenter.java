@@ -1,9 +1,6 @@
 package com.tieso2001.afm.objects.blocks.fermenter;
 
 import com.tieso2001.afm.Main;
-import com.tieso2001.afm.init.BlockInit;
-import com.tieso2001.afm.init.ItemInit;
-import com.tieso2001.afm.util.IHasModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -12,8 +9,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -23,7 +18,7 @@ import net.minecraftforge.fluids.FluidUtil;
 
 import javax.annotation.Nullable;
 
-public class BlockFermenter extends Block implements IHasModel, ITileEntityProvider {
+public class BlockFermenter extends Block implements ITileEntityProvider {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
@@ -31,11 +26,7 @@ public class BlockFermenter extends Block implements IHasModel, ITileEntityProvi
         super(material);
         setUnlocalizedName(name);
         setRegistryName(name);
-        setCreativeTab(Main.afmtab);
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-
-        BlockInit.BLOCKS.add(this);
-        ItemInit.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
     }
 
     @Override
@@ -44,13 +35,13 @@ public class BlockFermenter extends Block implements IHasModel, ITileEntityProvi
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING);
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override
@@ -88,8 +79,4 @@ public class BlockFermenter extends Block implements IHasModel, ITileEntityProvi
         return true;
     }
 
-    @Override
-    public void registerModels() {
-        Main.proxy.registerItemRenderer(Item.getItemFromBlock(this), 0, "inventory");
-    }
 }

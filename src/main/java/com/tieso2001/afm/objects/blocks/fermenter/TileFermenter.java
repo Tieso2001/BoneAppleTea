@@ -1,6 +1,6 @@
 package com.tieso2001.afm.objects.blocks.fermenter;
 
-import com.tieso2001.afm.init.ItemInit;
+import com.tieso2001.afm.init.ModItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.SlotFurnaceFuel;
@@ -192,13 +192,13 @@ public class TileFermenter extends TileEntity implements ITickable {
     public void update() {
         if (!world.isRemote) {
             ItemStack input = inputHandler.extractItem(1, 1, true);
-            ItemStack output = outputHandler.insertItem(0, new ItemStack(ItemInit.BARLEY), true);
-            if (input.getItem() == ItemInit.YEAST) {
+            ItemStack output = outputHandler.insertItem(0, new ItemStack(ModItems.BARLEY), true);
+            if (input.getItem() == ModItems.YEAST) {
                 if (fermenterInput.getFluidAmount() >= 1000) {
                     if (output.isEmpty()) {
                         if (fermenterOutput.canFillFluidType(new FluidStack(FluidRegistry.LAVA, 1000))) {
                             inputHandler.extractItem(1, 1, false);
-                            outputHandler.insertItem(0, new ItemStack(ItemInit.BARLEY), false);
+                            outputHandler.insertItem(0, new ItemStack(ModItems.BARLEY), false);
                             fermenterInput.drain(1000, true);
                             fermenterOutput.fill(new FluidStack(FluidRegistry.LAVA, 1000), true);
                             markDirty();
