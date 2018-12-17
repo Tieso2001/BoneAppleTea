@@ -1,4 +1,4 @@
-package com.tieso2001.afm.proxy;
+package com.tieso2001.afm.handler;
 
 import com.tieso2001.afm.objects.blocks.fermenter.ContainerFermenter;
 import com.tieso2001.afm.objects.blocks.fermenter.GuiFermenter;
