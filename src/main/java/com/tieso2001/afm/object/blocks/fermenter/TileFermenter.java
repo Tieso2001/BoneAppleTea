@@ -26,12 +26,14 @@ import javax.annotation.Nullable;
 
 public class TileFermenter extends TileEntity implements ITickable {
 
-    public static final int ITEM_SLOT = 1;
     public static final int FUEL_SLOT = 1;
+    public static final int ITEM_SLOT_ONE = 1;
+    public static final int ITEM_SLOT_TWO = 1;
     public static final int BUCKET_SLOT = 1;
+    public static final int OUTPUT_SLOT = 1;
 
-    public static final int INPUT_SLOTS = ITEM_SLOT + FUEL_SLOT + BUCKET_SLOT;
-    public static final int OUTPUT_SLOTS = 1;
+    public static final int INPUT_SLOTS = FUEL_SLOT + ITEM_SLOT_ONE + ITEM_SLOT_TWO + BUCKET_SLOT;
+    public static final int OUTPUT_SLOTS = OUTPUT_SLOT;
     public static final int SIZE = INPUT_SLOTS + OUTPUT_SLOTS;
 
     public static final int MAX_CONTENTS = 5000;
@@ -76,7 +78,7 @@ public class TileFermenter extends TileEntity implements ITickable {
         fermenterOutput.readFromNBT(packet.getNbtCompound().getCompoundTag("fermenter"));
     }
 
-    // Fuel slot
+    //Fuel Slot
     private ItemStackHandler fuelInputHandler = new ItemStackHandler(FUEL_SLOT) {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
@@ -89,15 +91,23 @@ public class TileFermenter extends TileEntity implements ITickable {
         }
     };
 
-    // Input slot
-    private ItemStackHandler itemInputHandler = new ItemStackHandler(ITEM_SLOT) {
+    // Input Slot One
+    private ItemStackHandler itemInputOneHandler = new ItemStackHandler(ITEM_SLOT_ONE) {
         @Override
         protected void onContentsChanged(int slot) {
             TileFermenter.this.markDirty();
         }
     };
 
-    // Bucket slot
+    // Input Slot Two
+    private ItemStackHandler itemInputTwoHandler = new ItemStackHandler(ITEM_SLOT_TWO) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            TileFermenter.this.markDirty();
+        }
+    };
+
+    //Bucket Slot
     private ItemStackHandler bucketInputHandler = new ItemStackHandler(BUCKET_SLOT) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -105,15 +115,15 @@ public class TileFermenter extends TileEntity implements ITickable {
         }
     };
 
-    // Output slot
-    private ItemStackHandler outputHandler = new ItemStackHandler(OUTPUT_SLOTS) {
+    //Output Slot
+    private ItemStackHandler outputHandler = new ItemStackHandler(OUTPUT_SLOT) {
         @Override
         protected void onContentsChanged(int slot) {
             TileFermenter.this.markDirty();
         }
     };
 
-    private CombinedInvWrapper inputHandler = new CombinedInvWrapper(fuelInputHandler, itemInputHandler, bucketInputHandler);
+    private CombinedInvWrapper inputHandler = new CombinedInvWrapper(fuelInputHandler, itemInputOneHandler, itemInputTwoHandler, bucketInputHandler);
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputHandler, outputHandler);
 
     @Override
@@ -122,8 +132,11 @@ public class TileFermenter extends TileEntity implements ITickable {
         if (compound.hasKey("fuelIn")) {
             fuelInputHandler.deserializeNBT((NBTTagCompound) compound.getTag("fuelIn"));
         }
-        if (compound.hasKey("itemsIn")) {
-            itemInputHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsIn"));
+        if (compound.hasKey("itemsOneIn")) {
+            itemInputOneHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsOneIn"));
+        }
+        if (compound.hasKey("itemsTwoIn")) {
+            itemInputTwoHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsTwoIn"));
         }
         if (compound.hasKey("bucketIn")) {
             bucketInputHandler.deserializeNBT((NBTTagCompound) compound.getTag("bucketIn"));
@@ -137,7 +150,8 @@ public class TileFermenter extends TileEntity implements ITickable {
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setTag("fuelIn", fuelInputHandler.serializeNBT());
-        compound.setTag("itemsIn", itemInputHandler.serializeNBT());
+        compound.setTag("itemsOneIn", itemInputOneHandler.serializeNBT());
+        compound.setTag("itemsTwoIn", itemInputTwoHandler.serializeNBT());
         compound.setTag("bucketIn", bucketInputHandler.serializeNBT());
         compound.setTag("itemsOut", outputHandler.serializeNBT());
         return compound;
@@ -186,6 +200,11 @@ public class TileFermenter extends TileEntity implements ITickable {
             else return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fermenterInput);
         }
         return super.getCapability(capability, facing);
+    }
+
+    public void canFerment() {
+        ItemStack inputSlotOne = inputHandler.extractItem(1,1, true);
+        ItemStack inputSlotTwo = inputHandler.extractItem(2,1,true);
     }
 
     @Override

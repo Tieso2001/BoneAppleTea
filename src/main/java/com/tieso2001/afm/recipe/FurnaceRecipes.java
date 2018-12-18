@@ -8,12 +8,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class FurnaceRecipes {
 
     public static void register() {
-        addFurnaceRecipe(ModItems.CORN_KERNELS, ModItems.POPCORN);
-        addFurnaceRecipe(ModItems.CORN, ModItems.CORN_ON_THE_COB);
+        addFurnaceRecipe(ModItems.CORN_KERNELS, ModItems.POPCORN, 0.35F);
+        addFurnaceRecipe(ModItems.CORN, ModItems.CORN_ON_THE_COB, 0.35F);
     }
 
-    public static void addFurnaceRecipe(Item inputItem, Item outputItem) {
-        GameRegistry.addSmelting(new ItemStack(inputItem), new ItemStack(outputItem), 0.35F);
+    public static void addFurnaceRecipe(Item inputItem, Item outputItem, float experience) {
+        GameRegistry.addSmelting(new ItemStack(inputItem), new ItemStack(outputItem), experience);
     }
 
 }

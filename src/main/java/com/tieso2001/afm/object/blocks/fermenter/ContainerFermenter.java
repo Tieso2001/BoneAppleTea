@@ -44,16 +44,26 @@ public class ContainerFermenter extends Container {
     private void addOwnSlots() {
         IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         int slotIndex = 0;
+        int x; int y;
 
-
-        int x = 26; int y = 48;
-        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
-        x = 26; y = 12;
-        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
-        x = 134; y = 12;
+        //Fuel Slot
+        x = 24; y = 54;
         addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
 
-        x = 134; y = 48;
+        //Input Slot One
+        x = 12; y = 12;
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
+
+        //Input Slot Two
+        x = 36; y = 12;
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
+
+        //Bucket Slot
+        x = 116; y = 12;
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
+
+        //Output Slot
+        x = 148; y = 36;
         addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
     }
 
