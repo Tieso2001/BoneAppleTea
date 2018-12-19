@@ -1,8 +1,11 @@
 package com.tieso2001.afm.object.blocks.fermenter;
 
+import com.tieso2001.afm.util.FluidStackRenderer;
 import com.tieso2001.afm.util.Reference;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GuiFermenter extends GuiContainer {
 
@@ -28,6 +31,7 @@ public class GuiFermenter extends GuiContainer {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
+        FluidStackRenderer.renderFluidStack(new FluidStack(FluidRegistry.WATER, 1000), guiLeft + 64, guiTop + 12);
         renderHoveredToolTip(mouseX, mouseY);
     }
 
