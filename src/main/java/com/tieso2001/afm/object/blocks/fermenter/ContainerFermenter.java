@@ -59,11 +59,11 @@ public class ContainerFermenter extends Container {
         addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
 
         //Bucket Slot
-        x = 116; y = 12;
+        x = 148; y = 12;
         addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
 
         //Output Slot
-        x = 148; y = 36;
+        x = 148; y = 54;
         addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
     }
 
