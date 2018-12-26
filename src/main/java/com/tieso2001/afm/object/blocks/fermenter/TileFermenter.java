@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -37,6 +38,9 @@ public class TileFermenter extends TileEntity implements ITickable {
     public static final int SIZE = INPUT_SLOTS + OUTPUT_SLOTS;
 
     public static final int MAX_CONTENTS = 5000;
+
+    private int INPUT_TANK_AMOUNT = 0;
+    private int OUTPUT_TANK_AMOUNT = 0;
 
     private FluidTank fermenterInput = new FluidTank(MAX_CONTENTS) {
         @Override
@@ -109,6 +113,11 @@ public class TileFermenter extends TileEntity implements ITickable {
 
     //Bucket Slot
     private ItemStackHandler bucketInputHandler = new ItemStackHandler(BUCKET_SLOT) {
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+            return SlotFurnaceFuel.isBucket(stack);
+        }
+
         @Override
         protected void onContentsChanged(int slot) {
             TileFermenter.this.markDirty();
@@ -194,12 +203,25 @@ public class TileFermenter extends TileEntity implements ITickable {
             }
         }
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            if (fermenterOutput.getFluidAmount() > 0) {
-                return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fermenterOutput);
-            }
-            else return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fermenterInput);
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fermenterInput);
         }
         return super.getCapability(capability, facing);
+    }
+
+    public void setINPUT_TANK_AMOUNT(int INPUT_TANK_AMOUNT) {
+        this.INPUT_TANK_AMOUNT = INPUT_TANK_AMOUNT;
+    }
+
+    public int getINPUT_TANK_AMOUNT() {
+        return INPUT_TANK_AMOUNT;
+    }
+
+    public void setOUTPUT_TANK_AMOUNT(int OUTPUT_TANK_AMOUNT) {
+        this.OUTPUT_TANK_AMOUNT = OUTPUT_TANK_AMOUNT;
+    }
+
+    public int getOUTPUT_TANK_AMOUNT() {
+        return OUTPUT_TANK_AMOUNT;
     }
 
     public void canFerment() {
@@ -209,11 +231,18 @@ public class TileFermenter extends TileEntity implements ITickable {
 
     @Override
     public void update() {
+
         if (!world.isRemote) {
+
+            setINPUT_TANK_AMOUNT(getInputTank().getFluidAmount());
+            setOUTPUT_TANK_AMOUNT(getOutputTank().getFluidAmount());
+            getInputFluidPercentage();
+            getOutputFluidPercentage();
+
             ItemStack input = inputHandler.extractItem(1, 1, true);
             ItemStack output = outputHandler.insertItem(0, new ItemStack(ModItems.BARLEY), true);
             if (input.getItem() == ModItems.YEAST) {
-                if (fermenterInput.getFluidAmount() >= 1000) {
+                if ((fermenterInput.getFluidAmount() >= 1000) && (fermenterOutput.getFluidAmount() <= 4000)) {
                     if (output.isEmpty()) {
                         if (fermenterOutput.canFillFluidType(new FluidStack(FluidRegistry.LAVA, 1000))) {
                             inputHandler.extractItem(1, 1, false);
@@ -225,8 +254,30 @@ public class TileFermenter extends TileEntity implements ITickable {
                     }
                 }
             }
+
         }
+
     }
 
+    //Fluid Tank GUI Updating
+    public float getInputFluidPercentage()
+    {
+        return (float) getINPUT_TANK_AMOUNT() / (float) MAX_CONTENTS;
+    }
+
+    public int getInputFluidGuiHeight(int maxHeight)
+    {
+        return (int) Math.ceil(getInputFluidPercentage() * (float) maxHeight);
+    }
+
+    public float getOutputFluidPercentage()
+    {
+        return (float) getOUTPUT_TANK_AMOUNT() / (float) MAX_CONTENTS;
+    }
+
+    public int getOutputFluidGuiHeight(int maxHeight)
+    {
+        return (int) Math.ceil(getOutputFluidPercentage() * (float) maxHeight);
+    }
 }
 

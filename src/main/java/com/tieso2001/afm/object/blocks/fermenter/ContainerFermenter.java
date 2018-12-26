@@ -2,6 +2,7 @@ package com.tieso2001.afm.object.blocks.fermenter;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -97,6 +98,25 @@ public class ContainerFermenter extends Container {
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
         return te.canInteractWith(playerIn);
+    }
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        for (IContainerListener listener : listeners) {
+            listener.sendWindowProperty(this,0, te.getINPUT_TANK_AMOUNT());
+            listener.sendWindowProperty(this,1, te.getOUTPUT_TANK_AMOUNT());
+        }
+    }
+
+    @Override
+    public void updateProgressBar(int id, int data) {
+        if (id == 0) {
+            te.setINPUT_TANK_AMOUNT(data);
+        }
+        if (id == 1) {
+            te.setOUTPUT_TANK_AMOUNT(data);
+        }
     }
 
 }
