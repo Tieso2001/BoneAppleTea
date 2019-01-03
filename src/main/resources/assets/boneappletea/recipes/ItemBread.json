@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "bbb"
+  ],
+  "key":
+  {
+    "b":
+    {
+      "item": "boneappletea:barley"
+    }
+  },
+  "result":
+  {
+    "item": "minecraft:bread",
+    "count": 1
+  }
+}

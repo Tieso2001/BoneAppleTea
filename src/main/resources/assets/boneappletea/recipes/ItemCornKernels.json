@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "boneappletea_food",
+  "ingredients": [
+    {
+      "item": "boneappletea:corn"
+    }
+  ],
+  "result": {
+    "item": "boneappletea:corn_kernels",
+    "count": 4
+  }
+}

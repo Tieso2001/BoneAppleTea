@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "boneappletea:mortar_and_pestle",
+      "data": 32767
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    }
+  ],
+  "result":
+  {
+    "item": "boneappletea:yeast",
+    "count": 1
+  }
+}

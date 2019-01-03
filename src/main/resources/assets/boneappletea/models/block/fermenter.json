@@ -1,0 +1,12 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "particle": "boneappletea:blocks/fermenter_front",
+    "down": "boneappletea:blocks/fermenter_side",
+    "up": "boneappletea:blocks/fermenter_side",
+    "east": "boneappletea:blocks/fermenter_side",
+    "west": "boneappletea:blocks/fermenter_side",
+    "north": "boneappletea:blocks/fermenter_front",
+    "south": "boneappletea:blocks/fermenter_side"
+  }
+}

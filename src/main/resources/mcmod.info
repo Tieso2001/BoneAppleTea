@@ -1,11 +1,11 @@
 [
 {
-  "modid": "afm",
-  "name": "AwesomeFarmMod",
+  "modid": "boneappletea",
+  "name": "Bone Apple Tea",
   "description": "A mod about farming and food",
-  "version": "1.0.0a1",
+  "version": "1.0.0",
   "mcversion": "1.12.2",
-  "url": "",
+  "url": "https://tieso2001.tk",
   "updateUrl": "",
   "authorList": ["Tieso2001", "Z3r0byte"],
   "credits": "",
