@@ -9,6 +9,7 @@ import com.tieso2001.boneappletea.object.items.item.ItemBarley;
 import com.tieso2001.boneappletea.object.items.item.ItemBarleySeeds;
 import com.tieso2001.boneappletea.object.items.item.ItemPotatoMush;
 import com.tieso2001.boneappletea.object.items.item.ItemYeast;
+import com.tieso2001.boneappletea.object.items.tools.ItemBeerBucket;
 import com.tieso2001.boneappletea.object.items.tools.ItemMortarAndPestle;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -30,6 +31,7 @@ public class ModItems {
     public static Item POPCORN;
 
     //Tools
+    public static Item BEER_BUCKET;
     public static Item MORTAR_AND_PESTLE;
 
     public static void init() {
@@ -42,6 +44,8 @@ public class ModItems {
         CORN_KERNELS = new ItemCornKernels("corn_kernels", 1, false);
         CORN_ON_THE_COB = new ItemCornOnTheCob("corn_on_the_cob", 5, false);
         POPCORN = new ItemPopcorn("popcorn", 2, false);
+
+        BEER_BUCKET = new ItemBeerBucket("beer_bucket");
         MORTAR_AND_PESTLE = new ItemMortarAndPestle("mortar_and_pestle");
     }
 
@@ -54,6 +58,7 @@ public class ModItems {
         registerItem(CORN_KERNELS);
         registerItem(CORN_ON_THE_COB);
         registerItem(POPCORN);
+        registerItem(BEER_BUCKET);
         registerItem(MORTAR_AND_PESTLE);
     }
 
@@ -66,6 +71,7 @@ public class ModItems {
         registerRender(CORN_KERNELS);
         registerRender(CORN_ON_THE_COB);
         registerRender(POPCORN);
+        registerRender(BEER_BUCKET);
         registerRender(MORTAR_AND_PESTLE);
     }
 
