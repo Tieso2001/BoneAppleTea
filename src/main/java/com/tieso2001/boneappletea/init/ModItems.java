@@ -27,6 +27,7 @@ public class ModItems {
     public static Item CORN_ON_THE_COB;
     public static Item FRIKANDEL;
     public static Item FRIKANDEL_ROLL;
+    public static Item GOLDEN_FRIKANDEL_ROLL;
     public static Item POPCORN;
 
     //Tools
@@ -44,6 +45,7 @@ public class ModItems {
         CORN_ON_THE_COB = new ItemCornOnTheCob("corn_on_the_cob", 5, false);
         FRIKANDEL = new ItemFrikandel("frikandel", 4, false);
         FRIKANDEL_ROLL = new ItemFrikandelRoll("frikandel_roll", 8, false);
+        GOLDEN_FRIKANDEL_ROLL = new ItemGoldenFrikandelRoll("golden_frikandel_roll", 20, false);
         POPCORN = new ItemPopcorn("popcorn", 2, false);
 
         BEER_BUCKET = new ItemBeerBucket("beer_bucket");
@@ -60,6 +62,7 @@ public class ModItems {
         registerItem(CORN_ON_THE_COB);
         registerItem(FRIKANDEL);
         registerItem(FRIKANDEL_ROLL);
+        registerItem(GOLDEN_FRIKANDEL_ROLL);
         registerItem(POPCORN);
         registerItem(BEER_BUCKET);
         registerItem(MORTAR_AND_PESTLE);
@@ -75,6 +78,7 @@ public class ModItems {
         registerRender(CORN_ON_THE_COB);
         registerRender(FRIKANDEL);
         registerRender(FRIKANDEL_ROLL);
+        registerRender(GOLDEN_FRIKANDEL_ROLL);
         registerRender(POPCORN);
         registerRender(BEER_BUCKET);
         registerRender(MORTAR_AND_PESTLE);

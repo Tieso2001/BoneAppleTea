@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "boneappletea_food",
+  "pattern": [
+    "ggg",
+    "gfg",
+    "ggg"
+  ],
+  "key": {
+    "f": {
+      "item": "boneappletea:frikandel_roll"
+    },
+    "g": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "item": "boneappletea:golden_frikandel_roll",
+    "count": 1
+  }
+}
