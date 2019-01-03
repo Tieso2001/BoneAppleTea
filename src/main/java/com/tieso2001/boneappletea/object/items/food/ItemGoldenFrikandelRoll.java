@@ -4,7 +4,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemFood;
@@ -29,6 +28,7 @@ public class ItemGoldenFrikandelRoll extends ItemFood {
         if (!worldIn.isRemote) {
             entityLiving.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 60 * 20, 2));
             entityLiving.addPotionEffect(new PotionEffect(MobEffects.HEALTH_BOOST, 30 * 20, 4));
+            entityLiving.heal(entityLiving.getMaxHealth());
         }
 
         if (entityLiving instanceof EntityPlayerMP) {
@@ -41,7 +41,7 @@ public class ItemGoldenFrikandelRoll extends ItemFood {
             stack.shrink(1);
         }
 
-        return stack.isEmpty() ? new ItemStack(Items.BUCKET) : stack;
+        return stack.isEmpty() ? ItemStack.EMPTY : stack;
 
     }
 
@@ -54,6 +54,9 @@ public class ItemGoldenFrikandelRoll extends ItemFood {
     }
 
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        if (playerIn.isCreative()) {
+            return new ActionResult<ItemStack>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
+        }
         playerIn.setActiveHand(handIn);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
     }
