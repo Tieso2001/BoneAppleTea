@@ -15,9 +15,12 @@ item.mortar_and_pestle.name=Mortar and Pestle
 
 # Blocks
 tile.barley.name=Barley
+tile.beer.name=Beer
 tile.corn.name=Corn
 tile.fermenter.name=Fermenter
 
+# Fluids
+fluid.beer=Beer
 
 # Creative Tabs
 itemGroup.tab_boneappletea=Bone Apple Tea

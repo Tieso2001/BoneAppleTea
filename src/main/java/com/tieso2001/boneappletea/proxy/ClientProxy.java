@@ -1,5 +1,6 @@
 package com.tieso2001.boneappletea.proxy;
 
+import com.tieso2001.boneappletea.handler.RenderHandler;
 import com.tieso2001.boneappletea.init.ModBlocks;
 import com.tieso2001.boneappletea.init.ModItems;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -13,6 +14,7 @@ public class ClientProxy extends CommonProxy {
         super.preInit(preEvent);
         ModBlocks.registerRenders();
         ModItems.registerRenders();
+        RenderHandler.registerCustomMeshesAndStates();
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.tieso2001.boneappletea.proxy.CommonProxy;
 import com.tieso2001.boneappletea.tab.TabBoneAppleTea;
 import com.tieso2001.boneappletea.util.Reference;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -24,6 +25,8 @@ public class Main {
 
     @SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.COMMON_PROXY_CLASS)
     public static CommonProxy proxy;
+
+    static { FluidRegistry.enableUniversalBucket(); }
 
     @EventHandler
     public static void PreInit(FMLPreInitializationEvent preEvent) {
