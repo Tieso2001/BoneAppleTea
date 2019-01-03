@@ -25,6 +25,7 @@ public class ModItems {
     public static Item CORN;
     public static Item CORN_KERNELS;
     public static Item CORN_ON_THE_COB;
+    public static Item FRIKANDEL;
     public static Item FRIKANDEL_ROLL;
     public static Item POPCORN;
 
@@ -41,7 +42,8 @@ public class ModItems {
         CORN = new ItemCorn("corn", 3, false);
         CORN_KERNELS = new ItemCornKernels("corn_kernels", 1, false);
         CORN_ON_THE_COB = new ItemCornOnTheCob("corn_on_the_cob", 5, false);
-        FRIKANDEL_ROLL = new ItemFrikandelRoll("frikandel_roll", 6, false);
+        FRIKANDEL = new ItemFrikandel("frikandel", 4, false);
+        FRIKANDEL_ROLL = new ItemFrikandelRoll("frikandel_roll", 8, false);
         POPCORN = new ItemPopcorn("popcorn", 2, false);
 
         BEER_BUCKET = new ItemBeerBucket("beer_bucket");
@@ -56,6 +58,7 @@ public class ModItems {
         registerItem(CORN);
         registerItem(CORN_KERNELS);
         registerItem(CORN_ON_THE_COB);
+        registerItem(FRIKANDEL);
         registerItem(FRIKANDEL_ROLL);
         registerItem(POPCORN);
         registerItem(BEER_BUCKET);
@@ -70,6 +73,7 @@ public class ModItems {
         registerRender(CORN);
         registerRender(CORN_KERNELS);
         registerRender(CORN_ON_THE_COB);
+        registerRender(FRIKANDEL);
         registerRender(FRIKANDEL_ROLL);
         registerRender(POPCORN);
         registerRender(BEER_BUCKET);
