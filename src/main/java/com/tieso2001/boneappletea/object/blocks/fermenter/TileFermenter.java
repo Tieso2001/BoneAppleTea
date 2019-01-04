@@ -233,7 +233,7 @@ public class TileFermenter extends TileEntity implements ITickable {
                 if (input.getItem() == recipeInputItem.getItem()) {
                     if (input.getCount() >= recipeInputItem.getCount()) {
                         if (ModFluids.compareFluid(inputTankStack.getFluid(), recipeInputFluid.getFluid())) {
-                            if (inputTankLevel >= recipeInputFluid.amount) {
+                            if (inputTankLevel >= recipeInputFluid.amount && (outputTankLevel + recipeOutputFluid.amount) <= MAX_TANK_CONTENTS) {
                                 itemSlotHandler.extractItem(0, recipeInputItem.getCount(), false);
                                 inputTank.drain(recipeInputFluid.amount, true);
                                 outputTank.fill(recipeOutputFluid, true);
