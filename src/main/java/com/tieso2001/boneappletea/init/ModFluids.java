@@ -24,6 +24,9 @@ public class ModFluids {
         if (addBucket) { FluidRegistry.addBucketForFluid(fluid); }
     }
 
+    public static boolean compareFluid(Fluid fluid1, Fluid fluid2) { return fluid1 == fluid2; }
+
+    public static boolean compareFluid(FluidStack stack1, FluidStack stack2) { return stack1 == stack2; }
 
     public static Fluid getFluidFromStack(FluidStack stack) { return stack == null ? null : stack.getFluid(); }
 
@@ -35,7 +38,6 @@ public class ModFluids {
     public static String getFluidName(Fluid fluid) { return fluid == null ? "null" : fluid.getName(); }
 
     public static int getAmount(FluidStack stack) { return stack == null ? 0 : stack.amount; }
-
 
     public static boolean isValidWaterStack(FluidStack stack) { return ModFluids.getFluidFromStack(stack) == FluidRegistry.WATER; }
 
