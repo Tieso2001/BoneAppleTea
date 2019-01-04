@@ -209,7 +209,7 @@ public class TileFermenter extends TileEntity implements ITickable {
     public void update() {
         if (!world.isRemote) {
             // Item Slot
-            ItemStack input = itemSlotHandler.extractItem(0, 1, true);
+            ItemStack input = itemSlotHandler.getStackInSlot(0);
 
             // Input Tank
             FluidStack inputTankStack = inputTank.getFluid();
@@ -222,7 +222,6 @@ public class TileFermenter extends TileEntity implements ITickable {
             setOutputTankAmount(outputTankLevel);
 
             if (inputTankStack == null || inputTankStack.getFluid() == null) return;
-            if (outputTankStack == null || outputTankStack.getFluid() == null) return;
 
             for (Object object : FermenterRecipes.RECIPES.entrySet()) {
                 Map.Entry recipe = (Map.Entry) object;
@@ -234,7 +233,7 @@ public class TileFermenter extends TileEntity implements ITickable {
                 if (input.getItem() == recipeInputItem.getItem()) {
                     if (input.getCount() >= recipeInputItem.getCount()) {
                         if (ModFluids.compareFluid(inputTankStack.getFluid(), recipeInputFluid.getFluid())) {
-                            if (outputTankLevel == 0 || ModFluids.compareFluid(outputTankStack.getFluid(), recipeOutputFluid.getFluid())) {
+                            if (outputTankLevel == 0 || outputTankStack == null || ModFluids.compareFluid(outputTankStack.getFluid(), recipeOutputFluid.getFluid())) {
                                 if (inputTankLevel >= recipeInputFluid.amount && (outputTankLevel + recipeOutputFluid.amount) <= MAX_TANK_CONTENTS) {
                                     itemSlotHandler.extractItem(0, recipeInputItem.getCount(), false);
                                     inputTank.drain(recipeInputFluid.amount, true);
