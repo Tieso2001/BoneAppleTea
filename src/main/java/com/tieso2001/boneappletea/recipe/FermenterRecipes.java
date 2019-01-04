@@ -1,6 +1,5 @@
 package com.tieso2001.boneappletea.recipe;
 
-import com.google.common.collect.Maps;
 import com.tieso2001.boneappletea.init.ModItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,9 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FermenterRecipes {
-
-    private final Map<ItemStack, ItemStack> inputItemList = Maps.<ItemStack, ItemStack>newHashMap();
-    private final Map<FluidStack, FluidStack> fluidList = Maps.<FluidStack, FluidStack>newHashMap();
 
     public static Map<ItemStack, FluidStack[]> RECIPES = new HashMap<>();
 
@@ -28,9 +24,6 @@ public class FermenterRecipes {
         fluids[1] = new FluidStack(outputFluid, outputFluidAmount);
         ItemStack itemStack = new ItemStack(inputItem, inputItemAmount);
         RECIPES.put(itemStack, fluids);
-    }
-
-    public static void addFluidEmptyRecipe() {
     }
 
 }
