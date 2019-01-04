@@ -37,10 +37,18 @@ public class GuiFermenter extends GuiContainer {
         int inputTankAmount = fermenter.getInputTankAmount();
         drawString(mc.fontRenderer, "Amount: " + inputTankAmount, guiLeft + 5, guiTop - 10, 0xffffff);
 
+        int heightInput = (int) (((double) inputTankAmount / fermenter.MAX_TANK_CONTENTS) * 57);
+//        drawRect(guiLeft + 45, guiTop + (70 - heightInput), guiLeft + 60, guiTop + 70, 0x24b33f);
+//        this.drawGradientRect(guiLeft + 45, guiTop + (70 - heightInput), guiLeft + 60, guiTop + 70, 0x24b33f, 0x24b33f);
+
 
         // Output Tank
         int outputTankAmount = fermenter.getOutputTankAmount();
         drawString(mc.fontRenderer, "Amount: " + outputTankAmount, guiLeft + 110, guiTop - 10, 0xffffff);
+
+        int heightOuput = (int) (((double) outputTankAmount / fermenter.MAX_TANK_CONTENTS) * 57);
+//        drawRect(guiLeft + 45, guiTop + (70 - heightOuput), guiLeft + 60, guiTop + 70, 0x24b33f);
+//        this.drawGradientRect(guiLeft + 45, guiTop + (70 - heightOuput), guiLeft + 60, guiTop + 70, 0x24b33f, 0x24b33f);
 
 
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
