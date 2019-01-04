@@ -1,5 +1,6 @@
 package com.tieso2001.boneappletea.object.blocks.fermenter;
 
+import com.tieso2001.boneappletea.init.ModFluids;
 import com.tieso2001.boneappletea.init.ModItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +14,6 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -26,45 +26,50 @@ import javax.annotation.Nullable;
 
 public class TileFermenter extends TileEntity implements ITickable {
 
-    public static final int FUEL_SLOT = 1;
-    public static final int ITEM_SLOT_ONE = 1;
-    public static final int ITEM_SLOT_TWO = 1;
-    public static final int BUCKET_SLOT = 1;
-    public static final int OUTPUT_SLOT = 1;
+    public static final int FUEL_SLOTS = 1;
+    public static final int ITEM_SLOTS = 1;
+    public static final int BUCKET_INPUT_SLOTS = 2;
+    public static final int BUCKET_OUTPUT_SLOTS = 2;
+    public static final int SLOTS = FUEL_SLOTS + ITEM_SLOTS + BUCKET_INPUT_SLOTS + BUCKET_OUTPUT_SLOTS;
 
-    public static final int INPUT_SLOTS = FUEL_SLOT + ITEM_SLOT_ONE + ITEM_SLOT_TWO + BUCKET_SLOT;
-    public static final int OUTPUT_SLOTS = OUTPUT_SLOT;
-    public static final int SIZE = INPUT_SLOTS + OUTPUT_SLOTS;
+    public static final int MAX_TANK_CONTENTS = 5000;
 
-    public static final int MAX_CONTENTS = 5000;
-
-    private int INPUT_TANK_AMOUNT = 0;
-    private int OUTPUT_TANK_AMOUNT = 0;
-
-    private FluidTank fermenterInput = new FluidTank(MAX_CONTENTS) {
+    // Create Input Tank
+    private FluidTank inputTank = new FluidTank(MAX_TANK_CONTENTS) {
         @Override
         protected void onContentsChanged() {
             IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos, state, state, 3);
+
             markDirty();
         }
     };
 
-    private FluidTank fermenterOutput = new FluidTank(MAX_CONTENTS) {
+    public FluidTank getInputTank() {
+        return inputTank;
+    }
+
+    // Create Output Tank
+    private FluidTank outputTank = new FluidTank(MAX_TANK_CONTENTS) {
         @Override
         protected void onContentsChanged() {
             IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos, state, state, 3);
+
             markDirty();
         }
     };
+
+    public FluidTank getOutputTank() {
+        return outputTank;
+    }
 
     @Override
     public NBTTagCompound getUpdateTag() {
         NBTTagCompound nbtTag = super.getUpdateTag();
         NBTTagCompound tankNBT = new NBTTagCompound();
-        fermenterInput.writeToNBT(tankNBT);
-        fermenterOutput.writeToNBT(tankNBT);
+        inputTank.writeToNBT(tankNBT);
+        outputTank.writeToNBT(tankNBT);
         nbtTag.setTag("fermenter", tankNBT);
         return nbtTag;
     }
@@ -77,12 +82,12 @@ public class TileFermenter extends TileEntity implements ITickable {
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-        fermenterInput.readFromNBT(packet.getNbtCompound().getCompoundTag("fermenter"));
-        fermenterOutput.readFromNBT(packet.getNbtCompound().getCompoundTag("fermenter"));
+        inputTank.readFromNBT(packet.getNbtCompound().getCompoundTag("fermenter"));
+        outputTank.readFromNBT(packet.getNbtCompound().getCompoundTag("fermenter"));
     }
 
-    //Fuel Slot
-    private ItemStackHandler fuelInputHandler = new ItemStackHandler(FUEL_SLOT) {
+    // Create Fuel Slot Handler
+    private ItemStackHandler fuelSlotHandler = new ItemStackHandler(FUEL_SLOTS) {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
             return TileEntityFurnace.isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack);
@@ -94,24 +99,16 @@ public class TileFermenter extends TileEntity implements ITickable {
         }
     };
 
-    // Input Slot One
-    private ItemStackHandler itemInputOneHandler = new ItemStackHandler(ITEM_SLOT_ONE) {
+    // Create Item Slot Handler
+    private ItemStackHandler itemSlotHandler = new ItemStackHandler(ITEM_SLOTS) {
         @Override
         protected void onContentsChanged(int slot) {
             TileFermenter.this.markDirty();
         }
     };
 
-    // Input Slot Two
-    private ItemStackHandler itemInputTwoHandler = new ItemStackHandler(ITEM_SLOT_TWO) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            TileFermenter.this.markDirty();
-        }
-    };
-
-    //Bucket Slot
-    private ItemStackHandler bucketInputHandler = new ItemStackHandler(BUCKET_SLOT) {
+    // Create Bucket Input Slot Handler
+    private ItemStackHandler bucketInputSlotHandler = new ItemStackHandler(BUCKET_INPUT_SLOTS) {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
             return SlotFurnaceFuel.isBucket(stack);
@@ -123,60 +120,60 @@ public class TileFermenter extends TileEntity implements ITickable {
         }
     };
 
-    //Output Slot
-    private ItemStackHandler outputHandler = new ItemStackHandler(OUTPUT_SLOT) {
+    // Create Bucket Output Slot Handler
+    private ItemStackHandler bucketOutputSlotHandler = new ItemStackHandler(BUCKET_OUTPUT_SLOTS) {
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+            return SlotFurnaceFuel.isBucket(stack);
+        }
+
         @Override
         protected void onContentsChanged(int slot) {
             TileFermenter.this.markDirty();
         }
     };
 
-    private CombinedInvWrapper inputHandler = new CombinedInvWrapper(fuelInputHandler, itemInputOneHandler, itemInputTwoHandler, bucketInputHandler);
-    private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputHandler, outputHandler);
+    // Combine Input Slots into one handler
+    private CombinedInvWrapper inputHandler = new CombinedInvWrapper(fuelSlotHandler, itemSlotHandler, bucketInputSlotHandler);
 
+    // Combine Input Slots with Output Slots into one handler
+    private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputHandler, bucketOutputSlotHandler);
+
+    // Read NBT Data
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         if (compound.hasKey("fuelIn")) {
-            fuelInputHandler.deserializeNBT((NBTTagCompound) compound.getTag("fuelIn"));
+            fuelSlotHandler.deserializeNBT((NBTTagCompound) compound.getTag("fuelIn"));
         }
-        if (compound.hasKey("itemsOneIn")) {
-            itemInputOneHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsOneIn"));
+        if (compound.hasKey("itemsIn")) {
+            itemSlotHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsIn"));
         }
-        if (compound.hasKey("itemsTwoIn")) {
-            itemInputTwoHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsTwoIn"));
+        if (compound.hasKey("bucketsIn")) {
+            bucketInputSlotHandler.deserializeNBT((NBTTagCompound) compound.getTag("bucketsIn"));
         }
-        if (compound.hasKey("bucketIn")) {
-            bucketInputHandler.deserializeNBT((NBTTagCompound) compound.getTag("bucketIn"));
-        }
-        if (compound.hasKey("itemsOut")) {
-            outputHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsOut"));
+        if (compound.hasKey("bucketsOut")) {
+            bucketOutputSlotHandler.deserializeNBT((NBTTagCompound) compound.getTag("bucketsOut"));
         }
     }
 
+    // Write NBT Data
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setTag("fuelIn", fuelInputHandler.serializeNBT());
-        compound.setTag("itemsOneIn", itemInputOneHandler.serializeNBT());
-        compound.setTag("itemsTwoIn", itemInputTwoHandler.serializeNBT());
-        compound.setTag("bucketIn", bucketInputHandler.serializeNBT());
-        compound.setTag("itemsOut", outputHandler.serializeNBT());
+        compound.setTag("fuelIn", fuelSlotHandler.serializeNBT());
+        compound.setTag("itemsIn", itemSlotHandler.serializeNBT());
+        compound.setTag("bucketsIn", bucketInputSlotHandler.serializeNBT());
+        compound.setTag("bucketsOut", bucketOutputSlotHandler.serializeNBT());
         return compound;
     }
 
+    // Check if player is close enough to interact with TileEntity
     public boolean canInteractWith(EntityPlayer playerIn) {
         return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 
-    public FluidTank getInputTank() {
-        return fermenterInput;
-    }
-
-    public FluidTank getOutputTank() {
-        return fermenterOutput;
-    }
-
+    // Check for capabilities
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
@@ -188,95 +185,57 @@ public class TileFermenter extends TileEntity implements ITickable {
         return super.hasCapability(capability, facing);
     }
 
+    // Get capabilities
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == null) {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(combinedHandler);
-            }
-            else if (facing == EnumFacing.UP) {
-                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inputHandler);
-            }
-            else {
-                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(outputHandler);
+            } else if (facing == EnumFacing.UP) {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemSlotHandler);
+            } else {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(bucketOutputSlotHandler);
             }
         }
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fermenterInput);
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(inputTank);
         }
         return super.getCapability(capability, facing);
     }
 
-    public void setINPUT_TANK_AMOUNT(int INPUT_TANK_AMOUNT) {
-        this.INPUT_TANK_AMOUNT = INPUT_TANK_AMOUNT;
-    }
-
-    public int getINPUT_TANK_AMOUNT() {
-        return INPUT_TANK_AMOUNT;
-    }
-
-    public void setOUTPUT_TANK_AMOUNT(int OUTPUT_TANK_AMOUNT) {
-        this.OUTPUT_TANK_AMOUNT = OUTPUT_TANK_AMOUNT;
-    }
-
-    public int getOUTPUT_TANK_AMOUNT() {
-        return OUTPUT_TANK_AMOUNT;
-    }
-
-    public void canFerment() {
-        ItemStack inputSlotOne = inputHandler.extractItem(1,1, true);
-        ItemStack inputSlotTwo = inputHandler.extractItem(2,1,true);
-    }
-
+    // Executes every tick
     @Override
     public void update() {
-
         if (!world.isRemote) {
+            // Item Slot
+            ItemStack input = itemSlotHandler.extractItem(0, 1, true);
 
-            setINPUT_TANK_AMOUNT(getInputTank().getFluidAmount());
-            setOUTPUT_TANK_AMOUNT(getOutputTank().getFluidAmount());
-            getInputFluidPercentage();
-            getOutputFluidPercentage();
+            // Input Tank
+            FluidStack inputTankStack = inputTank.getFluid();
+            int inputTankLevel = ModFluids.getAmount(inputTankStack);
+            setInputTankAmount(inputTankLevel);
 
-            ItemStack input = inputHandler.extractItem(1, 1, true);
-            ItemStack output = outputHandler.insertItem(0, new ItemStack(ModItems.BARLEY), true);
-            if (input.getItem() == ModItems.YEAST) {
-                if ((fermenterInput.getFluidAmount() >= 1000) && (fermenterOutput.getFluidAmount() <= 4000)) {
-                    if (output.isEmpty()) {
-                        if (fermenterOutput.canFillFluidType(new FluidStack(FluidRegistry.LAVA, 1000))) {
-                            inputHandler.extractItem(1, 1, false);
-                            outputHandler.insertItem(0, new ItemStack(ModItems.BARLEY), false);
-                            fermenterInput.drain(1000, true);
-                            fermenterOutput.fill(new FluidStack(FluidRegistry.LAVA, 1000), true);
-                            markDirty();
-                        }
-                    }
-                }
+            // Output Tank
+            FluidStack outputTankStack = outputTank.getFluid();
+            int outputTankLevel = ModFluids.getAmount(outputTankStack);
+            setOutputTankAmount(outputTankLevel);
+
+            if ((ModFluids.isValidWaterStack(inputTankStack) && (inputTankLevel >= 1000)) && ((ModFluids.isValidBeerStack(outputTankStack) && (outputTankLevel <= MAX_TANK_CONTENTS - 1000)) || (outputTankStack == null)) && (input.getItem() == ModItems.YEAST)) {
+                itemSlotHandler.extractItem(0, 1, false);
+                inputTank.drain(1000, true);
+                outputTank.fill(new FluidStack(ModFluids.BEER, 1000), true);
+                markDirty();
             }
-
         }
-
     }
 
-    //Fluid Tank GUI Updating
-    public float getInputFluidPercentage()
-    {
-        return (float) getINPUT_TANK_AMOUNT() / (float) MAX_CONTENTS;
-    }
+    private int inputTankAmount = 0;
+    public int getInputTankAmount() { return inputTankAmount; }
+    public void setInputTankAmount(int inputTankAmount) { this.inputTankAmount = inputTankAmount; }
 
-    public int getInputFluidGuiHeight(int maxHeight)
-    {
-        return (int) Math.ceil(getInputFluidPercentage() * (float) maxHeight);
-    }
+    private int outputTankAmount = 0;
+    public int getOutputTankAmount() { return outputTankAmount; }
+    public void setOutputTankAmount(int outputTankAmount) { this.outputTankAmount = outputTankAmount; }
 
-    public float getOutputFluidPercentage()
-    {
-        return (float) getOUTPUT_TANK_AMOUNT() / (float) MAX_CONTENTS;
-    }
-
-    public int getOutputFluidGuiHeight(int maxHeight)
-    {
-        return (int) Math.ceil(getOutputFluidPercentage() * (float) maxHeight);
-    }
 }
 

@@ -12,10 +12,10 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerFermenter extends Container {
 
-    private TileFermenter te;
+    private TileFermenter fermenter;
 
-    public ContainerFermenter(IInventory playerInventory, TileFermenter te) {
-        this.te = te;
+    public ContainerFermenter(IInventory playerInventory, TileFermenter fermenter) {
+        this.fermenter = fermenter;
 
         // This container references items out of our own inventory (the 9 slots we hold ourselves)
         // as well as the slots from the player inventory so that the user can transfer items between
@@ -43,27 +43,31 @@ public class ContainerFermenter extends Container {
     }
 
     private void addOwnSlots() {
-        IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        IItemHandler itemHandler = this.fermenter.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         int slotIndex = 0;
         int x; int y;
 
         //Fuel Slot
-        x = 24; y = 54;
+        x = 80; y = 54;
         addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
 
-        //Input Slot One
+        //Input Slot
+        x = 80; y = 15;
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
+
+        //Bucket Input Slot 1
         x = 12; y = 12;
         addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
 
-        //Input Slot Two
-        x = 36; y = 12;
+        //Bucket Output Slot 1
+        x = 12; y = 54;
         addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
 
-        //Bucket Slot
+        //Bucket Input Slot 2
         x = 148; y = 12;
         addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
 
-        //Output Slot
+        //Bucket Output Slot 2
         x = 148; y = 54;
         addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
     }
@@ -77,11 +81,11 @@ public class ContainerFermenter extends Container {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index < TileFermenter.SIZE) {
-                if (!this.mergeItemStack(itemstack1, TileFermenter.SIZE, this.inventorySlots.size(), true)) {
+            if (index < TileFermenter.SLOTS) {
+                if (!this.mergeItemStack(itemstack1, TileFermenter.SLOTS, this.inventorySlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 0, TileFermenter.SIZE, false)) {
+            } else if (!this.mergeItemStack(itemstack1, 0, TileFermenter.SLOTS, false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -97,25 +101,25 @@ public class ContainerFermenter extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return te.canInteractWith(playerIn);
+        return fermenter.canInteractWith(playerIn);
     }
 
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         for (IContainerListener listener : listeners) {
-            listener.sendWindowProperty(this,0, te.getINPUT_TANK_AMOUNT());
-            listener.sendWindowProperty(this,1, te.getOUTPUT_TANK_AMOUNT());
+            listener.sendWindowProperty(this, 0, fermenter.getInputTankAmount());
+            listener.sendWindowProperty(this, 1, fermenter.getOutputTankAmount());
         }
     }
 
     @Override
     public void updateProgressBar(int id, int data) {
         if (id == 0) {
-            te.setINPUT_TANK_AMOUNT(data);
+            fermenter.setInputTankAmount(data);
         }
         if (id == 1) {
-            te.setOUTPUT_TANK_AMOUNT(data);
+            fermenter.setOutputTankAmount(data);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.tieso2001.boneappletea.object;
+package com.tieso2001.boneappletea.object.fluids;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
