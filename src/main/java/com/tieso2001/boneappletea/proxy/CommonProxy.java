@@ -4,6 +4,7 @@ import com.tieso2001.boneappletea.init.ModBlocks;
 import com.tieso2001.boneappletea.init.ModFluids;
 import com.tieso2001.boneappletea.init.ModItems;
 import com.tieso2001.boneappletea.init.ModTileEntities;
+import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import com.tieso2001.boneappletea.recipe.FurnaceRecipes;
 import com.tieso2001.boneappletea.world.GrassSeeds;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -26,6 +27,7 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         FurnaceRecipes.register();
+        FermenterRecipes.register();
         GrassSeeds.register();
     }
 

@@ -3,7 +3,6 @@ package com.tieso2001.boneappletea.proxy;
 import com.tieso2001.boneappletea.handler.RenderHandler;
 import com.tieso2001.boneappletea.init.ModBlocks;
 import com.tieso2001.boneappletea.init.ModItems;
-import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -15,7 +14,6 @@ public class ClientProxy extends CommonProxy {
         super.preInit(preEvent);
         ModBlocks.registerRenders();
         ModItems.registerRenders();
-        FermenterRecipes.register();
         RenderHandler.registerCustomMeshesAndStates();
     }
 
