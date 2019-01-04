@@ -1,7 +1,7 @@
 package com.tieso2001.boneappletea.object.blocks.fermenter;
 
 import com.tieso2001.boneappletea.init.ModFluids;
-import com.tieso2001.boneappletea.init.ModItems;
+import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.SlotFurnaceFuel;
@@ -23,6 +23,7 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Map;
 
 public class TileFermenter extends TileEntity implements ITickable {
 
@@ -220,11 +221,27 @@ public class TileFermenter extends TileEntity implements ITickable {
             int outputTankLevel = ModFluids.getAmount(outputTankStack);
             setOutputTankAmount(outputTankLevel);
 
-            if ((ModFluids.isValidWaterStack(inputTankStack) && (inputTankLevel >= 1000)) && ((ModFluids.isValidBeerStack(outputTankStack) && (outputTankLevel <= MAX_TANK_CONTENTS - 1000)) || (outputTankStack == null)) && (input.getItem() == ModItems.YEAST)) {
-                itemSlotHandler.extractItem(0, 1, false);
-                inputTank.drain(1000, true);
-                outputTank.fill(new FluidStack(ModFluids.BEER, 1000), true);
-                markDirty();
+            if (inputTankStack == null || inputTankStack.getFluid() == null) return;
+
+            for (Object object : FermenterRecipes.RECIPES.entrySet()) {
+                Map.Entry recipe = (Map.Entry) object;
+                ItemStack recipeInputItem = (ItemStack) recipe.getKey();
+                FluidStack[] recipeFluidStacks = (FluidStack[]) recipe.getValue();
+                FluidStack recipeInputFluid = recipeFluidStacks[0];
+                FluidStack recipeOutputFluid = recipeFluidStacks[1];
+
+                if (input.getItem() == recipeInputItem.getItem()) {
+                    if (input.getCount() >= recipeInputItem.getCount()) {
+                        if (ModFluids.compareFluid(inputTankStack.getFluid(), recipeInputFluid.getFluid())) {
+                            if (inputTankLevel >= recipeInputFluid.amount) {
+                                itemSlotHandler.extractItem(0, recipeInputItem.getCount(), false);
+                                inputTank.drain(recipeInputFluid.amount, true);
+                                outputTank.fill(recipeOutputFluid, true);
+                                markDirty();
+                            }
+                        }
+                    }
+                }
             }
         }
     }
