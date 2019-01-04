@@ -222,6 +222,7 @@ public class TileFermenter extends TileEntity implements ITickable {
             setOutputTankAmount(outputTankLevel);
 
             if (inputTankStack == null || inputTankStack.getFluid() == null) return;
+            if (outputTankStack == null || outputTankStack.getFluid() == null) return;
 
             for (Object object : FermenterRecipes.RECIPES.entrySet()) {
                 Map.Entry recipe = (Map.Entry) object;
@@ -233,11 +234,13 @@ public class TileFermenter extends TileEntity implements ITickable {
                 if (input.getItem() == recipeInputItem.getItem()) {
                     if (input.getCount() >= recipeInputItem.getCount()) {
                         if (ModFluids.compareFluid(inputTankStack.getFluid(), recipeInputFluid.getFluid())) {
-                            if (inputTankLevel >= recipeInputFluid.amount && (outputTankLevel + recipeOutputFluid.amount) <= MAX_TANK_CONTENTS) {
-                                itemSlotHandler.extractItem(0, recipeInputItem.getCount(), false);
-                                inputTank.drain(recipeInputFluid.amount, true);
-                                outputTank.fill(recipeOutputFluid, true);
-                                markDirty();
+                            if (outputTankLevel == 0 || ModFluids.compareFluid(outputTankStack.getFluid(), recipeOutputFluid.getFluid())) {
+                                if (inputTankLevel >= recipeInputFluid.amount && (outputTankLevel + recipeOutputFluid.amount) <= MAX_TANK_CONTENTS) {
+                                    itemSlotHandler.extractItem(0, recipeInputItem.getCount(), false);
+                                    inputTank.drain(recipeInputFluid.amount, true);
+                                    outputTank.fill(recipeOutputFluid, true);
+                                    markDirty();
+                                }
                             }
                         }
                     }
