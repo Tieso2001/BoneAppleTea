@@ -5,7 +5,6 @@ import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,8 +18,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
@@ -41,7 +38,7 @@ public class TileFermenter extends TileEntity implements ITickable {
 
     public int fermenterBurnTime = 0;
     public int fermentTime = 0;
-    public int totalFermentTime = 100;
+    public int totalFermentTime = 200;
 
     // Create Input Tank
     private FluidTank inputTank = new FluidTank(MAX_TANK_CONTENTS) {
@@ -217,12 +214,6 @@ public class TileFermenter extends TileEntity implements ITickable {
         return fermenterBurnTime > 0;
     }
 
-    @SideOnly(Side.CLIENT)
-    public static boolean isBurning(IInventory inventory)
-    {
-        return inventory.getField(0) > 0;
-    }
-
     public boolean canFerment(boolean doFerment) {
         // Item Slot
         ItemStack input = itemSlotHandler.getStackInSlot(0);
@@ -262,7 +253,6 @@ public class TileFermenter extends TileEntity implements ITickable {
                 }
             }
         }
-
         return false;
     }
 
@@ -281,23 +271,18 @@ public class TileFermenter extends TileEntity implements ITickable {
     public void fuelFermenter() {
         ItemStack fuel = fuelSlotHandler.getStackInSlot(0);
         fuelSlotHandler.extractItem(0, 1, false);
-        fermenterBurnTime = TileEntityFurnace.getItemBurnTime(fuel);
+        fermenterBurnTime = TileEntityFurnace.getItemBurnTime(fuel) + 1;
         markDirty();
-
         if (fuel.getItem() == Items.LAVA_BUCKET) {
             fuelSlotHandler.insertItem(0, new ItemStack(Items.BUCKET, 1), false);
             markDirty();
         }
-
     }
 
     @Override
     public void update() {
-
         if (isBurning()) --fermenterBurnTime;
-
         if (!world.isRemote) {
-
             if (!isBurning() && canFerment(false)) {
                 if (canFuelFermenter()) { fuelFermenter(); }
                 else {
@@ -321,7 +306,6 @@ public class TileFermenter extends TileEntity implements ITickable {
                 fermenterBurnTime = 0;
             }
             else fermentTime = 0;
-
         }
     }
 
