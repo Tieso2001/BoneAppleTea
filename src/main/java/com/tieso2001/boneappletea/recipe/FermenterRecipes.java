@@ -1,5 +1,6 @@
 package com.tieso2001.boneappletea.recipe;
 
+import com.tieso2001.boneappletea.init.ModFluids;
 import com.tieso2001.boneappletea.init.ModItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ public class FermenterRecipes {
     public static Map<ItemStack, FluidStack[]> RECIPES = new HashMap<>();
 
     public static void register() {
-        addFermentRecipe(ModItems.YEAST, 1, FluidRegistry.WATER, 1000, FluidRegistry.LAVA, 1000);
+        addFermentRecipe(ModItems.YEAST, 1, FluidRegistry.WATER, 125, ModFluids.BEER, 125);
     }
 
     public static void addFermentRecipe(Item inputItem, int inputItemAmount, Fluid inputFluid, int inputFluidAmount, Fluid outputFluid, int outputFluidAmount) {

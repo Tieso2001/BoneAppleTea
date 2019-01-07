@@ -4,6 +4,8 @@ import com.tieso2001.boneappletea.init.ModFluids;
 import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +19,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
@@ -34,6 +38,10 @@ public class TileFermenter extends TileEntity implements ITickable {
     public static final int SLOTS = FUEL_SLOTS + ITEM_SLOTS + BUCKET_INPUT_SLOTS + BUCKET_OUTPUT_SLOTS;
 
     public static final int MAX_TANK_CONTENTS = 5000;
+
+    public int fermenterBurnTime = 0;
+    public int fermentTime = 0;
+    public int totalFermentTime = 100;
 
     // Create Input Tank
     private FluidTank inputTank = new FluidTank(MAX_TANK_CONTENTS) {
@@ -204,47 +212,116 @@ public class TileFermenter extends TileEntity implements ITickable {
         return super.getCapability(capability, facing);
     }
 
-    // Executes every tick
-    @Override
-    public void update() {
-        if (!world.isRemote) {
-            // Item Slot
-            ItemStack input = itemSlotHandler.getStackInSlot(0);
+    public boolean isBurning()
+    {
+        return fermenterBurnTime > 0;
+    }
 
-            // Input Tank
-            FluidStack inputTankStack = inputTank.getFluid();
-            int inputTankLevel = ModFluids.getAmount(inputTankStack);
-            setInputTankAmount(inputTankLevel);
+    @SideOnly(Side.CLIENT)
+    public static boolean isBurning(IInventory inventory)
+    {
+        return inventory.getField(0) > 0;
+    }
 
-            // Output Tank
-            FluidStack outputTankStack = outputTank.getFluid();
-            int outputTankLevel = ModFluids.getAmount(outputTankStack);
-            setOutputTankAmount(outputTankLevel);
+    public boolean canFerment(boolean doFerment) {
+        // Item Slot
+        ItemStack input = itemSlotHandler.getStackInSlot(0);
 
-            if (inputTankStack == null || inputTankStack.getFluid() == null) return;
+        // Input Tank
+        FluidStack inputTankStack = inputTank.getFluid();
+        int inputTankLevel = ModFluids.getAmount(inputTankStack);
+        setInputTankAmount(inputTankLevel);
 
-            for (Object object : FermenterRecipes.RECIPES.entrySet()) {
-                Map.Entry recipe = (Map.Entry) object;
-                ItemStack recipeInputItem = (ItemStack) recipe.getKey();
-                FluidStack[] recipeFluidStacks = (FluidStack[]) recipe.getValue();
-                FluidStack recipeInputFluid = recipeFluidStacks[0];
-                FluidStack recipeOutputFluid = recipeFluidStacks[1];
+        // Output Tank
+        FluidStack outputTankStack = outputTank.getFluid();
+        int outputTankLevel = ModFluids.getAmount(outputTankStack);
+        setOutputTankAmount(outputTankLevel);
 
-                if (input.getItem() == recipeInputItem.getItem()) {
-                    if (input.getCount() >= recipeInputItem.getCount()) {
-                        if (ModFluids.compareFluid(inputTankStack.getFluid(), recipeInputFluid.getFluid())) {
-                            if (outputTankLevel == 0 || outputTankStack == null || ModFluids.compareFluid(outputTankStack.getFluid(), recipeOutputFluid.getFluid())) {
-                                if (inputTankLevel >= recipeInputFluid.amount && (outputTankLevel + recipeOutputFluid.amount) <= MAX_TANK_CONTENTS) {
-                                    itemSlotHandler.extractItem(0, recipeInputItem.getCount(), false);
-                                    inputTank.drain(recipeInputFluid.amount, true);
-                                    outputTank.fill(recipeOutputFluid, true);
-                                    markDirty();
+        if (inputTankStack == null || inputTankStack.getFluid() == null) return false;
+
+        for (Object object : FermenterRecipes.RECIPES.entrySet()) {
+            Map.Entry recipe = (Map.Entry) object;
+            ItemStack recipeInputItem = (ItemStack) recipe.getKey();
+            FluidStack[] recipeFluidStacks = (FluidStack[]) recipe.getValue();
+            FluidStack recipeInputFluid = recipeFluidStacks[0];
+            FluidStack recipeOutputFluid = recipeFluidStacks[1];
+
+            if (input.getItem() == recipeInputItem.getItem()) {
+                if (input.getCount() >= recipeInputItem.getCount()) {
+                    if (ModFluids.compareFluid(inputTankStack.getFluid(), recipeInputFluid.getFluid())) {
+                        if (outputTankLevel == 0 || outputTankStack == null || ModFluids.compareFluid(outputTankStack.getFluid(), recipeOutputFluid.getFluid())) {
+                            if (inputTankLevel >= recipeInputFluid.amount && (outputTankLevel + recipeOutputFluid.amount) <= MAX_TANK_CONTENTS) {
+                                if (doFerment) {
+                                    ferment(recipeInputItem, recipeInputFluid, recipeOutputFluid);
+                                    return true;
                                 }
+                                return true;
                             }
                         }
                     }
                 }
             }
+        }
+
+        return false;
+    }
+
+    public void ferment(ItemStack recipeInputItem, FluidStack recipeInputFluid, FluidStack recipeOutputFluid) {
+        itemSlotHandler.extractItem(0, recipeInputItem.getCount(), false);
+        inputTank.drain(recipeInputFluid.amount, true);
+        outputTank.fill(recipeOutputFluid, true);
+        markDirty();
+    }
+
+    public boolean canFuelFermenter() {
+        ItemStack fuel = fuelSlotHandler.getStackInSlot(0);
+        return TileEntityFurnace.isItemFuel(fuel);
+    }
+
+    public void fuelFermenter() {
+        ItemStack fuel = fuelSlotHandler.getStackInSlot(0);
+        fuelSlotHandler.extractItem(0, 1, false);
+        fermenterBurnTime = TileEntityFurnace.getItemBurnTime(fuel);
+        markDirty();
+
+        if (fuel.getItem() == Items.LAVA_BUCKET) {
+            fuelSlotHandler.insertItem(0, new ItemStack(Items.BUCKET, 1), false);
+            markDirty();
+        }
+
+    }
+
+    @Override
+    public void update() {
+
+        if (isBurning()) --fermenterBurnTime;
+
+        if (!world.isRemote) {
+
+            if (!isBurning() && canFerment(false)) {
+                if (canFuelFermenter()) { fuelFermenter(); }
+                else {
+                    fermentTime = 0;
+                    fermenterBurnTime = 0;
+                }
+            }
+            else if (isBurning() && !canFerment(false)) {
+                fermentTime = 0;
+            }
+            else if (isBurning() && canFerment(false)) {
+                ++fermentTime;
+
+                if (fermentTime == totalFermentTime) {
+                    fermentTime = 0;
+                    canFerment(true);
+                }
+            }
+            else if (!isBurning() && !canFerment(false)) {
+                fermentTime = 0;
+                fermenterBurnTime = 0;
+            }
+            else fermentTime = 0;
+
         }
     }
 
