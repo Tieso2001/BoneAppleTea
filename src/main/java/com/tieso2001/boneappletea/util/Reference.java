@@ -9,4 +9,5 @@ public class Reference {
     public static final String CLIENT_PROXY_CLASS = "com.tieso2001.boneappletea.proxy.ClientProxy";
     public static final String COMMON_PROXY_CLASS = "com.tieso2001.boneappletea.proxy.CommonProxy";
 
+    public static final int GUI_FERMENTER = 0;
 }
