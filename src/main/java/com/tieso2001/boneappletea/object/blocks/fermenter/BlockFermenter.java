@@ -32,8 +32,9 @@ public class BlockFermenter extends Block implements ITileEntityProvider {
         super(material);
         setUnlocalizedName(name);
         setRegistryName(name);
-
         setSoundType(SoundType.METAL);
+        //setHardness();
+        //setResistance();
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
@@ -100,7 +101,7 @@ public class BlockFermenter extends Block implements ITileEntityProvider {
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileFermenter te = (TileFermenter)worldIn.getTileEntity(pos);
-        InventoryHelper.dropInventoryItems(worldIn, pos, te);
+        InventoryHelper.dropInventoryItems(worldIn, pos, tileEntity);
         super.breakBlock(worldIn, pos, state);
     }
     */
