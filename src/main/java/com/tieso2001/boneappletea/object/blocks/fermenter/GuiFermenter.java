@@ -3,6 +3,7 @@ package com.tieso2001.boneappletea.object.blocks.fermenter;
 import com.tieso2001.boneappletea.util.Reference;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiFermenter extends GuiContainer {
@@ -11,47 +12,58 @@ public class GuiFermenter extends GuiContainer {
     private static final int HEIGHT = 166;
 
     private static final ResourceLocation background = new ResourceLocation(Reference.MOD_ID, "textures/gui/fermenter.png");
-    private TileFermenter fermenter;
+    private TileFermenter tileEntity;
 
-    public GuiFermenter(TileFermenter tileEntity, ContainerFermenter container) {
-        super(container);
+    public GuiFermenter(InventoryPlayer player, TileFermenter tileEntity) {
+        super(new ContainerFermenter(player, tileEntity));
 
-        xSize = WIDTH;
-        ySize = HEIGHT;
+        this.xSize = WIDTH;
+        this.ySize = HEIGHT;
 
-        fermenter = tileEntity;
+        this.tileEntity = tileEntity;
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        mc.getTextureManager().bindTexture(background);
-        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        this.mc.getTextureManager().bindTexture(background);
+        this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        if(TileFermenter.isBurning(tileEntity))
+        {
+            int k = this.getBurnLeftScaled(13);
+            this.drawTexturedModalRect(this.guiLeft + 81, this.guiTop + 36 + 12 - k, 176, 13 - k, 14, k + 1);
+        }
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        drawDefaultBackground();
+        this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         // Input Tank
-        int inputTankAmount = fermenter.getInputTankAmount();
-        drawString(mc.fontRenderer, "Amount: " + inputTankAmount, guiLeft + 5, guiTop - 10, 0xffffff);
+        int inputTankAmount = tileEntity.getField(3);
+        this.drawString(mc.fontRenderer, "Amount: " + inputTankAmount, guiLeft + 5, guiTop - 10, 0xffffff);
 
-        int heightInput = (int) (((double) inputTankAmount / fermenter.MAX_TANK_CONTENTS) * 57);
+        int heightInput = (int) (((double) inputTankAmount / tileEntity.MAX_TANK_CONTENTS) * 57);
 //        drawRect(guiLeft + 45, guiTop + (70 - heightInput), guiLeft + 60, guiTop + 70, 0x24b33f);
 //        this.drawGradientRect(guiLeft + 45, guiTop + (70 - heightInput), guiLeft + 60, guiTop + 70, 0x24b33f, 0x24b33f);
 
 
         // Output Tank
-        int outputTankAmount = fermenter.getOutputTankAmount();
-        drawString(mc.fontRenderer, "Amount: " + outputTankAmount, guiLeft + 110, guiTop - 10, 0xffffff);
+        int outputTankAmount = tileEntity.getField(4);
+        this.drawString(mc.fontRenderer, "Amount: " + outputTankAmount, guiLeft + 110, guiTop - 10, 0xffffff);
 
-        int heightOuput = (int) (((double) outputTankAmount / fermenter.MAX_TANK_CONTENTS) * 57);
+        int heightOuput = (int) (((double) outputTankAmount / tileEntity.MAX_TANK_CONTENTS) * 57);
 //        drawRect(guiLeft + 45, guiTop + (70 - heightOuput), guiLeft + 60, guiTop + 70, 0x24b33f);
 //        this.drawGradientRect(guiLeft + 45, guiTop + (70 - heightOuput), guiLeft + 60, guiTop + 70, 0x24b33f, 0x24b33f);
 
 
-        mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        this.mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+    }
+
+    private int getBurnLeftScaled(int pixels) {
+        int i = this.tileEntity.getField(1);
+        if (i == 0) { i = 200; }
+        return this.tileEntity.getField(0) * pixels / i;
     }
 
 }

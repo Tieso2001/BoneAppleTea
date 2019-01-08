@@ -31,7 +31,7 @@ public class GuiHandler implements IGuiHandler {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileFermenter) {
             TileFermenter containerTileEntity = (TileFermenter) te;
-            return new GuiFermenter(containerTileEntity, new ContainerFermenter(player.inventory, containerTileEntity));
+            return new GuiFermenter(player.inventory, containerTileEntity);
         }
         return null;
     }

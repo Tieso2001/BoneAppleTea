@@ -18,6 +18,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
@@ -35,6 +37,9 @@ public class TileFermenter extends TileEntity implements ITickable {
     public static final int SLOTS = FUEL_SLOTS + ITEM_SLOTS + BUCKET_INPUT_SLOTS + BUCKET_OUTPUT_SLOTS;
 
     public static final int MAX_TANK_CONTENTS = 5000;
+
+    private int inputTankAmount = 0;
+    private int outputTankAmount = 0;
 
     public int fermenterBurnTime = 0;
     public int fermentTime = 0;
@@ -209,9 +214,13 @@ public class TileFermenter extends TileEntity implements ITickable {
         return super.getCapability(capability, facing);
     }
 
-    public boolean isBurning()
-    {
-        return fermenterBurnTime > 0;
+    public boolean isBurning() {
+        return this.fermenterBurnTime > 0;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static boolean isBurning(TileFermenter tileEntity) {
+        return tileEntity.getField(0) > 0;
     }
 
     public boolean canFerment(boolean doFerment) {
@@ -221,12 +230,12 @@ public class TileFermenter extends TileEntity implements ITickable {
         // Input Tank
         FluidStack inputTankStack = inputTank.getFluid();
         int inputTankLevel = ModFluids.getAmount(inputTankStack);
-        setInputTankAmount(inputTankLevel);
+        setField(3, inputTankLevel);
 
         // Output Tank
         FluidStack outputTankStack = outputTank.getFluid();
         int outputTankLevel = ModFluids.getAmount(outputTankStack);
-        setOutputTankAmount(outputTankLevel);
+        setField(4, outputTankLevel);
 
         if (inputTankStack == null || inputTankStack.getFluid() == null) return false;
 
@@ -309,13 +318,41 @@ public class TileFermenter extends TileEntity implements ITickable {
         }
     }
 
-    private int inputTankAmount = 0;
-    public int getInputTankAmount() { return inputTankAmount; }
-    public void setInputTankAmount(int inputTankAmount) { this.inputTankAmount = inputTankAmount; }
+    public int getField(int id) {
+        switch(id) {
+            case 0:
+                return this.fermenterBurnTime;
+            case 1:
+                return this.fermentTime;
+            case 2:
+                return this.totalFermentTime;
+            case 3:
+                return this.inputTankAmount;
+            case 4:
+                return this.outputTankAmount;
+            default:
+                return 0;
+        }
+    }
 
-    private int outputTankAmount = 0;
-    public int getOutputTankAmount() { return outputTankAmount; }
-    public void setOutputTankAmount(int outputTankAmount) { this.outputTankAmount = outputTankAmount; }
+    public void setField(int id, int value) {
+        switch (id) {
+            case 0:
+                this.fermenterBurnTime = value;
+                break;
+            case 1:
+                this.fermentTime = value;
+                break;
+            case 2:
+                this.totalFermentTime = value;
+                break;
+            case 3:
+                this.inputTankAmount = value;
+                break;
+            case 4:
+                this.outputTankAmount = value;
+        }
+    }
 
 }
 

@@ -12,10 +12,11 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerFermenter extends Container {
 
-    private TileFermenter fermenter;
+    private final TileFermenter tileEntity;
+    private int fermenterBurnTime, fermentTime, totalFermentTime, inputTankAmount, outputTankAmount;
 
-    public ContainerFermenter(IInventory playerInventory, TileFermenter fermenter) {
-        this.fermenter = fermenter;
+    public ContainerFermenter(IInventory playerInventory, TileFermenter tileEntity) {
+        this.tileEntity = tileEntity;
 
         // This container references items out of our own inventory (the 9 slots we hold ourselves)
         // as well as the slots from the player inventory so that the user can transfer items between
@@ -43,7 +44,7 @@ public class ContainerFermenter extends Container {
     }
 
     private void addOwnSlots() {
-        IItemHandler itemHandler = this.fermenter.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        IItemHandler itemHandler = this.tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         int slotIndex = 0;
         int x; int y;
 
@@ -101,26 +102,33 @@ public class ContainerFermenter extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return fermenter.canInteractWith(playerIn);
+        return tileEntity.canInteractWith(playerIn);
     }
 
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        for (IContainerListener listener : listeners) {
-            listener.sendWindowProperty(this, 0, fermenter.getInputTankAmount());
-            listener.sendWindowProperty(this, 1, fermenter.getOutputTankAmount());
+        for(int i = 0; i < this.listeners.size(); ++i)
+        {
+            IContainerListener listener = (IContainerListener)this.listeners.get(i);
+
+            if(this.fermenterBurnTime != this.tileEntity.getField(0)) listener.sendWindowProperty(this, 0, this.tileEntity.getField(0));
+            if(this.fermentTime != this.tileEntity.getField(1)) listener.sendWindowProperty(this, 1, this.tileEntity.getField(1));
+            if(this.totalFermentTime != this.tileEntity.getField(2)) listener.sendWindowProperty(this, 2, this.tileEntity.getField(2));
+            if(this.inputTankAmount != this.tileEntity.getField(3)) listener.sendWindowProperty(this, 3, this.tileEntity.getField(3));
+            if(this.outputTankAmount != this.tileEntity.getField(4)) listener.sendWindowProperty(this, 4, this.tileEntity.getField(4));
+
         }
+        this.fermenterBurnTime = this.tileEntity.getField(0);
+        this.fermentTime = this.tileEntity.getField(1);
+        this.totalFermentTime = this.tileEntity.getField(2);
+        this.inputTankAmount = this.tileEntity.getField(3);
+        this.outputTankAmount = this.tileEntity.getField(4);
     }
 
     @Override
     public void updateProgressBar(int id, int data) {
-        if (id == 0) {
-            fermenter.setInputTankAmount(data);
-        }
-        if (id == 1) {
-            fermenter.setOutputTankAmount(data);
-        }
+        this.tileEntity.setField(id, data);
     }
 
 }
