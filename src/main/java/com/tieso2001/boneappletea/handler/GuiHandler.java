@@ -1,8 +1,8 @@
 package com.tieso2001.boneappletea.handler;
 
-import com.tieso2001.boneappletea.object.blocks.fermenter.ContainerFermenter;
-import com.tieso2001.boneappletea.object.blocks.fermenter.GuiFermenter;
-import com.tieso2001.boneappletea.object.blocks.fermenter.TileFermenter;
+import com.tieso2001.boneappletea.gui.ContainerFermenter;
+import com.tieso2001.boneappletea.gui.GuiFermenter;
+import com.tieso2001.boneappletea.tileentity.TileFermenter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

@@ -1,30 +1,47 @@
 package com.tieso2001.boneappletea.recipe;
 
-import com.tieso2001.boneappletea.init.ModFluids;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import com.tieso2001.boneappletea.init.ModItems;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class FermenterRecipes {
 
-    public static Map<ItemStack, FluidStack[]> RECIPES = new HashMap<>();
+    private static final FermenterRecipes INSTANCE = new FermenterRecipes();
+    private final Table<ItemStack, ItemStack, ItemStack> fermentingList = HashBasedTable.<ItemStack, ItemStack, ItemStack>create();
 
-    public static void register() {
-        addFermentRecipe(ModItems.YEAST, 1, FluidRegistry.WATER, 125, ModFluids.BEER, 125);
+    public static FermenterRecipes getInstance() {
+        return INSTANCE;
     }
 
-    public static void addFermentRecipe(Item inputItem, int inputItemAmount, Fluid inputFluid, int inputFluidAmount, Fluid outputFluid, int outputFluidAmount) {
-        FluidStack[] fluids = new FluidStack[2];
-        fluids[0] = new FluidStack(inputFluid, inputFluidAmount);
-        fluids[1] = new FluidStack(outputFluid, outputFluidAmount);
-        ItemStack itemStack = new ItemStack(inputItem, inputItemAmount);
-        RECIPES.put(itemStack, fluids);
+    private FermenterRecipes() {
+        addFermentingRecipe(new ItemStack(ModItems.BARLEY), new ItemStack(Items.GLASS_BOTTLE), new ItemStack(ModItems.BEER_BUCKET));
+    }
+
+
+    public void addFermentingRecipe(ItemStack inputItem, ItemStack inputBottle, ItemStack outputBottle) {
+        if(getFermentingResult(inputItem, inputBottle) != ItemStack.EMPTY) return;
+        this.fermentingList.put(inputItem, inputBottle, outputBottle);
+    }
+
+    public ItemStack getFermentingResult(ItemStack inputItem, ItemStack inputBottle) {
+        for(Map.Entry<ItemStack, Map<ItemStack, ItemStack>> entry : this.fermentingList.columnMap().entrySet()) {
+            if(this.compareItemStacks(inputItem, (ItemStack)entry.getKey())) {
+                for(Map.Entry<ItemStack, ItemStack> ent : entry.getValue().entrySet()) {
+                    if(this.compareItemStacks(inputBottle, (ItemStack)ent.getKey())) {
+                        return (ItemStack)ent.getValue();
+                    }
+                }
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
+        return stack2.getItem() == stack1.getItem() && (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
     }
 
 }

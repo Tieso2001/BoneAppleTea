@@ -1,13 +1,13 @@
 package com.tieso2001.boneappletea.init;
 
-import com.tieso2001.boneappletea.Main;
-import com.tieso2001.boneappletea.object.items.food.*;
-import com.tieso2001.boneappletea.object.items.item.ItemBarley;
-import com.tieso2001.boneappletea.object.items.item.ItemBarleySeeds;
-import com.tieso2001.boneappletea.object.items.item.ItemPotatoMush;
-import com.tieso2001.boneappletea.object.items.item.ItemYeast;
-import com.tieso2001.boneappletea.object.items.tools.ItemBeerBucket;
-import com.tieso2001.boneappletea.object.items.tools.ItemMortarAndPestle;
+import com.tieso2001.boneappletea.BoneAppleTea;
+import com.tieso2001.boneappletea.item.*;
+import com.tieso2001.boneappletea.item.ItemBarley;
+import com.tieso2001.boneappletea.item.ItemBarleySeeds;
+import com.tieso2001.boneappletea.item.ItemPotatoMush;
+import com.tieso2001.boneappletea.item.ItemYeast;
+import com.tieso2001.boneappletea.item.ItemBeerBucket;
+import com.tieso2001.boneappletea.item.ItemMortarAndPestle;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
@@ -85,7 +85,7 @@ public class ModItems {
     }
 
     public static void registerItem(Item item) {
-        item.setCreativeTab(Main.TAB_BONEAPPLETEA);
+        item.setCreativeTab(BoneAppleTea.TAB_BONEAPPLETEA);
         ForgeRegistries.ITEMS.register(item);
     }
 
