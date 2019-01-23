@@ -11,6 +11,7 @@ public class SlotFermenterInput extends SlotItemHandler {
         super(itemHandler, index, xPosition, yPosition);
     }
 
+    @Override
     public boolean isItemValid(ItemStack stack) {
         return stack.getItem() == ModItems.BARLEY;
     }

@@ -4,7 +4,9 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.tieso2001.boneappletea.init.ModItems;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionUtils;
 
 import java.util.Map;
 
@@ -18,7 +20,7 @@ public class FermenterRecipes {
     }
 
     private FermenterRecipes() {
-        addFermentingRecipe(new ItemStack(ModItems.BARLEY), new ItemStack(Items.GLASS_BOTTLE), new ItemStack(ModItems.BEER_BUCKET));
+        addFermentingRecipe(new ItemStack(ModItems.BARLEY), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER), new ItemStack(ModItems.BEER_BUCKET));
     }
 
 
@@ -29,9 +31,9 @@ public class FermenterRecipes {
 
     public ItemStack getFermentingResult(ItemStack inputItem, ItemStack inputBottle) {
         for(Map.Entry<ItemStack, Map<ItemStack, ItemStack>> entry : this.fermentingList.columnMap().entrySet()) {
-            if(this.compareItemStacks(inputItem, (ItemStack)entry.getKey())) {
+            if(this.compareItemStacks(inputBottle, (ItemStack)entry.getKey())) {
                 for(Map.Entry<ItemStack, ItemStack> ent : entry.getValue().entrySet()) {
-                    if(this.compareItemStacks(inputBottle, (ItemStack)ent.getKey())) {
+                    if(this.compareItemStacks(inputItem, (ItemStack)ent.getKey())) {
                         return (ItemStack)ent.getValue();
                     }
                 }
@@ -41,6 +43,10 @@ public class FermenterRecipes {
     }
 
     private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
+        if (stack1.getItem() == Items.POTIONITEM && stack2.getItem() == Items.POTIONITEM) {
+            if(PotionUtils.getPotionFromItem(stack1) == (PotionUtils.getPotionFromItem(stack2))) return true;
+            else return false;
+        }
         return stack2.getItem() == stack1.getItem() && (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
     }
 

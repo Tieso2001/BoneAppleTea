@@ -3,12 +3,10 @@ package com.tieso2001.boneappletea.tileentity;
 import com.tieso2001.boneappletea.init.ModItems;
 import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -16,6 +14,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+
+import javax.annotation.Nonnull;
 
 public class TileFermenter extends TileEntity implements ITickable {
 
@@ -39,6 +39,11 @@ public class TileFermenter extends TileEntity implements ITickable {
     private ItemStackHandler bottleSlotHandler = new ItemStackHandler(3){
         @Override
         protected void onContentsChanged(int slot) { TileFermenter.this.markDirty(); }
+
+        @Override
+        protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
+            return super.getStackLimit(slot, stack);
+        }
     };
 
     private CombinedInvWrapper inputHandler = new CombinedInvWrapper(inputSlotHandler, yeastSlotHandler);
@@ -105,13 +110,17 @@ public class TileFermenter extends TileEntity implements ITickable {
     }
 
     private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
+        if (stack1.getItem() == Items.POTIONITEM && stack2.getItem() == Items.POTIONITEM) {
+            if(PotionUtils.getPotionFromItem(stack1) == (PotionUtils.getPotionFromItem(stack2))) return true;
+            else return false;
+        }
         return stack2.getItem() == stack1.getItem() && (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
     }
 
     private ItemStack getBottleIngredient() {
-        ItemStack inputBottle1 = combinedHandler.getStackInSlot(2);
-        ItemStack inputBottle2 = combinedHandler.getStackInSlot(3);
-        ItemStack inputBottle3 = combinedHandler.getStackInSlot(4);
+        ItemStack inputBottle1 = bottleSlotHandler.getStackInSlot(0);
+        ItemStack inputBottle2 = bottleSlotHandler.getStackInSlot(1);
+        ItemStack inputBottle3 = bottleSlotHandler.getStackInSlot(2);
 
         // bottle1 = item, bottle2 = empty, bottle3 = empty
         if (!inputBottle1.isEmpty() && inputBottle2.isEmpty() && inputBottle3.isEmpty()) return inputBottle1;
@@ -120,70 +129,61 @@ public class TileFermenter extends TileEntity implements ITickable {
         if (inputBottle1.isEmpty() && !inputBottle2.isEmpty() && inputBottle3.isEmpty()) return inputBottle2;
 
         // bottle1 = empty, bottle2 = empty, bottle3 = item
-        if (!inputBottle1.isEmpty() && !inputBottle2.isEmpty() && inputBottle3.isEmpty()) return inputBottle3;
+        if (inputBottle1.isEmpty() && inputBottle2.isEmpty() && !inputBottle3.isEmpty()) return inputBottle3;
 
         // bottle1 = bottle2, bottle3 = empty
-        if (compareItemStacks(inputBottle1, inputBottle2) && inputBottle3.isEmpty()) return inputBottle1;
+        if (this.compareItemStacks(inputBottle1, inputBottle2) && inputBottle3.isEmpty()) return inputBottle1;
 
         // bottle1 = empty, bottle2 = bottle3
-        if (inputBottle1.isEmpty() && compareItemStacks(inputBottle2, inputBottle3)) return inputBottle2;
+        if (inputBottle1.isEmpty() && this.compareItemStacks(inputBottle2, inputBottle3)) return inputBottle2;
 
         // bottle1 = bottle3, bottle2 = empty
-        if (compareItemStacks(inputBottle1, inputBottle3) && inputBottle2.isEmpty()) return inputBottle1;
+        if (this.compareItemStacks(inputBottle1, inputBottle3) && inputBottle2.isEmpty()) return inputBottle1;
 
         // bottle1 = bottle2 = bottle3
-        if (compareItemStacks(inputBottle1, inputBottle2) && compareItemStacks(inputBottle2, inputBottle3) && compareItemStacks(inputBottle1, inputBottle3)) return inputBottle1;
+        if (this.compareItemStacks(inputBottle1, inputBottle2) && this.compareItemStacks(inputBottle2, inputBottle3) && this.compareItemStacks(inputBottle1, inputBottle3)) return inputBottle1;
 
         return ItemStack.EMPTY;
     }
 
     private boolean canFerment() {
-        ItemStack inputItem = combinedHandler.getStackInSlot(0);
-        ItemStack inputYeast = combinedHandler.getStackInSlot(1);
+        ItemStack inputItem = inputSlotHandler.getStackInSlot(0);
+        ItemStack inputYeast = yeastSlotHandler.getStackInSlot(0);
         ItemStack inputBottle = getBottleIngredient();
-        ItemStack result = FermenterRecipes.getInstance().getFermentingResult(inputItem, inputBottle);
+        ItemStack result = FermenterRecipes.getInstance().getFermentingResult(inputItem, inputBottle).copy();
 
-        if(inputItem.isEmpty() || inputYeast.isEmpty() || (inputBottle.isEmpty())) {
-            return false;
-        }
-
-        if (result.isEmpty() || inputBottle.getCount() > 1) {
-            return false;
-        }
-
-        if (compareItemStacks(inputYeast, new ItemStack(ModItems.YEAST))) {
-            return false;
-        }
+        if(inputItem.isEmpty() || inputYeast.isEmpty() || (inputBottle.isEmpty())) return false;
+        if (result.isEmpty()) return false;
+        if (inputYeast.getItem() != ModItems.YEAST || inputYeast.getCount() <= 0) return false;
 
         return true;
     }
 
     public void fermentItem() {
         if (this.canFerment()) {
-            ItemStack inputItem = combinedHandler.getStackInSlot(0);
-            ItemStack inputYeast = combinedHandler.getStackInSlot(1);
-            ItemStack inputBottle1 = combinedHandler.getStackInSlot(2);
-            ItemStack inputBottle2 = combinedHandler.getStackInSlot(3);
-            ItemStack inputBottle3 = combinedHandler.getStackInSlot(4);
+            ItemStack inputItem = inputSlotHandler.getStackInSlot(0);
+            ItemStack inputBottle1 = bottleSlotHandler.getStackInSlot(0);
+            ItemStack inputBottle2 = bottleSlotHandler.getStackInSlot(1);
+            ItemStack inputBottle3 = bottleSlotHandler.getStackInSlot(2);
             ItemStack inputBottleIngredient = getBottleIngredient();
-            ItemStack result = FermenterRecipes.getInstance().getFermentingResult(inputItem, inputBottleIngredient);
+            ItemStack result = FermenterRecipes.getInstance().getFermentingResult(inputItem, inputBottleIngredient).copy();
 
-            inputItem.shrink(1);
-            inputYeast.shrink(1);
+            inputSlotHandler.extractItem(0,1, false);
+            yeastSlotHandler.extractItem(0,1, false);
 
             if (compareItemStacks(inputBottleIngredient, inputBottle1)) {
-                inputBottle1.shrink(1);
-                combinedHandler.insertItem(2, result,false);
+                bottleSlotHandler.extractItem(0, 1,false);
+                bottleSlotHandler.insertItem(0, result,false);
             }
 
             if (compareItemStacks(inputBottleIngredient, inputBottle2)) {
-                inputBottle2.shrink(1);
-                combinedHandler.insertItem(3, result,false);
+                bottleSlotHandler.extractItem(1, 1,false);
+                bottleSlotHandler.insertItem(1, result,false);
             }
 
             if (compareItemStacks(inputBottleIngredient, inputBottle3)) {
-                inputBottle3.shrink(1);
-                combinedHandler.insertItem(4, result,false);
+                bottleSlotHandler.extractItem(2, 1,false);
+                bottleSlotHandler.insertItem(2, result,false);
             }
 
             markDirty();

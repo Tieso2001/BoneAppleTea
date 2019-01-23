@@ -49,7 +49,7 @@ public class ContainerFermenter extends Container {
     }
 
     private void addPlayerSlots(IInventory playerInventory) {
-        // BoneAppleTea Inventory
+        // Main Inventory
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
                 int x = 8 + col * 18;
