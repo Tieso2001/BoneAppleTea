@@ -1,8 +1,7 @@
 package com.tieso2001.boneappletea.gui.handler;
 
-import net.minecraft.init.PotionTypes;
+import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -16,13 +15,9 @@ public class SlotFermenterBottle extends SlotItemHandler {
     }
 
     @Override
-    public int getItemStackLimit(@Nonnull ItemStack stack) {
-        return 1;
-    }
+    public boolean isItemValid(ItemStack stack) { return FermenterRecipes.getInstance().isItemBottleValid(stack); }
 
     @Override
-    public boolean isItemValid(ItemStack stack) {
-        return PotionUtils.getPotionFromItem(stack) == PotionTypes.WATER;
-    }
+    public int getItemStackLimit(@Nonnull ItemStack stack) { return 1; }
 
 }

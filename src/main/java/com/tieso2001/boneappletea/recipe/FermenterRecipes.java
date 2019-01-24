@@ -50,4 +50,28 @@ public class FermenterRecipes {
         return stack2.getItem() == stack1.getItem() && (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
     }
 
+    public boolean isItemInputValid(ItemStack item) {
+        for(Map.Entry<ItemStack, Map<ItemStack, ItemStack>> entry : this.fermentingList.columnMap().entrySet()) {
+                for(Map.Entry<ItemStack, ItemStack> ent : entry.getValue().entrySet()) {
+                    if(this.compareItemStacks(item, (ItemStack)ent.getKey())) {
+                        return true;
+                    }
+                }
+            }
+        return false;
+    }
+
+    public boolean isItemBottleValid(ItemStack item) {
+        for(Map.Entry<ItemStack, Map<ItemStack, ItemStack>> entry : this.fermentingList.columnMap().entrySet()) {
+            if(this.compareItemStacks(item, (ItemStack)entry.getKey())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isItemYeastValid(ItemStack item) {
+        return item.getItem() == ModItems.YEAST;
+    }
+
 }

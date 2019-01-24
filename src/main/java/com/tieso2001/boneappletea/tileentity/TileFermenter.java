@@ -29,11 +29,17 @@ public class TileFermenter extends TileEntity implements ITickable {
     private ItemStackHandler inputSlotHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) { TileFermenter.this.markDirty(); }
+
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) { return FermenterRecipes.getInstance().isItemInputValid(stack); }
     };
 
     private ItemStackHandler yeastSlotHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) { TileFermenter.this.markDirty(); }
+
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) { return FermenterRecipes.getInstance().isItemYeastValid(stack); }
     };
 
     private ItemStackHandler bottleSlotHandler = new ItemStackHandler(3){
@@ -41,10 +47,13 @@ public class TileFermenter extends TileEntity implements ITickable {
         protected void onContentsChanged(int slot) { TileFermenter.this.markDirty(); }
 
         @Override
-        protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
-            return super.getStackLimit(slot, stack);
-        }
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) { return FermenterRecipes.getInstance().isItemBottleValid(stack); }
+
+        @Override
+        protected int getStackLimit(int slot, @Nonnull ItemStack stack) { return 1; }
     };
+
+    public ItemStackHandler getBottleSlotHandler() { return bottleSlotHandler; }
 
     private CombinedInvWrapper inputHandler = new CombinedInvWrapper(inputSlotHandler, yeastSlotHandler);
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputSlotHandler, yeastSlotHandler, bottleSlotHandler);
@@ -117,6 +126,10 @@ public class TileFermenter extends TileEntity implements ITickable {
         return stack2.getItem() == stack1.getItem() && (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
     }
 
+    public static boolean isItemYeast(ItemStack item) {
+        return item.getItem() == ModItems.YEAST;
+    }
+
     private ItemStack getBottleIngredient() {
         ItemStack inputBottle1 = bottleSlotHandler.getStackInSlot(0);
         ItemStack inputBottle2 = bottleSlotHandler.getStackInSlot(1);
@@ -154,7 +167,7 @@ public class TileFermenter extends TileEntity implements ITickable {
 
         if(inputItem.isEmpty() || inputYeast.isEmpty() || (inputBottle.isEmpty())) return false;
         if (result.isEmpty()) return false;
-        if (inputYeast.getItem() != ModItems.YEAST || inputYeast.getCount() <= 0) return false;
+        if (!isItemYeast(inputYeast)) return false;
 
         return true;
     }

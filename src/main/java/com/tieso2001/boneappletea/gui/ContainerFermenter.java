@@ -3,6 +3,7 @@ package com.tieso2001.boneappletea.gui;
 import com.tieso2001.boneappletea.gui.handler.SlotFermenterBottle;
 import com.tieso2001.boneappletea.gui.handler.SlotFermenterInput;
 import com.tieso2001.boneappletea.gui.handler.SlotFermenterYeast;
+import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import com.tieso2001.boneappletea.tileentity.TileFermenter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -72,22 +73,52 @@ public class ContainerFermenter extends Container {
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
+
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index < TileFermenter.SLOTS) {
-                if (!this.mergeItemStack(itemstack1, TileFermenter.SLOTS, this.inventorySlots.size(), true)) {
+            if (index >= 5) {
+                if (FermenterRecipes.getInstance().isItemInputValid(itemstack1)) {
+                    if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else if (FermenterRecipes.getInstance().isItemYeastValid(itemstack1)) {
+                    if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else if (FermenterRecipes.getInstance().isItemBottleValid(itemstack1) && itemstack.getCount() < 1) {
+                    if (!this.mergeItemStack(itemstack1, 2, 5, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else if (index >= 5 && index < 32) {
+                    if (!this.mergeItemStack(itemstack1, 32, 41, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else if (index >= 32 && index < 41 && !this.mergeItemStack(itemstack1, 5, 32, false))
+                {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 0, TileFermenter.SLOTS, false)) {
+            }
+            else if (!this.mergeItemStack(itemstack1, 5, 41, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (itemstack1.isEmpty()) {
                 slot.putStack(ItemStack.EMPTY);
-            } else {
+            }
+            else {
                 slot.onSlotChanged();
             }
+
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(playerIn, itemstack1);
         }
 
         return itemstack;
