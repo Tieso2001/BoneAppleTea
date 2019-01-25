@@ -7,6 +7,7 @@ import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import com.tieso2001.boneappletea.tileentity.TileFermenter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,7 @@ import net.minecraftforge.items.IItemHandler;
 public class ContainerFermenter extends Container {
 
     private final TileFermenter tileEntity;
+    private int prevFermentTime;
 
     public ContainerFermenter(IInventory playerInventory, TileFermenter tileEntity) {
         this.tileEntity = tileEntity;
@@ -88,11 +90,6 @@ public class ContainerFermenter extends Container {
                         return ItemStack.EMPTY;
                     }
                 }
-                else if (FermenterRecipes.getInstance().isItemBottleValid(itemstack1) && itemstack.getCount() < 1) {
-                    if (!this.mergeItemStack(itemstack1, 2, 5, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
                 else if (index >= 5 && index < 32) {
                     if (!this.mergeItemStack(itemstack1, 32, 41, false)) {
                         return ItemStack.EMPTY;
@@ -103,8 +100,11 @@ public class ContainerFermenter extends Container {
                     return ItemStack.EMPTY;
                 }
             }
-            else if (!this.mergeItemStack(itemstack1, 5, 41, false)) {
-                return ItemStack.EMPTY;
+            else {
+                if (!this.mergeItemStack(itemstack1, 5, 41, false)) {
+                    return ItemStack.EMPTY;
+                }
+                slot.onSlotChange(itemstack1, itemstack);
             }
 
             if (itemstack1.isEmpty()) {
@@ -127,6 +127,23 @@ public class ContainerFermenter extends Container {
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
         return tileEntity.canInteractWith(playerIn);
+    }
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        for (int i = 0; i < this.listeners.size(); ++i) {
+            IContainerListener icontainerlistener = this.listeners.get(i);
+            if (this.prevFermentTime != this.tileEntity.getField(0)) {
+                icontainerlistener.sendWindowProperty(this, 0, this.tileEntity.getField(0));
+            }
+        }
+        this.prevFermentTime = this.tileEntity.getField(0);
+    }
+
+    @Override
+    public void updateProgressBar(int id, int data) {
+        this.tileEntity.setField(id, data);
     }
 
 }

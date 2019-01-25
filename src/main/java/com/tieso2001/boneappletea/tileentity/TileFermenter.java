@@ -3,10 +3,9 @@ package com.tieso2001.boneappletea.tileentity;
 import com.tieso2001.boneappletea.init.ModItems;
 import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -52,8 +51,6 @@ public class TileFermenter extends TileEntity implements ITickable {
         @Override
         protected int getStackLimit(int slot, @Nonnull ItemStack stack) { return 1; }
     };
-
-    public ItemStackHandler getBottleSlotHandler() { return bottleSlotHandler; }
 
     private CombinedInvWrapper inputHandler = new CombinedInvWrapper(inputSlotHandler, yeastSlotHandler);
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputSlotHandler, yeastSlotHandler, bottleSlotHandler);
@@ -110,12 +107,24 @@ public class TileFermenter extends TileEntity implements ITickable {
 
     @Override
     public void update() {
-        if (!this.world.isRemote) {
-            if (this.canFerment()) {
-                this.fermentItem();
+            boolean flag = this.canFerment();
+            boolean flag1 = this.fermentTime > 0;
+
+            if (flag1) {
+                --this.fermentTime;
+                boolean flag2 = this.fermentTime == 0;
+
+                if (flag2 && flag) {
+                    this.fermentItem();
+                    this.markDirty();
+                } else if (!flag) {
+                    this.fermentTime = 0;
+                    this.markDirty();
+                }
+            } else if (flag) {
+                this.fermentTime = 400;
                 this.markDirty();
             }
-        }
     }
 
     public static boolean isItemYeast(ItemStack item) {
@@ -123,9 +132,9 @@ public class TileFermenter extends TileEntity implements ITickable {
     }
 
     private ItemStack getBottleIngredient() {
-        ItemStack inputBottle1 = bottleSlotHandler.getStackInSlot(0);
-        ItemStack inputBottle2 = bottleSlotHandler.getStackInSlot(1);
-        ItemStack inputBottle3 = bottleSlotHandler.getStackInSlot(2);
+        ItemStack inputBottle1 = this.bottleSlotHandler.getStackInSlot(0);
+        ItemStack inputBottle2 = this.bottleSlotHandler.getStackInSlot(1);
+        ItemStack inputBottle3 = this.bottleSlotHandler.getStackInSlot(2);
 
         // bottle1 = item, bottle2 = empty, bottle3 = empty
         if (!inputBottle1.isEmpty() && inputBottle2.isEmpty() && inputBottle3.isEmpty()) return inputBottle1;
@@ -152,8 +161,8 @@ public class TileFermenter extends TileEntity implements ITickable {
     }
 
     private boolean canFerment() {
-        ItemStack inputItem = inputSlotHandler.getStackInSlot(0);
-        ItemStack inputYeast = yeastSlotHandler.getStackInSlot(0);
+        ItemStack inputItem = this.inputSlotHandler.getStackInSlot(0);
+        ItemStack inputYeast = this.yeastSlotHandler.getStackInSlot(0);
         ItemStack inputBottle = getBottleIngredient();
         ItemStack result = FermenterRecipes.getInstance().getFermentingResult(inputItem, inputBottle).copy();
 
@@ -166,32 +175,51 @@ public class TileFermenter extends TileEntity implements ITickable {
 
     public void fermentItem() {
         if (this.canFerment()) {
-            ItemStack inputItem = inputSlotHandler.getStackInSlot(0);
-            ItemStack inputBottle1 = bottleSlotHandler.getStackInSlot(0);
-            ItemStack inputBottle2 = bottleSlotHandler.getStackInSlot(1);
-            ItemStack inputBottle3 = bottleSlotHandler.getStackInSlot(2);
+            ItemStack inputItem = this.inputSlotHandler.getStackInSlot(0);
+            ItemStack inputBottle1 = this.bottleSlotHandler.getStackInSlot(0);
+            ItemStack inputBottle2 = this.bottleSlotHandler.getStackInSlot(1);
+            ItemStack inputBottle3 = this.bottleSlotHandler.getStackInSlot(2);
             ItemStack inputBottleIngredient = getBottleIngredient();
-            ItemStack result = FermenterRecipes.getInstance().getFermentingResult(inputItem, inputBottleIngredient).copy();
 
-            inputSlotHandler.extractItem(0,1, false);
-            yeastSlotHandler.extractItem(0,1, false);
+            Item resultItem = FermenterRecipes.getInstance().getFermentingResult(inputItem, inputBottleIngredient).copy().getItem();
+            ItemStack resultStack = new ItemStack(resultItem, 1);
+
+            this.inputSlotHandler.extractItem(0,1, false);
+            this.yeastSlotHandler.extractItem(0,1, false);
+            this.markDirty();
 
             if (FermenterRecipes.getInstance().compareItemStacks(inputBottleIngredient, inputBottle1)) {
-                bottleSlotHandler.extractItem(0, 1,false);
-                bottleSlotHandler.insertItem(0, result,false);
+                this.bottleSlotHandler.setStackInSlot(0, resultStack.copy());
+                this.markDirty();
             }
 
             if (FermenterRecipes.getInstance().compareItemStacks(inputBottleIngredient, inputBottle2)) {
-                bottleSlotHandler.extractItem(1, 1,false);
-                bottleSlotHandler.insertItem(1, result,false);
+                this.bottleSlotHandler.setStackInSlot(1, resultStack.copy());
+                this.markDirty();
             }
 
             if (FermenterRecipes.getInstance().compareItemStacks(inputBottleIngredient, inputBottle3)) {
-                bottleSlotHandler.extractItem(2, 1,false);
-                bottleSlotHandler.insertItem(2, result,false);
+                this.bottleSlotHandler.setStackInSlot(2, resultStack.copy());
+                this.markDirty();
             }
 
-            markDirty();
+            this.markDirty();
+        }
+    }
+
+    public int getField(int id) {
+        switch (id) {
+            case 0:
+                return this.fermentTime;
+            default:
+                return 0;
+        }
+    }
+
+    public void setField(int id, int value) {
+        switch (id) {
+            case 0:
+                this.fermentTime = value;
         }
     }
 
