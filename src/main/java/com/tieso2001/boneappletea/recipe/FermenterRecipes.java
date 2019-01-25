@@ -42,7 +42,7 @@ public class FermenterRecipes {
         return ItemStack.EMPTY;
     }
 
-    private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
+    public boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
         if (stack1.getItem() == Items.POTIONITEM && stack2.getItem() == Items.POTIONITEM) {
             if(PotionUtils.getPotionFromItem(stack1) == (PotionUtils.getPotionFromItem(stack2))) return true;
             else return false;

@@ -118,14 +118,6 @@ public class TileFermenter extends TileEntity implements ITickable {
         }
     }
 
-    private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
-        if (stack1.getItem() == Items.POTIONITEM && stack2.getItem() == Items.POTIONITEM) {
-            if(PotionUtils.getPotionFromItem(stack1) == (PotionUtils.getPotionFromItem(stack2))) return true;
-            else return false;
-        }
-        return stack2.getItem() == stack1.getItem() && (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
-    }
-
     public static boolean isItemYeast(ItemStack item) {
         return item.getItem() == ModItems.YEAST;
     }
@@ -145,16 +137,16 @@ public class TileFermenter extends TileEntity implements ITickable {
         if (inputBottle1.isEmpty() && inputBottle2.isEmpty() && !inputBottle3.isEmpty()) return inputBottle3;
 
         // bottle1 = bottle2, bottle3 = empty
-        if (this.compareItemStacks(inputBottle1, inputBottle2) && inputBottle3.isEmpty()) return inputBottle1;
+        if (FermenterRecipes.getInstance().compareItemStacks(inputBottle1, inputBottle2) && inputBottle3.isEmpty()) return inputBottle1;
 
         // bottle1 = empty, bottle2 = bottle3
-        if (inputBottle1.isEmpty() && this.compareItemStacks(inputBottle2, inputBottle3)) return inputBottle2;
+        if (inputBottle1.isEmpty() && FermenterRecipes.getInstance().compareItemStacks(inputBottle2, inputBottle3)) return inputBottle2;
 
         // bottle1 = bottle3, bottle2 = empty
-        if (this.compareItemStacks(inputBottle1, inputBottle3) && inputBottle2.isEmpty()) return inputBottle1;
+        if (FermenterRecipes.getInstance().compareItemStacks(inputBottle1, inputBottle3) && inputBottle2.isEmpty()) return inputBottle1;
 
         // bottle1 = bottle2 = bottle3
-        if (this.compareItemStacks(inputBottle1, inputBottle2) && this.compareItemStacks(inputBottle2, inputBottle3) && this.compareItemStacks(inputBottle1, inputBottle3)) return inputBottle1;
+        if (FermenterRecipes.getInstance().compareItemStacks(inputBottle1, inputBottle2) && FermenterRecipes.getInstance().compareItemStacks(inputBottle2, inputBottle3) && FermenterRecipes.getInstance().compareItemStacks(inputBottle1, inputBottle3)) return inputBottle1;
 
         return ItemStack.EMPTY;
     }
@@ -184,17 +176,17 @@ public class TileFermenter extends TileEntity implements ITickable {
             inputSlotHandler.extractItem(0,1, false);
             yeastSlotHandler.extractItem(0,1, false);
 
-            if (compareItemStacks(inputBottleIngredient, inputBottle1)) {
+            if (FermenterRecipes.getInstance().compareItemStacks(inputBottleIngredient, inputBottle1)) {
                 bottleSlotHandler.extractItem(0, 1,false);
                 bottleSlotHandler.insertItem(0, result,false);
             }
 
-            if (compareItemStacks(inputBottleIngredient, inputBottle2)) {
+            if (FermenterRecipes.getInstance().compareItemStacks(inputBottleIngredient, inputBottle2)) {
                 bottleSlotHandler.extractItem(1, 1,false);
                 bottleSlotHandler.insertItem(1, result,false);
             }
 
-            if (compareItemStacks(inputBottleIngredient, inputBottle3)) {
+            if (FermenterRecipes.getInstance().compareItemStacks(inputBottleIngredient, inputBottle3)) {
                 bottleSlotHandler.extractItem(2, 1,false);
                 bottleSlotHandler.insertItem(2, result,false);
             }
