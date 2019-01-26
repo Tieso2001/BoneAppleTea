@@ -25,7 +25,7 @@ public class BlockBaseCrops extends BlockCrops {
             };
 
     public BlockBaseCrops(String name, Item seedItem, Item productItem) {
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         this.seedItem = seedItem;
         this.productItem = productItem;

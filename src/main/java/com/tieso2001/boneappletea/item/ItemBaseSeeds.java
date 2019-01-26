@@ -19,7 +19,7 @@ public class ItemBaseSeeds extends Item implements IPlantable {
     private Block cropBlock;
 
     public ItemBaseSeeds(String name, Block cropBlock) {
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         this.cropBlock = cropBlock;
     }

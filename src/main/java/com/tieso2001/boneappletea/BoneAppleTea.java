@@ -1,10 +1,11 @@
 package com.tieso2001.boneappletea;
 
 import com.tieso2001.boneappletea.handler.GuiHandler;
+import com.tieso2001.boneappletea.init.ModItems;
 import com.tieso2001.boneappletea.proxy.CommonProxy;
-import com.tieso2001.boneappletea.creativetab.TabBoneAppleTea;
 import com.tieso2001.boneappletea.util.Reference;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -21,7 +22,12 @@ public class BoneAppleTea {
     @Instance
     public static BoneAppleTea instance;
 
-    public static final CreativeTabs TAB_BONEAPPLETEA = new TabBoneAppleTea();
+    public static CreativeTabs TAB_BONEAPPLETEA = new CreativeTabs("tab_boneappletea") {
+        @Override
+        public ItemStack createIcon() {
+            return new ItemStack(ModItems.CORN);
+        }
+    };
 
     @SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.COMMON_PROXY_CLASS)
     public static CommonProxy proxy;

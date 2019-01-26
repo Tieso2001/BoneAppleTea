@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 public class ItemMortarAndPestle extends Item {
 
     public ItemMortarAndPestle(String name) {
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         setMaxStackSize(1);
         setMaxDamage(15);

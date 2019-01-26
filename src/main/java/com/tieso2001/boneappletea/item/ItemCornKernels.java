@@ -18,7 +18,7 @@ public class ItemCornKernels extends ItemFood implements IPlantable {
 
     public ItemCornKernels(String name, int amount, boolean isWolfFood) {
         super(amount, isWolfFood);
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
     }
 

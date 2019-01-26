@@ -6,7 +6,7 @@ public class ItemBaseFood extends ItemFood {
 
     public ItemBaseFood(String name, int amount, boolean isWolfFood) {
         super(amount, isWolfFood);
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
     }
 

@@ -22,7 +22,7 @@ public class ItemBaseDrinks extends Item {
     private Potion potionEffect;
 
     public ItemBaseDrinks(String name, Potion potionEffect) {
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         setMaxStackSize(1);
         this.potionEffect = potionEffect;
