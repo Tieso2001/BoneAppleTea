@@ -1,15 +1,19 @@
 package com.tieso2001.boneappletea.tileentity;
 
+import com.tieso2001.boneappletea.state.FermenterState;
 import com.tieso2001.boneappletea.gui.handler.FermenterBottleSlotHandler;
 import com.tieso2001.boneappletea.gui.handler.FermenterInputSlotHandler;
 import com.tieso2001.boneappletea.gui.handler.FermenterYeastSlotHandler;
 import com.tieso2001.boneappletea.init.ModItems;
 import com.tieso2001.boneappletea.recipe.FermenterRecipes;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -18,6 +22,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
+import javax.annotation.Nullable;
+
 public class TileFermenter extends TileEntity implements ITickable, IInventory {
 
     public static final int SLOTS = 5;
@@ -25,6 +31,7 @@ public class TileFermenter extends TileEntity implements ITickable, IInventory {
     private int defaultTime = 400;
     private int timeMultiplier = 2;
     public int fermentingTime = defaultTime * timeMultiplier;
+    private FermenterState state = FermenterState.INACTIVE;
     private String fermenterCustomName;
 
     @Override
@@ -39,6 +46,42 @@ public class TileFermenter extends TileEntity implements ITickable, IInventory {
 
     public boolean canInteractWith(EntityPlayer playerIn) {
         return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound nbtTag = super.getUpdateTag();
+        nbtTag.setInteger("state", state.ordinal());
+        return nbtTag;
+    }
+
+    @Nullable
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 1, getUpdateTag());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+        int stateIndex = packet.getNbtCompound().getInteger("state");
+
+        if (world.isRemote && stateIndex != state.ordinal()) {
+            state = FermenterState.VALUES[stateIndex];
+            world.markBlockRangeForRenderUpdate(pos, pos);
+        }
+    }
+
+    public void setState(FermenterState state) {
+        if (this.state != state) {
+            this.state = state;
+            markDirty();
+            IBlockState blockState = world.getBlockState(pos);
+            getWorld().notifyBlockUpdate(pos, blockState, blockState, 3);
+        }
+    }
+
+    public FermenterState getState() {
+        return state;
     }
 
     private ItemStackHandler inputSlotHandler = new FermenterInputSlotHandler(1) {
@@ -178,7 +221,8 @@ public class TileFermenter extends TileEntity implements ITickable, IInventory {
         if (compound.hasKey("itemsBottle")) {
             bottleSlotHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsBottle"));
         }
-        this.fermentTime = compound.getInteger("FermentTime");
+        this.fermentTime = compound.getInteger("fermentTime");
+        this.state = FermenterState.VALUES[compound.getInteger("state")];
     }
 
     @Override
@@ -187,30 +231,47 @@ public class TileFermenter extends TileEntity implements ITickable, IInventory {
         compound.setTag("itemsInput", inputSlotHandler.serializeNBT());
         compound.setTag("itemsYeast", yeastSlotHandler.serializeNBT());
         compound.setTag("itemsBottle", bottleSlotHandler.serializeNBT());
-        compound.setInteger("FermentTime", (short)this.fermentTime);
+        compound.setInteger("fermentTime", (short)this.fermentTime);
+        compound.setInteger("state", state.ordinal());
         return compound;
     }
 
     @Override
     public void update() {
-            boolean flag = this.canFerment();
-            boolean flag1 = this.fermentTime > 0;
 
-            if (flag1) {
-                --this.fermentTime;
-                boolean flag2 = this.fermentTime == 0;
 
-                if (flag2 && flag) {
-                    this.fermentItem();
+            if (!world.isRemote) {
+
+                boolean flag = this.canFerment();
+                boolean flag1 = this.fermentTime > 0;
+
+                if (flag1) {
+                    --this.fermentTime;
+                    boolean flag2 = this.fermentTime == 0;
+
+                    if (flag2 && flag) {
+                        this.fermentItem();
+                        this.markDirty();
+                    } else if (!flag) {
+                        this.fermentTime = 0;
+                        this.markDirty();
+                        setState(FermenterState.INACTIVE);
+                    }
+                } else if (flag) {
+                    this.fermentTime = this.fermentingTime;
                     this.markDirty();
-                } else if (!flag) {
-                    this.fermentTime = 0;
-                    this.markDirty();
+                    setState(FermenterState.ACTIVE);
                 }
-            } else if (flag) {
-                this.fermentTime = this.fermentingTime;
-                this.markDirty();
+
+                if (fermentTime > 0) {
+                    setState(FermenterState.ACTIVE);
+                }
+                else {
+                    setState(FermenterState.INACTIVE);
+                }
+
             }
+
     }
 
     public static boolean isItemYeast(ItemStack item) {
