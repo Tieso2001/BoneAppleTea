@@ -15,9 +15,7 @@ public class FermenterRecipes {
     private static final FermenterRecipes INSTANCE = new FermenterRecipes();
     private final Table<ItemStack, ItemStack, ItemStack> fermentingList = HashBasedTable.<ItemStack, ItemStack, ItemStack>create();
 
-    public static FermenterRecipes getInstance() {
-        return INSTANCE;
-    }
+    public static FermenterRecipes getInstance() { return INSTANCE; }
 
     private FermenterRecipes() {
         addFermentingRecipe(new ItemStack(ModItems.BARLEY_GRAINS), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER), new ItemStack(ModItems.BEER_BOTTLE));
@@ -64,7 +62,7 @@ public class FermenterRecipes {
 
     public boolean isItemBottleValid(ItemStack item) {
         for(Map.Entry<ItemStack, Map<ItemStack, ItemStack>> entry : this.fermentingList.columnMap().entrySet()) {
-            if(this.compareItemStacks(item, (ItemStack)entry.getKey())) {
+            if(this.compareItemStacks(item, (ItemStack)entry.getKey()) && !item.isStackable()) {
                 return true;
             }
         }

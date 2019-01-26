@@ -37,4 +37,3 @@ public class GuiHandler implements IGuiHandler {
     }
 
 }
-

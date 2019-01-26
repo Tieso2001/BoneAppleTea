@@ -1,5 +1,8 @@
 package com.tieso2001.boneappletea.tileentity;
 
+import com.tieso2001.boneappletea.gui.handler.FermenterBottleSlotHandler;
+import com.tieso2001.boneappletea.gui.handler.FermenterInputSlotHandler;
+import com.tieso2001.boneappletea.gui.handler.FermenterYeastSlotHandler;
 import com.tieso2001.boneappletea.init.ModItems;
 import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +18,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
-import javax.annotation.Nonnull;
-
 public class TileFermenter extends TileEntity implements ITickable, IInventory {
 
     public static final int SLOTS = 5;
@@ -27,14 +28,12 @@ public class TileFermenter extends TileEntity implements ITickable, IInventory {
     private String fermenterCustomName;
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return this.hasCustomName() ? this.fermenterCustomName : "container.fermenter";
     }
 
     @Override
-    public boolean hasCustomName()
-    {
+    public boolean hasCustomName() {
         return this.fermenterCustomName != null && !this.fermenterCustomName.isEmpty();
     }
 
@@ -42,34 +41,21 @@ public class TileFermenter extends TileEntity implements ITickable, IInventory {
         return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 
-    private ItemStackHandler inputSlotHandler = new ItemStackHandler(1) {
+    private ItemStackHandler inputSlotHandler = new FermenterInputSlotHandler(1) {
         @Override
         protected void onContentsChanged(int slot) { TileFermenter.this.markDirty(); }
-
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) { return FermenterRecipes.getInstance().isItemInputValid(stack); }
     };
 
-    private ItemStackHandler yeastSlotHandler = new ItemStackHandler(1) {
+    private ItemStackHandler yeastSlotHandler = new FermenterYeastSlotHandler(1) {
         @Override
         protected void onContentsChanged(int slot) { TileFermenter.this.markDirty(); }
-
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) { return FermenterRecipes.getInstance().isItemYeastValid(stack); }
     };
 
-    private ItemStackHandler bottleSlotHandler = new ItemStackHandler(3){
+    private ItemStackHandler bottleSlotHandler = new FermenterBottleSlotHandler(3){
         @Override
         protected void onContentsChanged(int slot) { TileFermenter.this.markDirty(); }
-
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) { return FermenterRecipes.getInstance().isItemBottleValid(stack); }
-
-        @Override
-        protected int getStackLimit(int slot, @Nonnull ItemStack stack) { return 1; }
     };
 
-    private CombinedInvWrapper inputHandler = new CombinedInvWrapper(inputSlotHandler, yeastSlotHandler);
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputSlotHandler, yeastSlotHandler, bottleSlotHandler);
 
     @Override
@@ -168,7 +154,7 @@ public class TileFermenter extends TileEntity implements ITickable, IInventory {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(combinedHandler);
             }
             else if (facing == EnumFacing.UP) {
-                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inputHandler);
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(combinedHandler);
             }
             else if (facing == EnumFacing.DOWN) {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(bottleSlotHandler);

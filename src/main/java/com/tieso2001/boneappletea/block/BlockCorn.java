@@ -41,4 +41,5 @@ public class BlockCorn extends BlockCrops {
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return corn[((Integer) state.getValue(this.getAgeProperty())).intValue()];
     }
+
 }

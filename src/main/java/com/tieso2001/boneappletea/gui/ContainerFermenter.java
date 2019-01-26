@@ -1,8 +1,5 @@
 package com.tieso2001.boneappletea.gui;
 
-import com.tieso2001.boneappletea.gui.handler.SlotFermenterBottle;
-import com.tieso2001.boneappletea.gui.handler.SlotFermenterInput;
-import com.tieso2001.boneappletea.gui.handler.SlotFermenterYeast;
 import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import com.tieso2001.boneappletea.tileentity.TileFermenter;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +10,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerFermenter extends Container {
 
@@ -32,23 +30,23 @@ public class ContainerFermenter extends Container {
 
         //Input Slot
         x = 79; y = 17;
-        addSlotToContainer(new SlotFermenterInput(itemHandler, slotIndex++, x, y));
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
 
         //Yeast Slot
         x = 17; y = 17;
-        addSlotToContainer(new SlotFermenterYeast(itemHandler, slotIndex++, x, y));
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
 
         //Bottle 1 Slot
         x = 56; y = 51;
-        addSlotToContainer(new SlotFermenterBottle(itemHandler, slotIndex++, x, y));
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
 
         //Bottle 2 Slot
         x = 79; y = 58;
-        addSlotToContainer(new SlotFermenterBottle(itemHandler, slotIndex++, x, y));
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
 
         //Bottle 3 Slot
         x = 102; y = 51;
-        addSlotToContainer(new SlotFermenterBottle(itemHandler, slotIndex++, x, y));
+        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
     }
 
     private void addPlayerSlots(IInventory playerInventory) {
@@ -87,6 +85,11 @@ public class ContainerFermenter extends Container {
                 }
                 else if (FermenterRecipes.getInstance().isItemYeastValid(itemstack1)) {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else if (FermenterRecipes.getInstance().isItemBottleValid(itemstack1)) {
+                    if (!this.mergeItemStack(itemstack1, 2, 5, false)) {
                         return ItemStack.EMPTY;
                     }
                 }
@@ -147,4 +150,3 @@ public class ContainerFermenter extends Container {
     }
 
 }
-
