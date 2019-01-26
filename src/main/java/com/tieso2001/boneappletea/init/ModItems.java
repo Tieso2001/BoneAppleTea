@@ -3,6 +3,7 @@ package com.tieso2001.boneappletea.init;
 import com.tieso2001.boneappletea.BoneAppleTea;
 import com.tieso2001.boneappletea.item.*;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -34,23 +35,23 @@ public class ModItems {
     public static Item MORTAR_AND_PESTLE;
 
     public static void init() {
-        BARLEY = new ItemBarley("barley");
-        BARLEY_SEEDS = new ItemBarleySeeds("barley_seeds");
-        BARLEY_GRAINS = new ItemBarleyGrains("barley_grains");
-        POTATO_MUSH = new ItemPotatoMush("potato_mush");
-        YEAST = new ItemYeast("yeast");
+        BARLEY = new ItemBase("barley");
+        BARLEY_SEEDS = new ItemBaseSeeds("barley_seeds", ModBlocks.BARLEY);
+        BARLEY_GRAINS = new ItemBase("barley_grains");
+        POTATO_MUSH = new ItemBase("potato_mush");
+        YEAST = new ItemBase("yeast");
 
-        COOKED_MINCED_MEAT_SAUSAGE = new ItemCookedMincedMeatSausage("cooked_minced_meat_sausage", 4, false);
-        CORN = new ItemCorn("corn", 3, false);
+        COOKED_MINCED_MEAT_SAUSAGE = new ItemBaseFood("cooked_minced_meat_sausage", 4, false);
+        CORN = new ItemBaseFood("corn", 3, false);
         CORN_KERNELS = new ItemCornKernels("corn_kernels", 1, false);
-        CORN_ON_THE_COB = new ItemCornOnTheCob("corn_on_the_cob", 5, false);
-        MINCED_MEAT = new ItemMincedMeat("minced_meat", 2, false);
-        MINCED_MEAT_SAUSAGE = new ItemMincedMeatSausage("minced_meat_sausage", 3, false);
-        MINCED_MEAT_SAUSAGE_ROLL = new ItemMincedMeatSausageRoll("minced_meat_sausage_roll", 6, false);
-        POPCORN = new ItemPopcorn("popcorn", 2, false);
+        CORN_ON_THE_COB = new ItemBaseFood("corn_on_the_cob", 5, false);
+        MINCED_MEAT = new ItemBaseFood("minced_meat", 2, false);
+        MINCED_MEAT_SAUSAGE = new ItemBaseFood("minced_meat_sausage", 3, false);
+        MINCED_MEAT_SAUSAGE_ROLL = new ItemBaseFood("minced_meat_sausage_roll", 6, false);
+        POPCORN = new ItemBaseFood("popcorn", 2, false);
 
-        BEER_BOTTLE = new ItemBeerBottle("beer_bottle");
-        VODKA_BOTTLE = new ItemVodkaBottle("vodka_bottle");
+        BEER_BOTTLE = new ItemBaseDrinks("beer_bottle", MobEffects.STRENGTH);
+        VODKA_BOTTLE = new ItemBaseDrinks("vodka_bottle", MobEffects.SPEED);
 
         MORTAR_AND_PESTLE = new ItemMortarAndPestle("mortar_and_pestle");
     }

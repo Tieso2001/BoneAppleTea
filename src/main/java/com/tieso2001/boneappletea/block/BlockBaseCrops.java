@@ -1,6 +1,5 @@
 package com.tieso2001.boneappletea.block;
 
-import com.tieso2001.boneappletea.init.ModItems;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -8,8 +7,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockBarley extends BlockCrops {
-    private static final AxisAlignedBB[] barley =
+public class BlockBaseCrops extends BlockCrops {
+
+    private Item seedItem;
+    private Item productItem;
+
+    private static final AxisAlignedBB[] boundingBox =
             new AxisAlignedBB[]{
                     new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D),
                     new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D),
@@ -21,24 +24,22 @@ public class BlockBarley extends BlockCrops {
                     new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)
             };
 
-    public BlockBarley(String name) {
+    public BlockBaseCrops(String name, Item seedItem, Item productItem) {
         setUnlocalizedName(name);
         setRegistryName(name);
+        this.seedItem = seedItem;
+        this.productItem = productItem;
     }
 
     @Override
-    protected Item getSeed() {
-        return ModItems.BARLEY_SEEDS;
-    }
+    protected Item getSeed() { return seedItem; }
 
     @Override
-    protected Item getCrop() {
-        return ModItems.BARLEY;
-    }
+    protected Item getCrop() { return productItem; }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return barley[((Integer) state.getValue(this.getAgeProperty())).intValue()];
+        return boundingBox[((Integer) state.getValue(this.getAgeProperty())).intValue()];
     }
 
 }

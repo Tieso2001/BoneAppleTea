@@ -1,6 +1,6 @@
 package com.tieso2001.boneappletea.item;
 
-import com.tieso2001.boneappletea.init.ModBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,11 +14,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
-public class ItemBarleySeeds extends Item implements IPlantable {
+public class ItemBaseSeeds extends Item implements IPlantable {
 
-    public ItemBarleySeeds(String name) {
+    private Block cropBlock;
+
+    public ItemBaseSeeds(String name, Block cropBlock) {
         setUnlocalizedName(name);
         setRegistryName(name);
+        this.cropBlock = cropBlock;
     }
 
     @Override
@@ -27,7 +30,7 @@ public class ItemBarleySeeds extends Item implements IPlantable {
         IBlockState state = worldIn.getBlockState(pos);
 
         if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, stack) && state.getBlock().canSustainPlant(state, worldIn, pos, EnumFacing.UP, this) && worldIn.isAirBlock(pos.up())) {
-            worldIn.setBlockState(pos.up(), ModBlocks.BARLEY.getDefaultState());
+            worldIn.setBlockState(pos.up(), cropBlock.getDefaultState());
             stack.shrink(1);
             return EnumActionResult.SUCCESS;
         } else return EnumActionResult.FAIL;
@@ -40,7 +43,7 @@ public class ItemBarleySeeds extends Item implements IPlantable {
 
     @Override
     public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
-        return ModBlocks.BARLEY.getDefaultState();
+        return cropBlock.getDefaultState();
     }
 
 }

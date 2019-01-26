@@ -9,6 +9,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
@@ -16,18 +17,21 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class ItemVodkaBottle extends Item {
+public class ItemBaseDrinks extends Item {
 
-    public ItemVodkaBottle(String name) {
+    private Potion potionEffect;
+
+    public ItemBaseDrinks(String name, Potion potionEffect) {
         setUnlocalizedName(name);
         setRegistryName(name);
         setMaxStackSize(1);
+        this.potionEffect = potionEffect;
     }
 
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
         if (!worldIn.isRemote) {
             entityLiving.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 200, 0));
-            entityLiving.addPotionEffect(new PotionEffect(MobEffects.SPEED, 600, 0));
+            entityLiving.addPotionEffect(new PotionEffect(potionEffect, 600, 0));
         }
         if (entityLiving instanceof EntityPlayerMP) {
             EntityPlayerMP entityplayermp = (EntityPlayerMP) entityLiving;

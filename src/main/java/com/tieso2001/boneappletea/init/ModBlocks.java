@@ -1,8 +1,7 @@
 package com.tieso2001.boneappletea.init;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
-import com.tieso2001.boneappletea.block.BlockBarley;
-import com.tieso2001.boneappletea.block.BlockCorn;
+import com.tieso2001.boneappletea.block.BlockBaseCrops;
 import com.tieso2001.boneappletea.block.BlockFermenter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -22,8 +21,8 @@ public class ModBlocks {
     public static Block FERMENTER;
 
     public static void init() {
-        BARLEY = new BlockBarley("barley");
-        CORN = new BlockCorn("corn");
+        BARLEY = new BlockBaseCrops("barley", ModItems.BARLEY_SEEDS, ModItems.BARLEY);
+        CORN = new BlockBaseCrops("corn", ModItems.CORN_KERNELS, ModItems.CORN);
         FERMENTER = new BlockFermenter("fermenter", Material.IRON);
     }
 
