@@ -41,12 +41,12 @@ public class ModItems {
         POTATO_MUSH = new ItemBase("potato_mush");
         YEAST = new ItemBase("yeast");
 
-        COOKED_MINCED_MEAT_SAUSAGE = new ItemBaseFood("cooked_minced_meat_sausage", 4, false);
+        COOKED_MINCED_MEAT_SAUSAGE = new ItemBaseFood("cooked_minced_meat_sausage", 4, true);
         CORN = new ItemBaseFood("corn", 3, false);
         CORN_KERNELS = new ItemCornKernels("corn_kernels", 1, false);
         CORN_ON_THE_COB = new ItemBaseFood("corn_on_the_cob", 5, false);
-        MINCED_MEAT = new ItemBaseFood("minced_meat", 2, false);
-        MINCED_MEAT_SAUSAGE = new ItemBaseFood("minced_meat_sausage", 3, false);
+        MINCED_MEAT = new ItemBaseFood("minced_meat", 2, true);
+        MINCED_MEAT_SAUSAGE = new ItemBaseFood("minced_meat_sausage", 3, true);
         MINCED_MEAT_SAUSAGE_ROLL = new ItemBaseFood("minced_meat_sausage_roll", 6, false);
         POPCORN = new ItemBaseFood("popcorn", 2, false);
 
