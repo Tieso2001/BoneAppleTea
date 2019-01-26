@@ -14,6 +14,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -33,8 +34,8 @@ public class BlockFermenter extends Block implements ITileEntityProvider {
         setUnlocalizedName(name);
         setRegistryName(name);
         setSoundType(SoundType.METAL);
-        //setHardness();
-        //setResistance();
+        setHardness(3.5F);
+        setResistance(17.5F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
@@ -94,14 +95,15 @@ public class BlockFermenter extends Block implements ITileEntityProvider {
         worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
     }
 
-    /*
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        TileFermenter te = (TileFermenter)worldIn.getTileEntity(pos);
-        InventoryHelper.dropInventoryItems(worldIn, pos, tileEntity);
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if (tileEntity instanceof TileFermenter) {
+            InventoryHelper.dropInventoryItems(worldIn, pos, (TileFermenter)tileEntity);
+            worldIn.updateComparatorOutputLevel(pos, this);
+        }
         super.breakBlock(worldIn, pos, state);
     }
-    */
 
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {

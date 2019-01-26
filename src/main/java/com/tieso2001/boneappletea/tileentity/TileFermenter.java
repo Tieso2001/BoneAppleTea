@@ -3,6 +3,7 @@ package com.tieso2001.boneappletea.tileentity;
 import com.tieso2001.boneappletea.init.ModItems;
 import com.tieso2001.boneappletea.recipe.FermenterRecipes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,10 +17,23 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 
-public class TileFermenter extends TileEntity implements ITickable {
+public class TileFermenter extends TileEntity implements ITickable, IInventory {
 
     public static final int SLOTS = 5;
     private int fermentTime;
+    private String fermenterCustomName;
+
+    @Override
+    public String getName()
+    {
+        return this.hasCustomName() ? this.fermenterCustomName : "container.fermenter";
+    }
+
+    @Override
+    public boolean hasCustomName()
+    {
+        return this.fermenterCustomName != null && !this.fermenterCustomName.isEmpty();
+    }
 
     public boolean canInteractWith(EntityPlayer playerIn) {
         return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
@@ -54,6 +68,87 @@ public class TileFermenter extends TileEntity implements ITickable {
 
     private CombinedInvWrapper inputHandler = new CombinedInvWrapper(inputSlotHandler, yeastSlotHandler);
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputSlotHandler, yeastSlotHandler, bottleSlotHandler);
+
+    @Override
+    public int getSizeInventory() {
+        return SLOTS;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int index) {
+        return combinedHandler.getStackInSlot(index);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public ItemStack decrStackSize(int index, int count) {
+        combinedHandler.extractItem(index, 1, false);
+        markDirty();
+        return combinedHandler.extractItem(index, 1, true);
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack itemstack = combinedHandler.getStackInSlot(index);
+        combinedHandler.setStackInSlot(index, ItemStack.EMPTY);
+        markDirty();
+        return itemstack;
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 64;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        combinedHandler.setStackInSlot(index, stack);
+        markDirty();
+    }
+
+    @Override
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        if (this.world.getTileEntity(this.pos) != this) {
+            return false;
+        }
+        else {
+            return player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
+        }
+    }
+
+    @Override
+    public void openInventory(EntityPlayer player) {
+    }
+
+    @Override
+    public void closeInventory(EntityPlayer player) {
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        if (index == 0) {
+            return FermenterRecipes.getInstance().isItemInputValid(stack);
+        }
+        else if (index == 1) {
+            return FermenterRecipes.getInstance().isItemYeastValid(stack);
+        }
+        else if (index == 2 || index == 3 || index == 4) {
+            return FermenterRecipes.getInstance().isItemBottleValid(stack);
+        }
+        else return false;
+    }
+
+    @Override
+    public void clear() {
+        for (int i = 0; i < SLOTS; i++) {
+            combinedHandler.setStackInSlot(i, ItemStack.EMPTY);
+            markDirty();
+        }
+    }
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
@@ -94,6 +189,7 @@ public class TileFermenter extends TileEntity implements ITickable {
         if (compound.hasKey("itemsBottle")) {
             bottleSlotHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsBottle"));
         }
+        this.fermentTime = compound.getInteger("FermentTime");
     }
 
     @Override
@@ -102,6 +198,7 @@ public class TileFermenter extends TileEntity implements ITickable {
         compound.setTag("itemsInput", inputSlotHandler.serializeNBT());
         compound.setTag("itemsYeast", yeastSlotHandler.serializeNBT());
         compound.setTag("itemsBottle", bottleSlotHandler.serializeNBT());
+        compound.setInteger("FermentTime", (short)this.fermentTime);
         return compound;
     }
 
@@ -221,6 +318,11 @@ public class TileFermenter extends TileEntity implements ITickable {
             case 0:
                 this.fermentTime = value;
         }
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 1;
     }
 
 }
