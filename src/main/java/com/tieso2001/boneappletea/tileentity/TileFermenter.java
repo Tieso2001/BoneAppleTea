@@ -21,6 +21,9 @@ public class TileFermenter extends TileEntity implements ITickable, IInventory {
 
     public static final int SLOTS = 5;
     private int fermentTime;
+    private int defaultTime = 400;
+    private int timeMultiplier = 2;
+    public int fermentingTime = defaultTime * timeMultiplier;
     private String fermenterCustomName;
 
     @Override
@@ -219,7 +222,7 @@ public class TileFermenter extends TileEntity implements ITickable, IInventory {
                     this.markDirty();
                 }
             } else if (flag) {
-                this.fermentTime = 400;
+                this.fermentTime = this.fermentingTime;
                 this.markDirty();
             }
     }

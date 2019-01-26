@@ -48,7 +48,7 @@ public class GuiFermenter extends GuiContainer {
         int i1 = this.tileEntity.getField(0);
 
         if (i1 > 0) {
-            int j1 = (int)(28.0F * (1.0F - (float)i1 / 400.0F));
+            int j1 = (int)(28.0F * (1.0F - (float)i1 / this.tileEntity.fermentingTime));
 
             if (j1 > 0) {
                 this.drawTexturedModalRect(i + 97, j + 16, 176, 0, 9, j1);
