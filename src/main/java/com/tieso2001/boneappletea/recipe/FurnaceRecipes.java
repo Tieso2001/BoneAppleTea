@@ -8,8 +8,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class FurnaceRecipes {
 
     public static void register() {
-        addFurnaceRecipe(ModItems.CORN_KERNELS, ModItems.POPCORN, 0.35F);
+        addFurnaceRecipe(ModItems.MINCED_MEAT_SAUSAGE, ModItems.COOKED_MINCED_MEAT_SAUSAGE, 0.35F);
         addFurnaceRecipe(ModItems.CORN, ModItems.CORN_ON_THE_COB, 0.35F);
+        addFurnaceRecipe(ModItems.CORN_KERNELS, ModItems.POPCORN, 0.35F);
     }
 
     public static void addFurnaceRecipe(Item inputItem, Item outputItem, float experience) {

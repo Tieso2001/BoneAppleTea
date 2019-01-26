@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "boneappletea",
+  "ingredients": [
+    {
+      "item": "boneappletea:mortar_and_pestle",
+      "data": 32767
+    },
+    {
+      "item": "minecraft:beef"
+    },
+    {
+      "item": "minecraft:porkchop"
+    },
+    {
+      "item": "minecraft:chicken"
+    }
+  ],
+  "result":
+  {
+    "item": "boneappletea:minced_meat",
+    "count": 3
+  }
+}

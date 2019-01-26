@@ -44,5 +44,3 @@ public class ItemBarleySeeds extends Item implements IPlantable {
     }
 
 }
-
-

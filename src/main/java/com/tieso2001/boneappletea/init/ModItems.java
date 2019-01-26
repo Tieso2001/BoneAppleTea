@@ -17,12 +17,13 @@ public class ModItems {
     public static Item YEAST;
 
     //Food
+    public static Item COOKED_MINCED_MEAT_SAUSAGE;
     public static Item CORN;
     public static Item CORN_KERNELS;
     public static Item CORN_ON_THE_COB;
-    public static Item FRIKANDEL;
-    public static Item FRIKANDEL_ROLL;
-    public static Item GOLDEN_FRIKANDEL_ROLL;
+    public static Item MINCED_MEAT;
+    public static Item MINCED_MEAT_SAUSAGE;
+    public static Item MINCED_MEAT_SAUSAGE_ROLL;
     public static Item POPCORN;
 
     //Drinks
@@ -39,12 +40,13 @@ public class ModItems {
         POTATO_MUSH = new ItemPotatoMush("potato_mush");
         YEAST = new ItemYeast("yeast");
 
+        COOKED_MINCED_MEAT_SAUSAGE = new ItemCookedMincedMeatSausage("cooked_minced_meat_sausage", 4, false);
         CORN = new ItemCorn("corn", 3, false);
         CORN_KERNELS = new ItemCornKernels("corn_kernels", 1, false);
         CORN_ON_THE_COB = new ItemCornOnTheCob("corn_on_the_cob", 5, false);
-        FRIKANDEL = new ItemFrikandel("frikandel", 4, false);
-        FRIKANDEL_ROLL = new ItemFrikandelRoll("frikandel_roll", 8, false);
-        GOLDEN_FRIKANDEL_ROLL = new ItemGoldenFrikandelRoll("golden_frikandel_roll", 20, false);
+        MINCED_MEAT = new ItemMincedMeat("minced_meat", 2, false);
+        MINCED_MEAT_SAUSAGE = new ItemMincedMeatSausage("minced_meat_sausage", 3, false);
+        MINCED_MEAT_SAUSAGE_ROLL = new ItemMincedMeatSausageRoll("minced_meat_sausage_roll", 6, false);
         POPCORN = new ItemPopcorn("popcorn", 2, false);
 
         BEER_BOTTLE = new ItemBeerBottle("beer_bottle");
@@ -59,12 +61,13 @@ public class ModItems {
         registerItem(BARLEY_SEEDS);
         registerItem(POTATO_MUSH);
         registerItem(YEAST);
+        registerItem(COOKED_MINCED_MEAT_SAUSAGE);
         registerItem(CORN);
         registerItem(CORN_KERNELS);
         registerItem(CORN_ON_THE_COB);
-        registerItem(FRIKANDEL);
-        registerItem(FRIKANDEL_ROLL);
-        registerItem(GOLDEN_FRIKANDEL_ROLL);
+        registerItem(MINCED_MEAT);
+        registerItem(MINCED_MEAT_SAUSAGE);
+        registerItem(MINCED_MEAT_SAUSAGE_ROLL);
         registerItem(POPCORN);
         registerItem(BEER_BOTTLE);
         registerItem(VODKA_BOTTLE);
@@ -77,13 +80,14 @@ public class ModItems {
         registerRender(BARLEY_SEEDS);
         registerRender(POTATO_MUSH);
         registerRender(YEAST);
+        registerRender(COOKED_MINCED_MEAT_SAUSAGE);
         registerRender(CORN);
         registerRender(CORN_KERNELS);
         registerRender(CORN_ON_THE_COB);
-        registerRender(FRIKANDEL);
-        registerRender(FRIKANDEL_ROLL);
-        registerRender(GOLDEN_FRIKANDEL_ROLL);
         registerRender(POPCORN);
+        registerRender(MINCED_MEAT);
+        registerRender(MINCED_MEAT_SAUSAGE);
+        registerRender(MINCED_MEAT_SAUSAGE_ROLL);
         registerRender(BEER_BOTTLE);
         registerRender(VODKA_BOTTLE);
         registerRender(MORTAR_AND_PESTLE);

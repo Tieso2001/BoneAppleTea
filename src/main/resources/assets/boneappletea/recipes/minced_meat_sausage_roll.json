@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "boneappletea",
+  "ingredients": [
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "boneappletea:cooked_minced_meat_sausage"
+    }
+  ],
+  "result": {
+    "item": "boneappletea:minced_meat_sausage_roll",
+    "count": 1
+  }
+}

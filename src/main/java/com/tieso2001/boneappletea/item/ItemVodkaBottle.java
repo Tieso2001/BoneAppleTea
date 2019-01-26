@@ -27,6 +27,7 @@ public class ItemVodkaBottle extends Item {
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
         if (!worldIn.isRemote) {
             entityLiving.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 200, 0));
+            entityLiving.addPotionEffect(new PotionEffect(MobEffects.SPEED, 600, 0));
         }
         if (entityLiving instanceof EntityPlayerMP) {
             EntityPlayerMP entityplayermp = (EntityPlayerMP) entityLiving;

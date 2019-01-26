@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "boneappletea",
+  "pattern":
+  [
+    "  m",
+    " m ",
+    "m  "
+  ],
+  "key":
+  {
+    "m":
+    {
+      "item": "boneappletea:minced_meat"
+    }
+  },
+  "result":
+  {
+    "item": "boneappletea:minced_meat_sausage",
+    "count": 2
+  }
+}

@@ -6,13 +6,14 @@ item.potato_mush.name=Potato Mush
 item.yeast.name=Yeast
 
 # Food
+item.cooked_minced_meat_sausage.name=Frikandel
 item.corn.name=Corn
 item.corn_kernels.name=Corn Kernels
 item.corn_on_the_cob.name=Corn on the Cob
-item.frikandel.name=Frikandel
-item.frikandel_roll.name=Frikandel Roll
-item.golden_frikandel_roll.name=Golden Frikandel Roll
 item.popcorn.name=Popcorn
+item.minced_meat.name=Raw Minced Meat
+item.minced_meat_sausage.name=Raw Minced Meat Sausage
+item.minced_meat_sausage_roll.name=Frikandel Roll
 
 # Drinks
 item.beer_bottle.name=Beer Bottle
