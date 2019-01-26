@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "boneappletea_food",
+  "group": "boneappletea",
   "ingredients": [
     {
       "item": "boneappletea:corn"

@@ -1,5 +1,6 @@
 # Items
 item.barley.name=Barley
+item.barley_grains.name=Barley Grains
 item.barley_seeds.name=Barley Seeds
 item.potato_mush.name=Potato Mush
 item.yeast.name=Yeast
@@ -13,8 +14,11 @@ item.frikandel_roll.name=Frikandel Roll
 item.golden_frikandel_roll.name=Golden Frikandel Roll
 item.popcorn.name=Popcorn
 
+# Drinks
+item.beer_bottle.name=Beer Bottle
+item.vodka_bottle.name=Vodka Bottle
+
 # Tools
-item.beer_bucket.name=Beer Bucket
 item.mortar_and_pestle.name=Mortar and Pestle
 
 # Blocks

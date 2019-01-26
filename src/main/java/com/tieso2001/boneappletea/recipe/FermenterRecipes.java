@@ -20,7 +20,8 @@ public class FermenterRecipes {
     }
 
     private FermenterRecipes() {
-        addFermentingRecipe(new ItemStack(ModItems.BARLEY), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER), new ItemStack(ModItems.BEER_BUCKET));
+        addFermentingRecipe(new ItemStack(ModItems.BARLEY_GRAINS), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER), new ItemStack(ModItems.BEER_BOTTLE));
+        addFermentingRecipe(new ItemStack(ModItems.POTATO_MUSH), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER), new ItemStack(ModItems.VODKA_BOTTLE));
     }
 
 

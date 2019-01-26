@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "boneappletea_materials",
+  "group": "boneappletea",
   "ingredients": [
     {
       "item": "boneappletea:mortar_and_pestle",

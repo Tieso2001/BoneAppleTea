@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "boneappletea_materials",
+  "group": "boneappletea",
   "ingredients": [
     {
       "item": "boneappletea:mortar_and_pestle",
       "data": 32767
     },
     {
-      "item": "minecraft:brown_mushroom"
+      "item": "boneappletea:barley"
     }
   ],
   "result":
   {
-    "item": "boneappletea:yeast",
+    "item": "boneappletea:barley_grains",
     "count": 1
   }
 }

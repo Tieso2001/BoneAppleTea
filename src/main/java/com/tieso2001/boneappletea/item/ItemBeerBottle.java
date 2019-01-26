@@ -16,32 +16,27 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class ItemBeerBucket extends Item {
+public class ItemBeerBottle extends Item {
 
-    public ItemBeerBucket(String name) {
+    public ItemBeerBottle(String name) {
         setUnlocalizedName(name);
         setRegistryName(name);
         setMaxStackSize(1);
     }
 
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-
         if (!worldIn.isRemote) {
             entityLiving.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 200, 0));
         }
-
         if (entityLiving instanceof EntityPlayerMP) {
             EntityPlayerMP entityplayermp = (EntityPlayerMP) entityLiving;
             CriteriaTriggers.CONSUME_ITEM.trigger(entityplayermp, stack);
             entityplayermp.addStat(StatList.getObjectUseStats(this));
         }
-
         if (entityLiving instanceof EntityPlayer && !((EntityPlayer) entityLiving).capabilities.isCreativeMode) {
             stack.shrink(1);
         }
-
-        return stack.isEmpty() ? new ItemStack(Items.BUCKET) : stack;
-
+        return stack.isEmpty() ? new ItemStack(Items.GLASS_BOTTLE) : stack;
     }
 
     public int getMaxItemUseDuration(ItemStack stack)

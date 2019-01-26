@@ -2,12 +2,6 @@ package com.tieso2001.boneappletea.init;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
 import com.tieso2001.boneappletea.item.*;
-import com.tieso2001.boneappletea.item.ItemBarley;
-import com.tieso2001.boneappletea.item.ItemBarleySeeds;
-import com.tieso2001.boneappletea.item.ItemPotatoMush;
-import com.tieso2001.boneappletea.item.ItemYeast;
-import com.tieso2001.boneappletea.item.ItemBeerBucket;
-import com.tieso2001.boneappletea.item.ItemMortarAndPestle;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
@@ -17,6 +11,7 @@ public class ModItems {
 
     //Items
     public static Item BARLEY;
+    public static Item BARLEY_GRAINS;
     public static Item BARLEY_SEEDS;
     public static Item POTATO_MUSH;
     public static Item YEAST;
@@ -30,13 +25,17 @@ public class ModItems {
     public static Item GOLDEN_FRIKANDEL_ROLL;
     public static Item POPCORN;
 
+    //Drinks
+    public static Item BEER_BOTTLE;
+    public static Item VODKA_BOTTLE;
+
     //Tools
-    public static Item BEER_BUCKET;
     public static Item MORTAR_AND_PESTLE;
 
     public static void init() {
         BARLEY = new ItemBarley("barley");
         BARLEY_SEEDS = new ItemBarleySeeds("barley_seeds");
+        BARLEY_GRAINS = new ItemBarleyGrains("barley_grains");
         POTATO_MUSH = new ItemPotatoMush("potato_mush");
         YEAST = new ItemYeast("yeast");
 
@@ -48,12 +47,15 @@ public class ModItems {
         GOLDEN_FRIKANDEL_ROLL = new ItemGoldenFrikandelRoll("golden_frikandel_roll", 20, false);
         POPCORN = new ItemPopcorn("popcorn", 2, false);
 
-        BEER_BUCKET = new ItemBeerBucket("beer_bucket");
+        BEER_BOTTLE = new ItemBeerBottle("beer_bottle");
+        VODKA_BOTTLE = new ItemVodkaBottle("vodka_bottle");
+
         MORTAR_AND_PESTLE = new ItemMortarAndPestle("mortar_and_pestle");
     }
 
     public static void register() {
         registerItem(BARLEY);
+        registerItem(BARLEY_GRAINS);
         registerItem(BARLEY_SEEDS);
         registerItem(POTATO_MUSH);
         registerItem(YEAST);
@@ -64,12 +66,14 @@ public class ModItems {
         registerItem(FRIKANDEL_ROLL);
         registerItem(GOLDEN_FRIKANDEL_ROLL);
         registerItem(POPCORN);
-        registerItem(BEER_BUCKET);
+        registerItem(BEER_BOTTLE);
+        registerItem(VODKA_BOTTLE);
         registerItem(MORTAR_AND_PESTLE);
     }
 
     public static void registerRenders() {
         registerRender(BARLEY);
+        registerRender(BARLEY_GRAINS);
         registerRender(BARLEY_SEEDS);
         registerRender(POTATO_MUSH);
         registerRender(YEAST);
@@ -80,7 +84,8 @@ public class ModItems {
         registerRender(FRIKANDEL_ROLL);
         registerRender(GOLDEN_FRIKANDEL_ROLL);
         registerRender(POPCORN);
-        registerRender(BEER_BUCKET);
+        registerRender(BEER_BOTTLE);
+        registerRender(VODKA_BOTTLE);
         registerRender(MORTAR_AND_PESTLE);
     }
 
