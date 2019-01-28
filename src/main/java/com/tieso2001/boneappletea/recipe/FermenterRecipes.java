@@ -13,7 +13,7 @@ import java.util.Map;
 public class FermenterRecipes {
 
     private static final FermenterRecipes INSTANCE = new FermenterRecipes();
-    private final Table<ItemStack, ItemStack, ItemStack> fermentingList = HashBasedTable.<ItemStack, ItemStack, ItemStack>create();
+    public final Table<ItemStack, ItemStack, ItemStack> fermentingList = HashBasedTable.<ItemStack, ItemStack, ItemStack>create();
 
     public static FermenterRecipes getInstance() { return INSTANCE; }
 
