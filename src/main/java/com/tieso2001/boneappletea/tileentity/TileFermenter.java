@@ -1,5 +1,6 @@
 package com.tieso2001.boneappletea.tileentity;
 
+import com.tieso2001.boneappletea.config.BoneAppleTeaConfig;
 import com.tieso2001.boneappletea.state.FermenterState;
 import com.tieso2001.boneappletea.gui.handler.FermenterBottleSlotHandler;
 import com.tieso2001.boneappletea.gui.handler.FermenterInputSlotHandler;
@@ -28,9 +29,10 @@ public class TileFermenter extends TileEntity implements ITickable, IInventory {
 
     public static final int SLOTS = 5;
     private int fermentTime;
-    private int defaultTime = 400;
-    private int timeMultiplier = 2;
-    public int fermentingTime = defaultTime * timeMultiplier;
+
+    // Default: fermentingTime = 800 ticks
+    public int fermentingTime = BoneAppleTeaConfig.Fermenter.fermentingTime;
+
     private FermenterState state = FermenterState.INACTIVE;
     private String fermenterCustomName;
 
