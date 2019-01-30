@@ -3,6 +3,7 @@ package com.tieso2001.boneappletea.proxy;
 import com.tieso2001.boneappletea.init.ModBlocks;
 import com.tieso2001.boneappletea.init.ModItems;
 import com.tieso2001.boneappletea.init.ModTileEntities;
+import com.tieso2001.boneappletea.integration.ModOreDictionary;
 import com.tieso2001.boneappletea.recipe.FurnaceRecipes;
 import com.tieso2001.boneappletea.world.GrassSeeds;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -18,6 +19,7 @@ public class CommonProxy {
         ModBlocks.register();
         ModItems.register();
         ModTileEntities.register();
+        ModOreDictionary.register();
     }
 
     public void init(FMLInitializationEvent event) {
