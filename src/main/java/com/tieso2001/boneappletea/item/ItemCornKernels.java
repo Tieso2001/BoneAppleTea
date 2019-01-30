@@ -28,7 +28,7 @@ public class ItemCornKernels extends ItemFood implements IPlantable {
         IBlockState state = worldIn.getBlockState(pos);
 
         if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, stack) && state.getBlock().canSustainPlant(state, worldIn, pos, EnumFacing.UP, this) && worldIn.isAirBlock(pos.up())) {
-            worldIn.setBlockState(pos.up(), ModBlocks.BARLEY.getDefaultState());
+            worldIn.setBlockState(pos.up(), ModBlocks.CORN.getDefaultState());
             stack.shrink(1);
             return EnumActionResult.SUCCESS;
         } else return EnumActionResult.FAIL;
@@ -41,7 +41,7 @@ public class ItemCornKernels extends ItemFood implements IPlantable {
 
     @Override
     public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
-        return ModBlocks.BARLEY.getDefaultState();
+        return ModBlocks.CORN.getDefaultState();
     }
 
 }

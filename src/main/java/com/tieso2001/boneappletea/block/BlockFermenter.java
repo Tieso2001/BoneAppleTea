@@ -1,6 +1,5 @@
 package com.tieso2001.boneappletea.block;
 
-import com.sun.xml.internal.bind.v2.model.core.EnumConstant;
 import com.tieso2001.boneappletea.BoneAppleTea;
 import com.tieso2001.boneappletea.init.ModBlocks;
 import com.tieso2001.boneappletea.state.FermenterState;
@@ -17,7 +16,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
