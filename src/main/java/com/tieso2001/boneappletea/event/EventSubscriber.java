@@ -25,7 +25,10 @@ public class EventSubscriber
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
         final Item[] items = {
-                ModItems.CORN
+                ModItems.CORN,
+                ModItems.CORN_KERNELS,
+                ModItems.CORN_ON_THE_COB,
+                ModItems.POPCORN
         };
 
         final Item[] itemBlocks = {

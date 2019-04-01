@@ -1,5 +1,6 @@
 package com.tieso2001.boneappletea;
 
+import com.tieso2001.boneappletea.recipe.ModRecipes;
 import com.tieso2001.boneappletea.tab.TabCreative;
 import com.tieso2001.boneappletea.util.IProxy;
 import net.minecraft.creativetab.CreativeTabs;
@@ -38,6 +39,7 @@ public class BoneAppleTea
     public static void init(FMLInitializationEvent event)
     {
         proxy.init(event);
+        ModRecipes.initSmelting();
     }
 
     @Mod.EventHandler

@@ -9,4 +9,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class ModItems
 {
     public static Item CORN = new ItemFoodItem("corn",1, false);
+    public static Item CORN_KERNELS = new ItemFoodItem("corn_kernels",1, false);
+    public static Item CORN_ON_THE_COB = new ItemFoodItem("corn_on_the_cob",4, false);
+    public static Item POPCORN = new ItemFoodItem("popcorn",2, false);
 }
