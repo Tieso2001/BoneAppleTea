@@ -17,6 +17,9 @@ public class ClientEventSubscriber
     public static void registerModels(ModelRegistryEvent event)
     {
         registerModel(ModItems.CORN);
+        registerModel(ModItems.CORN_KERNELS);
+        registerModel(ModItems.CORN_ON_THE_COB);
+        registerModel(ModItems.POPCORN);
     }
 
     private static void registerModel(Item item)
