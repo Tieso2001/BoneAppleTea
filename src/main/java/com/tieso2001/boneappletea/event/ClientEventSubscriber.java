@@ -1,6 +1,7 @@
 package com.tieso2001.boneappletea.event;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
+import com.tieso2001.boneappletea.init.ModItems;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -15,7 +16,7 @@ public class ClientEventSubscriber
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event)
     {
-
+        registerModel(ModItems.CORN);
     }
 
     private static void registerModel(Item item)

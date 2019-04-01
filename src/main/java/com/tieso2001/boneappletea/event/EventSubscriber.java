@@ -1,6 +1,7 @@
 package com.tieso2001.boneappletea.event;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
+import com.tieso2001.boneappletea.init.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -24,7 +25,7 @@ public class EventSubscriber
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
         final Item[] items = {
-
+                ModItems.CORN
         };
 
         final Item[] itemBlocks = {
