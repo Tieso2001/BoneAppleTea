@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "boneappletea:items/cooked_minced_meat_sausage"
-  }
-}
