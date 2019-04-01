@@ -1,6 +1,0 @@
-{
-  "parent": "block/crop",
-  "textures": {
-    "crop": "boneappletea:blocks/barley_stage_2"
-  }
-}
