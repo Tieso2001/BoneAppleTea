@@ -1,21 +1,18 @@
 {
   "forge_marker": 1,
   "variants": {
-    "age=0,half=lower": { "model" : "boneappletea:corn_lower_stage0" },
-    "age=1,half=lower": { "model" : "boneappletea:corn_lower_stage0" },
-    "age=2,half=lower": { "model" : "boneappletea:corn_lower_stage1" },
-    "age=3,half=lower": { "model" : "boneappletea:corn_lower_stage1" },
-    "age=4,half=lower": { "model" : "boneappletea:corn_lower_stage2" },
-    "age=5,half=lower": { "model" : "boneappletea:corn_lower_stage2" },
-    "age=6,half=lower": { "model" : "boneappletea:corn_lower_stage3" },
-    "age=7,half=lower": { "model" : "boneappletea:corn_lower_stage3" },
-    "age=0,half=upper": { "model" : "boneappletea:corn_upper_stage0" },
-    "age=1,half=upper": { "model" : "boneappletea:corn_upper_stage0" },
-    "age=2,half=upper": { "model" : "boneappletea:corn_upper_stage1" },
-    "age=3,half=upper": { "model" : "boneappletea:corn_upper_stage1" },
-    "age=4,half=upper": { "model" : "boneappletea:corn_upper_stage2" },
-    "age=5,half=upper": { "model" : "boneappletea:corn_upper_stage2" },
-    "age=6,half=upper": { "model" : "boneappletea:corn_upper_stage3" },
-    "age=7,half=upper": { "model" : "boneappletea:corn_upper_stage3" }
+    "age=0": { "model" : "boneappletea:corn_stage0" },
+    "age=1": { "model" : "boneappletea:corn_stage0" },
+    "age=2": { "model" : "boneappletea:corn_stage1" },
+    "age=3": { "model" : "boneappletea:corn_stage1" },
+    "age=4": { "model" : "boneappletea:corn_stage2" },
+    "age=5": { "model" : "boneappletea:corn_stage2" },
+    "age=6": { "model" : "boneappletea:corn_stage3" },
+    "age=7": { "model" : "boneappletea:corn_stage3" },
+    "age=8": { "model" : "boneappletea:corn_stage3" },
+    "age=9": { "model" : "boneappletea:corn_stage4" },
+    "age=10": { "model" : "boneappletea:corn_stage4" },
+    "age=11": { "model" : "boneappletea:corn_stage4" },
+    "age=12": { "model" : "boneappletea:corn_stage5" }
   }
 }
