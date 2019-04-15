@@ -1,0 +1,6 @@
+{
+  "parent": "block/crop",
+  "textures": {
+    "crop": "boneappletea:blocks/corn_stage_0"
+  }
+}

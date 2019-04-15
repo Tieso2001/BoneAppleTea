@@ -39,6 +39,7 @@ public class BoneAppleTea
     public static void init(FMLInitializationEvent event)
     {
         proxy.init(event);
+        ModRecipes.initGrassSeeds();
         ModRecipes.initSmelting();
     }
 
