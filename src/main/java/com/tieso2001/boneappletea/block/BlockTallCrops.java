@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class BlockTallCrops extends BlockCrops implements IGrowable
 {
-    public static final PropertyInteger CROPS_AGE = PropertyInteger.create("age", 0, 12);
+    public static final PropertyInteger CROPS_AGE = PropertyInteger.create("age", 0, 13);
     private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.625D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)};
 
 
@@ -34,8 +34,11 @@ public class BlockTallCrops extends BlockCrops implements IGrowable
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        if (state.getValue(this.getAgeProperty()) < 8) return CROPS_AABB[((Integer)state.getValue(this.getAgeProperty())).intValue()];
-        else return CROPS_AABB[7];
+        if (this.getAge(state) == 0 || this.getAge(state) == 5 || this.getAge(state) == 10) return CROPS_AABB[0];
+        if (this.getAge(state) == 1 || this.getAge(state) == 6 || this.getAge(state) == 11) return CROPS_AABB[2];
+        if (this.getAge(state) == 2 || this.getAge(state) == 7 || this.getAge(state) == 12) return CROPS_AABB[5];
+        if (this.getAge(state) == 3 || this.getAge(state) == 4 || this.getAge(state) == 8 || this.getAge(state) == 9 || this.getAge(state) == 13) return CROPS_AABB[7];
+        return CROPS_AABB[7];
     }
 
     public Block getCropBlock()
@@ -45,20 +48,13 @@ public class BlockTallCrops extends BlockCrops implements IGrowable
 
     public int getHeight(World worldIn, BlockPos pos, IBlockState state)
     {
-        int blockHeight = 1;
+        if (this.getAge(state) <= 4) return 1;
+        if (this.getAge(state) >= 10) return this.getMaxHeight();
+
+        int blockHeight = 2;
         for (int i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this.getCropBlock(); i++)
         {
-            blockHeight++;
-        }
-        return blockHeight;
-    }
-
-    public int getHeight(net.minecraft.world.IBlockAccess world, BlockPos pos, IBlockState state)
-    {
-        int blockHeight = 1;
-        for (int i = 1; world.getBlockState(pos.down(i)).getBlock() == this.getCropBlock(); i++)
-        {
-            blockHeight++;
+            if (this.getAge(worldIn.getBlockState(pos.down(i))) > 4) blockHeight++;
         }
         return blockHeight;
     }
@@ -70,7 +66,7 @@ public class BlockTallCrops extends BlockCrops implements IGrowable
 
     public boolean isFullGrown(IBlockState state)
     {
-        return this.getAge(state) == 8 || this.getAge(state) == 12;
+        return this.getAge(state) == 4 || this.getAge(state) == 9 || this.getAge(state) == 13;
     }
 
     @Override
@@ -88,188 +84,173 @@ public class BlockTallCrops extends BlockCrops implements IGrowable
     @Override
     public boolean isMaxAge(IBlockState state)
     {
-        return this.getAge(state) == 7 || this.getAge(state) == 8 || this.getAge(state) >= 12;
+        return this.getAge(state) == 3 || this.getAge(state) == 8 || this.getAge(state) == 13;
     }
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
+        this.checkAndDropBlock(worldIn, pos, state);
+
         if (!worldIn.isAreaLoaded(pos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
         if (worldIn.getLightFromNeighbors(pos.up()) >= 9)
         {
-            int i = this.getAge(state);
-
-            if ((i < this.getMaxAge() || i == 9 || i == 10 || i == 11) && this.canGrow(worldIn, pos, state, false))
+            if (!this.isFullGrown(state) && !this.isMaxAge(state))
             {
-                float f = 2 * getGrowthChance(this, worldIn, pos);
+                float f = getGrowthChance(this, worldIn, pos);
 
                 if(net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, rand.nextInt((int)(25.0F / f) + 1) == 0))
                 {
-                    growOnce(worldIn, pos, state);
+                    grow(worldIn, pos, state, 1);
                     net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
                 }
             }
         }
     }
 
-    public void destroyCrop(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (worldIn.getBlockState(pos).getBlock() != this.getCropBlock()) worldIn.setBlockState(pos, state);
-
-        if (this.getHeight(worldIn, pos, state) == this.getMaxHeight())
-        {
-            if (this.getAge(worldIn.getBlockState(pos)) == 12) this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
-            worldIn.destroyBlock(pos, false);
-
-            for (int i = 1; i < this.getMaxHeight(); i++)
-            {
-                if (this.getHeight(worldIn, pos, worldIn.getBlockState(pos.down(i))) == 1 && this.getAge(worldIn.getBlockState(pos.down(i))) == 8) this.dropBlockAsItem(worldIn, pos.down(i), worldIn.getBlockState(pos.down(i)), 0);
-                worldIn.destroyBlock(pos.down(i), false);
-            }
-        }
-        else {
-            int up = 0;
-            for (int i = 1; worldIn.getBlockState(pos.up(i)).getBlock() == this.getCropBlock(); i++)
-            {
-                up++;
-            }
-
-            if (up > 0)
-            {
-                for (int i = up; i > 0; i--)
-                {
-                    if (this.getAge(worldIn.getBlockState(pos.up(i))) == 12) this.dropBlockAsItem(worldIn, pos.up(i), worldIn.getBlockState(pos.up(i)), 0);
-                    worldIn.destroyBlock(pos.up(i), false);
-                }
-            }
-
-            if (this.getHeight(worldIn, pos, state) > 1)
-            {
-                int down = 0;
-                for (int i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this.getCropBlock(); i++)
-                {
-                    down++;
-                }
-
-                worldIn.destroyBlock(pos, false);
-
-                if (down > 0)
-                {
-                    for (int i = down; i > 0; i--)
-                    {
-                        if (this.getHeight(worldIn, pos.down(i), worldIn.getBlockState(pos.down(i))) == 1)
-                        {
-                            if (this.getAge(worldIn.getBlockState(pos.down(i))) == 8) this.dropBlockAsItem(worldIn, pos.down(i), worldIn.getBlockState(pos.down(i)), 0);
-                        }
-
-                        worldIn.destroyBlock(pos.down(i), false);
-                    }
-                }
-            }
-            else {
-                if (this.getAge(worldIn.getBlockState(pos)) == 8) this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
-                worldIn.destroyBlock(pos, false);
-            }
-        }
-    }
-
-    @Override
-    public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
-    {
-        destroyCrop(worldIn, pos, state);
-    }
-
     @Override
     protected void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state)
     {
+        if (!this.canBlockStay(worldIn, pos, state))
+        {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+            breakBlock(worldIn, pos, state);
+        }
+    }
 
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        for (int i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this.getCropBlock(); i++)
+        {
+            this.dropBlockAsItem(worldIn, pos.down(i), worldIn.getBlockState(pos.down(i)), 0);
+            worldIn.setBlockState(pos.down(i), Blocks.AIR.getDefaultState(), 3);
+        }
     }
 
     @Override
     public void grow(World worldIn, BlockPos pos, IBlockState state)
     {
-        int age = this.getAge(state) + this.getBonemealAgeIncrease(worldIn);
-        int ageMax = this.getMaxAge();
+        int ageOld = this.getAge(state);
+        int ageNew = this.getAge(state) + this.getBonemealAgeIncrease(worldIn);
         int height = this.getHeight(worldIn, pos, state);
         int heightMax = this.getMaxHeight();
 
-        if (this.isMaxAge(state)) return;
-        if (age >= ageMax) age = ageMax;
-
-        if (height < heightMax)
+        if (ageOld <= 4) // Base
         {
-            worldIn.setBlockState(pos, this.withAge(age));
-            if (age == ageMax) worldIn.setBlockState(pos.up(), this.getDefaultState());
-        }
-        else {
-            if (age <= 3) {
-                worldIn.setBlockState(pos, this.withAge(age));
-            }
-            else if (age == 4) worldIn.setBlockState(pos, this.withAge(9));
-            else if (age == 5) worldIn.setBlockState(pos, this.withAge(10));
-            else if (age == 6) worldIn.setBlockState(pos, this.withAge(11));
-            else if (age == 7)
+            if (ageNew >= 3)
             {
-                worldIn.setBlockState(pos, this.withAge(12));
-                for (int i = 1; i < this.getMaxHeight(); i++) worldIn.setBlockState(pos.down(i), worldIn.getBlockState(pos.down(i)).withProperty(CROPS_AGE, 8));
+                ageNew = 3;
+                if (height < heightMax - 1) worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(CROPS_AGE, 5), 2);
+                else worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(CROPS_AGE, 10), 2);
             }
+            worldIn.setBlockState(pos, this.withAge(ageNew), 2);
+        }
+
+        if (ageOld >= 5 && ageOld <= 9) // Middle
+        {
+            if (ageNew >= 8)
+            {
+                ageNew = 8;
+                if (height < heightMax - 1) worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(CROPS_AGE, 5), 2);
+                else worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(CROPS_AGE, 10), 2);
+            }
+            worldIn.setBlockState(pos, this.withAge(ageNew), 2);
+        }
+
+        if (ageOld >= 10 && ageOld <= 13) // Top
+        {
+            if (ageNew >= 13)
+            {
+                ageNew = 13;
+                for (int i = 1; i < heightMax; i++)
+                {
+                    worldIn.setBlockState(pos.down(i), worldIn.getBlockState(pos.down(i)).withProperty(CROPS_AGE, (this.getAge(worldIn.getBlockState(pos.down(i))) + 1)), 2);
+                }
+            }
+            worldIn.setBlockState(pos, this.withAge(ageNew), 2);
         }
     }
 
-    public void growOnce(World worldIn, BlockPos pos, IBlockState state)
+    public void grow(World worldIn, BlockPos pos, IBlockState state, int amount)
     {
-        int age = this.getAge(state) + 1;
-        int ageMax = this.getMaxAge();
+        int ageOld = this.getAge(state);
+        int ageNew = this.getAge(state) + amount;
         int height = this.getHeight(worldIn, pos, state);
         int heightMax = this.getMaxHeight();
 
-        if (this.isMaxAge(state)) return;
-        if (age >= ageMax) age = ageMax;
-
-        if (height < heightMax)
+        if (ageOld <= 4) // Base
         {
-            worldIn.setBlockState(pos, this.withAge(age));
-            if (age == ageMax) worldIn.setBlockState(pos.up(), this.getDefaultState());
-        }
-        else {
-            if (age <= 3) {
-                worldIn.setBlockState(pos, this.withAge(age));
-            }
-            else if (age == 4) worldIn.setBlockState(pos, this.withAge(9));
-            else if (age == 5) worldIn.setBlockState(pos, this.withAge(10));
-            else if (age == 6) worldIn.setBlockState(pos, this.withAge(11));
-            else if (age == 7)
+            if (ageNew >= 3)
             {
-                worldIn.setBlockState(pos, this.withAge(12));
-                for (int i = 1; i < this.getMaxHeight(); i++) worldIn.setBlockState(pos.down(i), worldIn.getBlockState(pos.down(i)).withProperty(CROPS_AGE, 8));
+                ageNew = 3;
+                if (height < heightMax - 1) worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(CROPS_AGE, 5), 2);
+                else worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(CROPS_AGE, 10), 2);
             }
+            worldIn.setBlockState(pos, this.withAge(ageNew), 2);
+        }
+
+        if (ageOld >= 5 && ageOld <= 9) // Middle
+        {
+            if (ageNew >= 8)
+            {
+                ageNew = 8;
+                if (height < heightMax - 1) worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(CROPS_AGE, 5), 2);
+                else worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(CROPS_AGE, 10), 2);
+            }
+            worldIn.setBlockState(pos, this.withAge(ageNew), 2);
+        }
+
+        if (ageOld >= 10 && ageOld <= 13) // Top
+        {
+            if (ageNew >= 13)
+            {
+                ageNew = 13;
+                for (int i = 1; i < heightMax; i++)
+                {
+                    worldIn.setBlockState(pos.down(i), worldIn.getBlockState(pos.down(i)).withProperty(CROPS_AGE, (this.getAge(worldIn.getBlockState(pos.down(i))) + 1)), 2);
+                }
+            }
+            worldIn.setBlockState(pos, this.withAge(ageNew), 2);
         }
     }
 
     @Override
     public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
     {
-        IBlockState soil = worldIn.getBlockState(pos.down());
-
-        boolean light = worldIn.getLight(pos) >= 8 || worldIn.canSeeSky(pos);
-        boolean below = soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) || (this.getHeight(worldIn, pos, state) > 1 && soil.getBlock() == this.getCropBlock());
-        if (state.getBlock() == this.getCropBlock() && soil.getBlock() == Blocks.AIR) return false;
-        return light && below;
+        boolean one = worldIn.getLight(pos) >= 8 || worldIn.canSeeSky(pos);
+        boolean two = worldIn.getBlockState(pos.down()).getBlock().canSustainPlant(worldIn.getBlockState(pos.down()), worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) || worldIn.getBlockState(pos.down()).getBlock() == this.getCropBlock();
+        return one && two;
     }
 
     @Override
     public void getDrops(net.minecraft.util.NonNullList<ItemStack> drops, net.minecraft.world.IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        int count = 1;
+        Random rand0 = world instanceof World ? ((World)world).rand : RANDOM;
+
+        int count = quantityDropped(state, fortune, rand0);
         for (int i = 0; i < count; i++)
         {
-            Item item = null;
-            if (this.getAge(state) == 12) item = this.getCrop();
-            if (this.getHeight(world, pos, state) == 1) item = this.getSeed();
-
-            if (item != Items.AIR && item != null)
+            Item item = this.getItemDropped(state, rand0, fortune);
+            if (item != Items.AIR)
             {
                 drops.add(new ItemStack(item, 1, this.damageDropped(state)));
+            }
+        }
+
+        Random rand1 = world instanceof World ? ((World)world).rand : new Random();
+
+        if (this.getHeight((World)world, pos, state) == 1 && this.isFullGrown(state))
+        {
+            int k = 3 + fortune;
+
+            for (int i = 0; i < 3 + fortune; ++i)
+            {
+                if (rand1.nextInt(2 * this.getMaxAge()) <= this.getMaxAge())
+                {
+                    drops.add(new ItemStack(this.getSeed(), 1, 0));
+                }
             }
         }
     }
@@ -290,20 +271,38 @@ public class BlockTallCrops extends BlockCrops implements IGrowable
                 }
             }
         }
+
+        if (false && !worldIn.isRemote) // Forge: NOP all this.
+        {
+            if (this.getHeight(worldIn, pos, state) == 1 && this.isFullGrown(state))
+            {
+                int j = 3 + fortune;
+
+                for (int k = 0; k < j; ++k)
+                {
+                    if (worldIn.rand.nextInt(2 * this.getMaxAge()) <= this.getMaxAge())
+                    {
+                        spawnAsEntity(worldIn, pos, new ItemStack(this.getSeed()));
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return this.getSeed();
+        if (this.getAge(state) == 4) return this.getCrop();
+        if (this.getAge(state) < 4) return this.getSeed();
+        return null;
     }
 
     @Override
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
-        if (this.isMaxAge(state)) return false;
         if (this.isFullGrown(state)) return false;
-        if (!(worldIn.getBlockState(pos.up()).getBlock() == Blocks.AIR)) return false;
+        if (this.isMaxAge(state)) return false;
+        if (worldIn.getBlockState(pos.up()).getBlock() != Blocks.AIR && this.getAge(state) < 10) return false;
         return true;
     }
 
