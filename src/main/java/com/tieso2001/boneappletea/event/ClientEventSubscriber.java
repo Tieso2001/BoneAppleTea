@@ -18,8 +18,8 @@ public class ClientEventSubscriber
     {
         registerModel(ModItems.CORN);
         registerModel(ModItems.CORN_KERNELS);
-        registerModel(ModItems.CORN_ON_THE_COB);
         registerModel(ModItems.POPCORN);
+        registerModel(ModItems.ROASTED_CORN);
     }
 
     private static void registerModel(Item item)

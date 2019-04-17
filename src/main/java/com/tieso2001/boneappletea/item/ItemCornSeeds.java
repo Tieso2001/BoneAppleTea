@@ -13,9 +13,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
-public class ItemCornKernels extends ItemFoodItem implements IPlantable
+public class ItemCornSeeds extends ItemEdible implements IPlantable
 {
-    public ItemCornKernels(String name, int amount, boolean isWolfFood)
+    public ItemCornSeeds(String name, int amount, boolean isWolfFood)
     {
         super(name, amount, isWolfFood);
     }

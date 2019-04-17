@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "boneappletea:items/corn_on_the_cob"
+    "layer0": "boneappletea:items/roasted_corn"
   }
 }
