@@ -1,6 +1,5 @@
 package com.tieso2001.boneappletea.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.properties.IProperty;
@@ -22,8 +21,7 @@ import java.util.Random;
 public class BlockTallCrops extends BlockCrops implements IGrowable
 {
     public static final PropertyInteger CROPS_AGE = PropertyInteger.create("age", 0, 13);
-    private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.625D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)};
-
+    public static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)};
 
     public BlockTallCrops()
     {
@@ -34,16 +32,9 @@ public class BlockTallCrops extends BlockCrops implements IGrowable
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        if (this.getAge(state) == 0 || this.getAge(state) == 5 || this.getAge(state) == 10) return CROPS_AABB[0];
-        if (this.getAge(state) == 1 || this.getAge(state) == 6 || this.getAge(state) == 11) return CROPS_AABB[2];
-        if (this.getAge(state) == 2 || this.getAge(state) == 7 || this.getAge(state) == 12) return CROPS_AABB[5];
-        if (this.getAge(state) == 3 || this.getAge(state) == 4 || this.getAge(state) == 8 || this.getAge(state) == 9 || this.getAge(state) == 13) return CROPS_AABB[7];
-        return CROPS_AABB[7];
-    }
-
-    public Block getCropBlock()
-    {
-        return Blocks.WHEAT;
+        if (this.getAge(state) > 4) return CROPS_AABB[0];
+        if (this.getAge(state) == 4) return CROPS_AABB[this.getAge(state)];
+        else return CROPS_AABB[this.getAge(state) + 1];
     }
 
     public int getHeight(World worldIn, BlockPos pos, IBlockState state)
@@ -52,7 +43,7 @@ public class BlockTallCrops extends BlockCrops implements IGrowable
         if (this.getAge(state) >= 10) return this.getMaxHeight();
 
         int blockHeight = 2;
-        for (int i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this.getCropBlock(); i++)
+        for (int i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; i++)
         {
             if (this.getAge(worldIn.getBlockState(pos.down(i))) > 4) blockHeight++;
         }
@@ -61,7 +52,7 @@ public class BlockTallCrops extends BlockCrops implements IGrowable
 
     public int getMaxHeight()
     {
-        return 3;
+        return 2;
     }
 
     public boolean isFullGrown(IBlockState state)
@@ -122,7 +113,7 @@ public class BlockTallCrops extends BlockCrops implements IGrowable
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        for (int i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this.getCropBlock(); i++)
+        for (int i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; i++)
         {
             this.dropBlockAsItem(worldIn, pos.down(i), worldIn.getBlockState(pos.down(i)), 0);
             worldIn.setBlockState(pos.down(i), Blocks.AIR.getDefaultState(), 3);
@@ -220,7 +211,7 @@ public class BlockTallCrops extends BlockCrops implements IGrowable
     public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
     {
         boolean one = worldIn.getLight(pos) >= 8 || worldIn.canSeeSky(pos);
-        boolean two = worldIn.getBlockState(pos.down()).getBlock().canSustainPlant(worldIn.getBlockState(pos.down()), worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) || worldIn.getBlockState(pos.down()).getBlock() == this.getCropBlock();
+        boolean two = worldIn.getBlockState(pos.down()).getBlock().canSustainPlant(worldIn.getBlockState(pos.down()), worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this) || worldIn.getBlockState(pos.down()).getBlock() == this;
         return one && two;
     }
 
