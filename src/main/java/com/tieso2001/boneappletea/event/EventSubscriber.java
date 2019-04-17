@@ -28,8 +28,8 @@ public class EventSubscriber
         final Item[] items = {
                 ModItems.CORN,
                 ModItems.CORN_KERNELS,
-                ModItems.CORN_ON_THE_COB,
-                ModItems.POPCORN
+                ModItems.POPCORN,
+                ModItems.ROASTED_CORN
         };
 
         final Item[] itemBlocks = {
