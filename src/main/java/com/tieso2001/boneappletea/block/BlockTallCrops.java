@@ -21,7 +21,7 @@ import java.util.Random;
 public class BlockTallCrops extends BlockCrops implements IGrowable
 {
     public static final PropertyInteger CROPS_AGE = PropertyInteger.create("age", 0, 13);
-    public static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)};
+    public static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)};
 
     public BlockTallCrops()
     {
@@ -32,9 +32,10 @@ public class BlockTallCrops extends BlockCrops implements IGrowable
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        if (this.getAge(state) > 4) return CROPS_AABB[0];
-        if (this.getAge(state) == 4) return CROPS_AABB[this.getAge(state)];
-        else return CROPS_AABB[this.getAge(state) + 1];
+        if (this.getAge(state) == 0 || this.getAge(state) == 5 || this.getAge(state) == 10) return CROPS_AABB[0];
+        if (this.getAge(state) == 1 || this.getAge(state) == 6 || this.getAge(state) == 11) return CROPS_AABB[1];
+        if (this.getAge(state) == 2 || this.getAge(state) == 7 || this.getAge(state) == 12) return CROPS_AABB[2];
+        else return CROPS_AABB[3];
     }
 
     public int getHeight(World worldIn, BlockPos pos, IBlockState state)
