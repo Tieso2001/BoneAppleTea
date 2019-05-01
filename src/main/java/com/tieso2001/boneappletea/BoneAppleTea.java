@@ -1,16 +1,17 @@
 package com.tieso2001.boneappletea;
 
+import com.tieso2001.boneappletea.init.ModItems;
 import com.tieso2001.boneappletea.recipe.ModRecipes;
-import com.tieso2001.boneappletea.tab.TabCreative;
+import com.tieso2001.boneappletea.handler.GuiHandler;
 import com.tieso2001.boneappletea.util.IProxy;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod(modid = BoneAppleTea.MODID, name = BoneAppleTea.NAME, version = BoneAppleTea.VERSION, acceptedMinecraftVersions = BoneAppleTea.MC_VERSION)
 public class BoneAppleTea
@@ -20,14 +21,22 @@ public class BoneAppleTea
     public static final String VERSION = "0.0.0";
     public static final String MC_VERSION = "[1.12.2]";
 
-    public static final Logger LOGGER = LogManager.getLogger(BoneAppleTea.MODID);
+    @Mod.Instance
+    public static BoneAppleTea instance;
 
     public static final String CLIENT = "com.tieso2001.boneappletea.proxy.ClientProxy";
     public static final String SERVER = "com.tieso2001.boneappletea.proxy.ServerProxy";
     @SidedProxy(clientSide = BoneAppleTea.CLIENT, serverSide = BoneAppleTea.SERVER)
     public static IProxy proxy;
 
-    public static final CreativeTabs TAB_BONE_APPLE_TEA = new TabCreative(BoneAppleTea.MODID);
+    public static CreativeTabs TAB_BONE_APPLE_TEA = new CreativeTabs(BoneAppleTea.MODID)
+    {
+        @Override
+        public ItemStack createIcon()
+        {
+            return new ItemStack(ModItems.CORN);
+        }
+    };
 
     @Mod.EventHandler
     public static void PreInit(FMLPreInitializationEvent preEvent)
@@ -41,6 +50,7 @@ public class BoneAppleTea
         proxy.init(event);
         ModRecipes.initGrassSeeds();
         ModRecipes.initSmelting();
+        NetworkRegistry.INSTANCE.registerGuiHandler(BoneAppleTea.instance, new GuiHandler());
     }
 
     @Mod.EventHandler

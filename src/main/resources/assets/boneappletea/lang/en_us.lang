@@ -1,8 +1,11 @@
 # Creative Tabs
 itemGroup.boneappletea=Bone Apple Tea
 
+# Blocks
+tile.boneappletea.stock_pot.name=Stock Pot
+
 # Items
-item.corn.name=Corn
-item.corn_kernels.name=Corn Kernels
-item.popcorn.name=Popcorn
-item.roasted_corn.name=Roasted Corn
+item.boneappletea.corn.name=Corn
+item.boneappletea.corn_kernels.name=Corn Kernels
+item.boneappletea.popcorn.name=Popcorn
+item.boneappletea.roasted_corn.name=Roasted Corn

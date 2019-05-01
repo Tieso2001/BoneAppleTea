@@ -1,12 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
+  "ingredients": [{
       "item": "boneappletea:corn"
-    }
-  ],
-  "result":
-  {
+  }],
+  "result": {
     "item": "boneappletea:corn_kernels"
   }
 }
