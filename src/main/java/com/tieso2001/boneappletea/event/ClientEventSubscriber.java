@@ -1,6 +1,7 @@
 package com.tieso2001.boneappletea.event;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
+import com.tieso2001.boneappletea.init.ModBlocks;
 import com.tieso2001.boneappletea.init.ModItems;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -20,6 +21,7 @@ public class ClientEventSubscriber
         registerModel(ModItems.CORN_KERNELS);
         registerModel(ModItems.POPCORN);
         registerModel(ModItems.ROASTED_CORN);
+        registerModel(Item.getItemFromBlock(ModBlocks.STOCK_POT));
     }
 
     private static void registerModel(Item item)
