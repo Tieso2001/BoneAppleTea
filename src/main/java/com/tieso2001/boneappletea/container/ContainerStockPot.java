@@ -1,11 +1,17 @@
 package com.tieso2001.boneappletea.container;
 
+import com.tieso2001.boneappletea.network.ModPacketHandler;
+import com.tieso2001.boneappletea.network.PacketFluidTankUpdate;
 import com.tieso2001.boneappletea.tile.TileStockPot;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -93,5 +99,20 @@ public class ContainerStockPot extends Container
     public boolean canInteractWith(EntityPlayer playerIn)
     {
         return playerIn.getDistanceSq(playerIn.getPosition().add(0.5D, 0.5D, 0.5D)) <= 64D;
+    }
+
+    @Override
+    public void detectAndSendChanges()
+    {
+        super.detectAndSendChanges();
+
+        for (IContainerListener listener : listeners)
+        {
+            if (listener instanceof EntityPlayerMP)
+            {
+                if (tileEntity.getFluidTank().getFluid() != null) ModPacketHandler.INSTANCE.sendToAll(new PacketFluidTankUpdate(tileEntity, tileEntity.getFluidTank().getFluid()));
+                else ModPacketHandler.INSTANCE.sendToAll(new PacketFluidTankUpdate(tileEntity, new FluidStack(FluidRegistry.WATER, 0)));
+            }
+        }
     }
 }

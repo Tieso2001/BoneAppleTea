@@ -1,8 +1,10 @@
 package com.tieso2001.boneappletea;
 
 import com.tieso2001.boneappletea.init.ModItems;
-import com.tieso2001.boneappletea.recipe.ModRecipes;
+import com.tieso2001.boneappletea.init.ModRecipes;
 import com.tieso2001.boneappletea.handler.GuiHandler;
+import com.tieso2001.boneappletea.network.ModPacketHandler;
+import com.tieso2001.boneappletea.network.PacketFluidTankUpdate;
 import com.tieso2001.boneappletea.util.IProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -12,6 +14,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = BoneAppleTea.MODID, name = BoneAppleTea.NAME, version = BoneAppleTea.VERSION, acceptedMinecraftVersions = BoneAppleTea.MC_VERSION)
 public class BoneAppleTea
@@ -50,7 +53,9 @@ public class BoneAppleTea
         proxy.init(event);
         ModRecipes.initGrassSeeds();
         ModRecipes.initSmelting();
+        ModRecipes.initBoiling();
         NetworkRegistry.INSTANCE.registerGuiHandler(BoneAppleTea.instance, new GuiHandler());
+        ModPacketHandler.INSTANCE.registerMessage(PacketFluidTankUpdate.PacketHandler.class, PacketFluidTankUpdate.class, 0, Side.CLIENT);
     }
 
     @Mod.EventHandler
