@@ -17,10 +17,10 @@ import java.awt.*;
 
 public class GuiUtil
 {
-    public static void drawRectangle(GuiContainer container, ResourceLocation rectangle, int xPos, int yPos, int xSize, int ySize)
+    public static void drawRectangle(GuiContainer container, ResourceLocation rectangle, int xPos, int yPos, int xPosTexture, int yPosTexture, int xSize, int ySize)
     {
         bindTexture(container, rectangle);
-        container.drawTexturedModalRect(xPos, yPos, 0, 0, xSize, ySize);
+        container.drawTexturedModalRect(xPos, yPos, xPosTexture, yPosTexture, xSize, ySize);
     }
 
     public static void drawFluidTank(GuiContainer container, FluidTank fluidTank, Rectangle fluidTankGUI, int guiLeft, int guiTop)

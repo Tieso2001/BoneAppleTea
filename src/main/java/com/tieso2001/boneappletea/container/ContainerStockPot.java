@@ -19,6 +19,8 @@ import net.minecraftforge.items.SlotItemHandler;
 public class ContainerStockPot extends Container
 {
     private TileStockPot tileEntity;
+    private int boilTime;
+    private int maxBoilTime;
 
     public ContainerStockPot(IInventory playerInventory, TileStockPot tileEntity)
     {
@@ -117,5 +119,19 @@ public class ContainerStockPot extends Container
                 else ModPacketHandler.INSTANCE.sendToAll(new PacketFluidTankUpdate(tileEntity, new FluidStack(FluidRegistry.WATER, 0)));
             }
         }
+
+        for (int i = 0; i < this.listeners.size(); ++i)
+        {
+            IContainerListener iContainerListener = this.listeners.get(i);
+            if (this.boilTime != this.tileEntity.boilTime) iContainerListener.sendWindowProperty(this, 0, this.tileEntity.boilTime);
+            if (this.maxBoilTime != this.tileEntity.maxBoilTime) iContainerListener.sendWindowProperty(this, 1, this.tileEntity.maxBoilTime);
+        }
+    }
+
+    @Override
+    public void updateProgressBar(int id, int data)
+    {
+        if (id == 0) this.tileEntity.boilTime = data;
+        if (id == 1) this.tileEntity.maxBoilTime = data;
     }
 }

@@ -25,6 +25,7 @@ public class TileStockPot extends TileEntity implements ITickable
     public int SLOTS_OUTPUT = 1;
     public int SLOTS = SLOTS_INPUT + SLOTS_OUTPUT;
     public int boilTime = 0;
+    public int maxBoilTime = 200;
     public boolean isActive = false;
 
     private ItemStackHandler inputItemStackHandler = new ItemStackHandler(SLOTS_INPUT)
@@ -93,7 +94,11 @@ public class TileStockPot extends TileEntity implements ITickable
             return;
         }
 
-        if (boilTime == 0) boilTime = recipe.getBoilTime();
+        if (boilTime == 0)
+        {
+            boilTime = recipe.getBoilTime();
+            maxBoilTime = recipe.getBoilTime();
+        }
 
         if (boilTime == 1)
         {

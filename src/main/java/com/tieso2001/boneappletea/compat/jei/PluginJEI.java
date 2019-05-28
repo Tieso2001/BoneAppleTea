@@ -42,7 +42,6 @@ public class PluginJEI implements IModPlugin
     public void registerCategories(IRecipeCategoryRegistration registry)
     {
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
-
         registry.addRecipeCategories(new JEIRecipeCategoryStockPot(guiHelper));
     }
 }
