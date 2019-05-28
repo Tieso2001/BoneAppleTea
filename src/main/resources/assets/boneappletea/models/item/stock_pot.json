@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:items/cauldron"
+    "layer0": "boneappletea:items/stock_pot"
   }
 }
