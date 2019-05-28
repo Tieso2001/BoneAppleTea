@@ -15,9 +15,9 @@ public class RecipeStockPotRegistry
         recipeMap.put(recipeName, recipe);
     }
 
-    public static void addRecipe(String recipeName, FluidStack inputFluid, ItemStack inputItemFirst, ItemStack inputItemSecond, FluidStack outputFluid, int boilTime)
+    public static void addRecipe(String recipeName, FluidStack inputFluid, ItemStack inputItemFirst, ItemStack inputItemSecond, FluidStack outputFluid, ItemStack outputItem, int boilTime)
     {
-        recipeMap.put(recipeName, new RecipeStockPot(inputFluid, inputItemFirst, inputItemSecond, outputFluid, boilTime));
+        recipeMap.put(recipeName, new RecipeStockPot(inputFluid, inputItemFirst, inputItemSecond, outputFluid, outputItem, boilTime));
     }
 
     public static Map<String, RecipeStockPot> getRecipeMap()
@@ -41,9 +41,20 @@ public class RecipeStockPotRegistry
         {
             if (recipe.getInputFluid().getFluid() == inputFluid.getFluid())
             {
-                if (recipe.getInputItemFirst().getItem() == inputItemFirst.getItem() && recipe.getInputItemSecond().getItem() == inputItemSecond.getItem() || recipe.getInputItemFirst().getItem() == inputItemSecond.getItem() && recipe.getInputItemSecond().getItem() == inputItemFirst.getItem())
+                if ((!recipe.getInputItemFirst().isEmpty() || !recipe.getInputItemSecond().isEmpty()) && (!inputItemFirst.isEmpty() || !inputItemSecond.isEmpty()))
                 {
-                    return recipe;
+                    if (recipe.getInputItemFirst().isEmpty() && ((recipe.getInputItemSecond().isItemEqual(inputItemFirst) && inputItemSecond.isEmpty()) || (recipe.getInputItemSecond().isItemEqual(inputItemSecond) && inputItemFirst.isEmpty())))
+                    {
+                        return recipe;
+                    }
+                    else if (recipe.getInputItemSecond().isEmpty() && ((recipe.getInputItemFirst().isItemEqual(inputItemFirst) && inputItemSecond.isEmpty()) || (recipe.getInputItemSecond().isItemEqual(inputItemSecond) && inputItemFirst.isEmpty())))
+                    {
+                        return recipe;
+                    }
+                    else if (recipe.getInputItemFirst().isItemEqual(inputItemFirst) && recipe.getInputItemSecond().isItemEqual(inputItemSecond) || recipe.getInputItemFirst().isItemEqual(inputItemSecond) && recipe.getInputItemSecond().isItemEqual(inputItemFirst))
+                    {
+                        return recipe;
+                    }
                 }
             }
         }

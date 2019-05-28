@@ -14,16 +14,20 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TileStockPot extends TileEntity implements ITickable
 {
-    public int SLOTS = 2;
+    public int SLOTS_INPUT = 2;
+    public int SLOTS_OUTPUT = 1;
+    public int SLOTS = SLOTS_INPUT + SLOTS_OUTPUT;
     public int boilTime = 0;
+    public boolean isActive = false;
 
-    private ItemStackHandler itemStackHandler = new ItemStackHandler(SLOTS)
+    private ItemStackHandler inputItemStackHandler = new ItemStackHandler(SLOTS_INPUT)
     {
         @Override
         protected void onContentsChanged(int slot) { markDirty(); }
@@ -38,6 +42,17 @@ public class TileStockPot extends TileEntity implements ITickable
             return false;
         }
     };
+
+    private ItemStackHandler outputItemStackHandler = new ItemStackHandler(SLOTS_OUTPUT)
+    {
+        @Override
+        protected void onContentsChanged(int slot) { markDirty(); }
+
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) { return false; }
+    };
+
+    private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputItemStackHandler, outputItemStackHandler);
 
     private FluidTank fluidTank = new FluidTank(1000)
     {
@@ -54,8 +69,9 @@ public class TileStockPot extends TileEntity implements ITickable
     public void update()
     {
         FluidStack fluidStack = fluidTank.getFluid();
-        ItemStack itemFirst = itemStackHandler.getStackInSlot(0);
-        ItemStack itemSecond = itemStackHandler.getStackInSlot(1);
+        ItemStack itemFirst = inputItemStackHandler.getStackInSlot(0);
+        ItemStack itemSecond = inputItemStackHandler.getStackInSlot(1);
+        ItemStack itemOutput = outputItemStackHandler.getStackInSlot(0);
 
         if (world.getBlockState(pos.down()).getBlock() != Blocks.FIRE)
         {
@@ -63,7 +79,7 @@ public class TileStockPot extends TileEntity implements ITickable
             return;
         }
 
-        if (fluidStack == null || (itemFirst.isEmpty() && itemSecond.isEmpty()))
+        if (fluidStack == null)
         {
             boilTime = 0;
             return;
@@ -71,13 +87,7 @@ public class TileStockPot extends TileEntity implements ITickable
 
         RecipeStockPot recipe = RecipeStockPotRegistry.getRecipe(fluidStack, itemFirst, itemSecond);
 
-        if (recipe == null)
-        {
-            boilTime = 0;
-            return;
-        }
-
-        if (fluidStack.amount < recipe.getInputFluid().amount)
+        if (recipe == null || fluidStack.amount < recipe.getInputFluid().amount || (!itemOutput.isEmpty() && !itemOutput.isItemEqual(recipe.getOutputItem())) || (itemOutput.getCount() + recipe.getOutputItem().getCount() > 64))
         {
             boilTime = 0;
             return;
@@ -88,20 +98,36 @@ public class TileStockPot extends TileEntity implements ITickable
         if (boilTime == 1)
         {
             boilTime--;
-            fluidTank.setFluid(new FluidStack(recipe.getOutputFluid().copy(), fluidStack.amount));
-            if (itemFirst != ItemStack.EMPTY) itemStackHandler.getStackInSlot(0).shrink(1);
-            if (itemSecond != ItemStack.EMPTY) itemStackHandler.getStackInSlot(1).shrink(1);
+
+            if (recipe.getOutputFluid() == null) fluidTank.setFluid(null);
+            else fluidTank.setFluid(new FluidStack(recipe.getOutputFluid().copy(), fluidStack.amount));
+
+            if (itemFirst != ItemStack.EMPTY) inputItemStackHandler.getStackInSlot(0).shrink(1);
+            if (itemSecond != ItemStack.EMPTY) inputItemStackHandler.getStackInSlot(1).shrink(1);
+
+            if (!recipe.getOutputItem().isEmpty())
+            {
+                if (itemOutput.isEmpty()) outputItemStackHandler.setStackInSlot(0, recipe.getOutputItem().copy());
+                else if (itemOutput.isItemEqual(recipe.getOutputItem())) outputItemStackHandler.getStackInSlot(0).setCount(itemOutput.getCount() + recipe.getOutputItem().getCount());
+            }
+
             markDirty();
         }
 
-        if (boilTime > 1) boilTime--;
+        if (boilTime > 1)
+        {
+            boilTime--;
+            isActive = true;
+        }
+        else isActive = false;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        if (compound.hasKey("items")) itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
+        if (compound.hasKey("itemsInput")) inputItemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsInput"));
+        if (compound.hasKey("itemsOutput")) outputItemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsOutput"));
         if (compound.hasKey("fluids")) fluidTank.readFromNBT(compound.getCompoundTag("fluids"));
         boilTime = compound.getInteger("boilTime");
     }
@@ -110,7 +136,8 @@ public class TileStockPot extends TileEntity implements ITickable
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
-        compound.setTag("items", itemStackHandler.serializeNBT());
+        compound.setTag("itemsInput", inputItemStackHandler.serializeNBT());
+        compound.setTag("itemsOutput", outputItemStackHandler.serializeNBT());
         NBTTagCompound fluidTankNBT = new NBTTagCompound();
         fluidTank.writeToNBT(fluidTankNBT);
         compound.setTag("fluids", fluidTankNBT);
@@ -129,7 +156,7 @@ public class TileStockPot extends TileEntity implements ITickable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler);
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(combinedHandler);
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidTank);
         return super.getCapability(capability, facing);
     }

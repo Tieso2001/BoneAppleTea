@@ -17,15 +17,10 @@ import java.awt.*;
 
 public class GuiUtil
 {
-    private static void bindTexture(GuiContainer container, ResourceLocation resource)
+    public static void drawRectangle(GuiContainer container, ResourceLocation rectangle, int xPos, int yPos, int xSize, int ySize)
     {
-        container.mc.getTextureManager().bindTexture(resource);
-    }
-
-    public static void drawBackground(GuiContainer container, ResourceLocation background, int guiLeft, int guiTop, int xSize, int ySize)
-    {
-        bindTexture(container, background);
-        container.drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        bindTexture(container, rectangle);
+        container.drawTexturedModalRect(xPos, yPos, 0, 0, xSize, ySize);
     }
 
     public static void drawFluidTank(GuiContainer container, FluidTank fluidTank, Rectangle fluidTankGUI, int guiLeft, int guiTop)
@@ -64,14 +59,32 @@ public class GuiUtil
         tessellator.draw();
     }
 
-    public static void drawFluidTankOverlay(GuiContainer container, ResourceLocation guiTexture, int guiWidth, int guiLeft, int guiTop, Rectangle fluidTankGUI)
+    public static void drawFluidTankOverlay(GuiContainer container, ResourceLocation guiTexture, int guiWidth, int guiHeight, int guiLeft, int guiTop, Rectangle fluidTankGUI)
     {
         bindTexture(container, guiTexture);
-        container.drawTexturedModalRect(guiLeft + fluidTankGUI.x, guiTop + fluidTankGUI.y, guiWidth, 0, fluidTankGUI.width, fluidTankGUI.height);
+        container.drawTexturedModalRect(guiLeft + fluidTankGUI.x, guiTop + fluidTankGUI.y, guiWidth, guiHeight, fluidTankGUI.width, fluidTankGUI.height);
     }
 
     private static TextureAtlasSprite getFluidTexture(GuiContainer container, Fluid fluid)
     {
         return container.mc.getTextureMapBlocks().getTextureExtry(fluid.getStill().toString());
+    }
+
+    public static String numberToString(int number)
+    {
+        int thousand;
+        for (thousand = 0; number >= 1000; thousand++)
+        {
+            number = number - 1000;
+        }
+        if (thousand > 0 && number >= 100) return thousand + "," + number;
+        if (thousand > 0 && number >= 10) return thousand + "," + "0" + number;
+        if (thousand > 0 && number >= 0) return thousand + "," + "00" + number;
+        return "" + number;
+    }
+
+    private static void bindTexture(GuiContainer container, ResourceLocation resource)
+    {
+        container.mc.getTextureManager().bindTexture(resource);
     }
 }
