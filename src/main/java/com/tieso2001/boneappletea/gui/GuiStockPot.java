@@ -43,9 +43,10 @@ public class GuiStockPot extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        GuiUtil.drawRectangle(this, background, guiLeft, guiTop, xSize, ySize); // background
+        GuiUtil.drawRectangle(this, background, guiLeft, guiTop,0, 0, xSize, ySize); // background
         GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(), fluidTankGUI, guiLeft, guiTop); // fluid tank
         GuiUtil.drawFluidTankOverlay(this, background, xSize, 29, guiLeft, guiTop, fluidTankGUI); // fluid tank overlay
+        renderBubbles();
     }
 
     protected void renderFluidToolTip(int x, int y)
@@ -61,6 +62,18 @@ public class GuiStockPot extends GuiContainer
                 toolTip.add(GuiUtil.numberToString(tileEntity.getFluidTank().getFluid().amount) + " / " + GuiUtil.numberToString(tileEntity.getFluidTank().getCapacity()) + " mB");
                 this.drawHoveringText(toolTip, x, y, (font == null ? fontRenderer : font));
             }
+        }
+    }
+
+    protected void renderBubbles()
+    {
+        int boilTime = this.tileEntity.boilTime;
+
+        if (boilTime > 0)
+        {
+            int maxBoilTime = this.tileEntity.maxBoilTime;
+            int bubbleHeight = (int) (29 * ((float) (maxBoilTime - boilTime) / maxBoilTime));
+            GuiUtil.drawRectangle(this, background, guiLeft + 103, guiTop + 27 + (29 - bubbleHeight), 176, 29 - bubbleHeight, 12, bubbleHeight);
         }
     }
 }
