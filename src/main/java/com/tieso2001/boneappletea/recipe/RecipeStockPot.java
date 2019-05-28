@@ -9,14 +9,16 @@ public class RecipeStockPot
     private final ItemStack inputItemFirst;
     private final ItemStack inputItemSecond;
     private final FluidStack outputFluid;
+    private final ItemStack outputItem;
     private final int boilTime;
 
-    public RecipeStockPot(FluidStack inputFluid, ItemStack inputItemFirst, ItemStack inputItemSecond, FluidStack outputFluid, int boilTime)
+    public RecipeStockPot(FluidStack inputFluid, ItemStack inputItemFirst, ItemStack inputItemSecond, FluidStack outputFluid, ItemStack outputItem, int boilTime)
     {
         this.inputFluid = inputFluid;
         this.inputItemFirst = inputItemFirst;
         this.inputItemSecond = inputItemSecond;
         this.outputFluid = outputFluid;
+        this.outputItem = outputItem;
         this.boilTime = boilTime;
     }
 
@@ -38,6 +40,11 @@ public class RecipeStockPot
     public FluidStack getOutputFluid()
     {
         return outputFluid;
+    }
+
+    public ItemStack getOutputItem()
+    {
+        return outputItem;
     }
 
     public int getBoilTime()

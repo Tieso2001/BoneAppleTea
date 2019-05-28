@@ -32,11 +32,14 @@ public class ContainerStockPot extends Container
         IItemHandler itemHandler = this.tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         int x; int y;
 
-        x = 53; y = 33;
+        x = 53; y = 21;
         addSlotToContainer(new SlotItemHandler(itemHandler, 0, x, y));
 
-        x = 106; y = 33;
+        x = 53; y = 47;
         addSlotToContainer(new SlotItemHandler(itemHandler, 1, x, y));
+
+        x = 122; y = 34;
+        addSlotToContainer(new SlotItemHandler(itemHandler, 2, x, y));
     }
 
     private void addPlayerSlots(IInventory playerInventory)
