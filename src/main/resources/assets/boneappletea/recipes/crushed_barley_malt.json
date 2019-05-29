@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "boneappletea:mortar_and_pestle"
+    },
+    {
+      "item": "boneappletea:barley_malt"
+    }
+  ],
+  "result": {
+    "item": "boneappletea:crushed_barley_malt"
+  }
+}

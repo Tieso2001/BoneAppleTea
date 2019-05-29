@@ -1,7 +1,10 @@
 package com.tieso2001.boneappletea.init;
 
+import com.tieso2001.boneappletea.recipe.RecipeStockPotRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModRecipes
@@ -20,6 +23,6 @@ public class ModRecipes
 
     public static void initBoiling()
     {
-
+        RecipeStockPotRegistry.addRecipe("barley_malt", new FluidStack(FluidRegistry.WATER, 1000), new ItemStack(ModItems.BARLEY_GRAINS), ItemStack.EMPTY, null, new ItemStack(ModItems.BARLEY_MALT), 1200);
     }
 }
