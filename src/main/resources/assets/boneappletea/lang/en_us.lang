@@ -5,6 +5,9 @@ itemGroup.boneappletea=Bone Apple Tea
 tile.boneappletea.stock_pot.name=Stock Pot
 
 # Items
+item.boneappletea.barley.name=Barley
+item.boneappletea.barley_grains.name=Barley Grains
+item.boneappletea.barley_seeds.name=Barley Seeds
 item.boneappletea.corn.name=Corn
 item.boneappletea.corn_kernels.name=Corn Kernels
 item.boneappletea.popcorn.name=Popcorn
