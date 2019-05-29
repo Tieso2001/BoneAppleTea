@@ -17,11 +17,14 @@ public class ClientEventSubscriber
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event)
     {
-        registerModel(ModItems.BARLEY_GRAINS);
         registerModel(ModItems.BARLEY);
+        registerModel(ModItems.BARLEY_GRAINS);
+        registerModel(ModItems.BARLEY_MALT);
         registerModel(ModItems.BARLEY_SEEDS);
         registerModel(ModItems.CORN);
         registerModel(ModItems.CORN_KERNELS);
+        registerModel(ModItems.CRUSHED_BARLEY_MALT);
+        registerModel(ModItems.MORTAR_AND_PESTLE);
         registerModel(ModItems.POPCORN);
         registerModel(ModItems.ROASTED_CORN);
         registerModel(Item.getItemFromBlock(ModBlocks.STOCK_POT));
