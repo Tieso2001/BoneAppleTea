@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "age=0": { "model" : "boneappletea:barley_stage0" },
+    "age=1": { "model" : "boneappletea:barley_stage0" },
+    "age=2": { "model" : "boneappletea:barley_stage1" },
+    "age=3": { "model" : "boneappletea:barley_stage1" },
+    "age=4": { "model" : "boneappletea:barley_stage2" },
+    "age=5": { "model" : "boneappletea:barley_stage2" },
+    "age=6": { "model" : "boneappletea:barley_stage2" },
+    "age=7": { "model" : "boneappletea:barley_stage3" }
+  }
+}

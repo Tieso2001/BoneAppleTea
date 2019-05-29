@@ -8,6 +8,7 @@ public class ModRecipes
 {
     public static void initGrassSeeds()
     {
+        MinecraftForge.addGrassSeed(new ItemStack(ModItems.BARLEY_SEEDS), 5);
         MinecraftForge.addGrassSeed(new ItemStack(ModItems.CORN_KERNELS), 5);
     }
 

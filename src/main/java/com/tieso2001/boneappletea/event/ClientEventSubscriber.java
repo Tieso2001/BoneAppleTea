@@ -17,6 +17,9 @@ public class ClientEventSubscriber
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event)
     {
+        registerModel(ModItems.BARLEY_GRAINS);
+        registerModel(ModItems.BARLEY);
+        registerModel(ModItems.BARLEY_SEEDS);
         registerModel(ModItems.CORN);
         registerModel(ModItems.CORN_KERNELS);
         registerModel(ModItems.POPCORN);
