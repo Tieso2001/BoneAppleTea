@@ -1,10 +1,7 @@
 package com.tieso2001.boneappletea.event;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
-import com.tieso2001.boneappletea.block.BlockBarley;
-import com.tieso2001.boneappletea.block.BlockCorn;
-import com.tieso2001.boneappletea.block.BlockFluidSweetWort;
-import com.tieso2001.boneappletea.block.BlockStockPot;
+import com.tieso2001.boneappletea.block.*;
 import com.tieso2001.boneappletea.init.ModBlocks;
 import com.tieso2001.boneappletea.init.ModFluids;
 import com.tieso2001.boneappletea.item.ItemMortarAndPestle;
@@ -30,6 +27,7 @@ public class EventBusSubscriber
         final Block[] blocks = {
                 new BlockBarley().setRegistryName("barley").setTranslationKey(BoneAppleTea.MODID + "." + "barley"),
                 new BlockCorn().setRegistryName("corn").setTranslationKey(BoneAppleTea.MODID + "." + "corn"),
+                new BlockHops().setRegistryName("hops").setTranslationKey(BoneAppleTea.MODID + "." + "hops"),
                 new BlockStockPot().setRegistryName("stock_pot").setTranslationKey(BoneAppleTea.MODID + "." + "stock_pot").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new BlockFluidSweetWort().setRegistryName("sweet_wort").setTranslationKey(BoneAppleTea.MODID + "." + "sweet_wort")
         };
@@ -49,6 +47,8 @@ public class EventBusSubscriber
                 new ItemSeeds(ModBlocks.BARLEY, Blocks.FARMLAND).setRegistryName("barley_seeds").setTranslationKey(BoneAppleTea.MODID + "." + "barley_seeds").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new ItemFood(1, 0.6F,false).setRegistryName("corn").setTranslationKey(BoneAppleTea.MODID + "." + "corn").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new ItemSeedFood(1, 0.3F, ModBlocks.CORN, Blocks.FARMLAND).setRegistryName("corn_kernels").setTranslationKey(BoneAppleTea.MODID + "." + "corn_kernels").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
+                new Item().setRegistryName("hops").setTranslationKey(BoneAppleTea.MODID + "." + "hops").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
+                new ItemSeeds(ModBlocks.HOPS, Blocks.FARMLAND).setRegistryName("hops_seeds").setTranslationKey(BoneAppleTea.MODID + "." + "hops_seeds").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new ItemMortarAndPestle().setRegistryName("mortar_and_pestle").setTranslationKey(BoneAppleTea.MODID + "." + "mortar_and_pestle").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new ItemFood(2, 0.6F, false).setRegistryName("popcorn").setTranslationKey(BoneAppleTea.MODID + "." + "popcorn").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new ItemFood(4, 0.6F, false).setRegistryName("roasted_corn").setTranslationKey(BoneAppleTea.MODID + "." + "roasted_corn").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA)

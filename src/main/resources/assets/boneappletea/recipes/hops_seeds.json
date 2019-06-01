@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{
+      "item": "boneappletea:hops"
+  }],
+  "result": {
+    "item": "boneappletea:hops_seeds"
+  }
+}

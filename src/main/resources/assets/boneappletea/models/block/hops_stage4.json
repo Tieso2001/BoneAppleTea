@@ -1,0 +1,6 @@
+{
+  "parent": "block/crop",
+  "textures": {
+    "crop": "boneappletea:blocks/hops_stage_4"
+  }
+}

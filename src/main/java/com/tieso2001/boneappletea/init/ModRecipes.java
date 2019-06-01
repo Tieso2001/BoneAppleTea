@@ -13,6 +13,7 @@ public class ModRecipes
     {
         MinecraftForge.addGrassSeed(new ItemStack(ModItems.BARLEY_SEEDS), 5);
         MinecraftForge.addGrassSeed(new ItemStack(ModItems.CORN_KERNELS), 5);
+        MinecraftForge.addGrassSeed(new ItemStack(ModItems.HOPS_SEEDS), 5);
     }
 
     public static void initSmelting()
