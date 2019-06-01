@@ -1,5 +1,6 @@
 package com.tieso2001.boneappletea;
 
+import com.tieso2001.boneappletea.init.ModFluids;
 import com.tieso2001.boneappletea.init.ModItems;
 import com.tieso2001.boneappletea.init.ModRecipes;
 import com.tieso2001.boneappletea.handler.GuiHandler;
@@ -8,6 +9,10 @@ import com.tieso2001.boneappletea.network.PacketFluidTankUpdate;
 import com.tieso2001.boneappletea.util.IProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -39,7 +44,19 @@ public class BoneAppleTea
         {
             return new ItemStack(ModItems.CORN);
         }
+
+        @Override
+        public void displayAllRelevantItems(NonNullList<ItemStack> p_78018_1_)
+        {
+            p_78018_1_.add(FluidUtil.getFilledBucket(new FluidStack(ModFluids.SWEET_WORT, 1000)));
+            super.displayAllRelevantItems(p_78018_1_);
+        }
     };
+
+    static
+    {
+        FluidRegistry.enableUniversalBucket();
+    }
 
     @Mod.EventHandler
     public static void PreInit(FMLPreInitializationEvent preEvent)
