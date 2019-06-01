@@ -2,6 +2,8 @@ package com.tieso2001.boneappletea.event;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
 import com.tieso2001.boneappletea.block.*;
+import com.tieso2001.boneappletea.block.fluids.BlockFluidHoppedWort;
+import com.tieso2001.boneappletea.block.fluids.BlockFluidSweetWort;
 import com.tieso2001.boneappletea.init.ModBlocks;
 import com.tieso2001.boneappletea.init.ModFluids;
 import com.tieso2001.boneappletea.item.ItemMortarAndPestle;
@@ -21,7 +23,10 @@ public class EventBusSubscriber
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event)
     {
+        FluidRegistry.registerFluid(ModFluids.HOPPED_WORT);
         FluidRegistry.registerFluid(ModFluids.SWEET_WORT);
+
+        FluidRegistry.addBucketForFluid(ModFluids.HOPPED_WORT);
         FluidRegistry.addBucketForFluid(ModFluids.SWEET_WORT);
 
         final Block[] blocks = {
@@ -29,6 +34,7 @@ public class EventBusSubscriber
                 new BlockCorn().setRegistryName("corn").setTranslationKey(BoneAppleTea.MODID + "." + "corn"),
                 new BlockHops().setRegistryName("hops").setTranslationKey(BoneAppleTea.MODID + "." + "hops"),
                 new BlockStockPot().setRegistryName("stock_pot").setTranslationKey(BoneAppleTea.MODID + "." + "stock_pot").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
+                new BlockFluidHoppedWort().setRegistryName("hopped_wort").setTranslationKey(BoneAppleTea.MODID + "." + "hopped_wort"),
                 new BlockFluidSweetWort().setRegistryName("sweet_wort").setTranslationKey(BoneAppleTea.MODID + "." + "sweet_wort")
         };
 
