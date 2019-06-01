@@ -1,6 +1,9 @@
 # Creative Tabs
 itemGroup.boneappletea=Bone Apple Tea
 
+# Fluids
+fluid.sweet_wort=Sweet Wort
+
 # Blocks
 tile.boneappletea.stock_pot.name=Stock Pot
 
@@ -8,10 +11,10 @@ tile.boneappletea.stock_pot.name=Stock Pot
 item.boneappletea.barley.name=Barley
 item.boneappletea.barley_grains.name=Barley Grains
 item.boneappletea.barley_malt.name=Barley Malt
+item.boneappletea.barley_malt_crushed.name=Crushed Barley Malt
 item.boneappletea.barley_seeds.name=Barley Seeds
 item.boneappletea.corn.name=Corn
 item.boneappletea.corn_kernels.name=Corn Kernels
-item.boneappletea.crushed_barley_malt.name=Crushed Barley Malt
 item.boneappletea.mortar_and_pestle.name=Mortar and Pestle
 item.boneappletea.popcorn.name=Popcorn
 item.boneappletea.roasted_corn.name=Roasted Corn

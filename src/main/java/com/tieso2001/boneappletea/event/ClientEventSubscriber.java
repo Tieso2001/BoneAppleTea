@@ -20,10 +20,10 @@ public class ClientEventSubscriber
         registerModel(ModItems.BARLEY);
         registerModel(ModItems.BARLEY_GRAINS);
         registerModel(ModItems.BARLEY_MALT);
+        registerModel(ModItems.BARLEY_MALT_CRUSHED);
         registerModel(ModItems.BARLEY_SEEDS);
         registerModel(ModItems.CORN);
         registerModel(ModItems.CORN_KERNELS);
-        registerModel(ModItems.CRUSHED_BARLEY_MALT);
         registerModel(ModItems.MORTAR_AND_PESTLE);
         registerModel(ModItems.POPCORN);
         registerModel(ModItems.ROASTED_CORN);
