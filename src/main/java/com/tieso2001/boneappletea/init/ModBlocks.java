@@ -14,5 +14,6 @@ public class ModBlocks
 
     public static final BlockCrops BARLEY = null;
     public static final BlockTallCrops CORN = null;
+    public static final BlockTallCrops HOPS = null;
     public static final BlockStockPot STOCK_POT = null;
 }

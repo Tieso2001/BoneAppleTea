@@ -18,6 +18,8 @@ public class ModItems
     public static final ItemSeeds BARLEY_SEEDS = null;
     public static final ItemFood CORN = null;
     public static final ItemSeedFood CORN_KERNELS = null;
+    public static final Item HOPS = null;
+    public static final ItemSeeds HOPS_SEEDS = null;
     public static final ItemMortarAndPestle MORTAR_AND_PESTLE = null;
     public static final ItemFood POPCORN = null;
     public static final ItemFood ROASTED_CORN = null;
