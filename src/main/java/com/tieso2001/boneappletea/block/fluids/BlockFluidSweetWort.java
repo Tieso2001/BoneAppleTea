@@ -1,4 +1,4 @@
-package com.tieso2001.boneappletea.block;
+package com.tieso2001.boneappletea.block.fluids;
 
 import com.tieso2001.boneappletea.init.ModFluids;
 import net.minecraft.block.material.Material;

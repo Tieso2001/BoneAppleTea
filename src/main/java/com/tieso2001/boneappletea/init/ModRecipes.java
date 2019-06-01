@@ -26,5 +26,6 @@ public class ModRecipes
     {
         RecipeStockPotRegistry.addRecipe("barley_malt", new FluidStack(FluidRegistry.WATER, 1000), new ItemStack(ModItems.BARLEY_GRAINS), ItemStack.EMPTY, null, new ItemStack(ModItems.BARLEY_MALT), 1200);
         RecipeStockPotRegistry.addRecipe("sweet_wort", new FluidStack(FluidRegistry.WATER, 1000), new ItemStack(ModItems.BARLEY_MALT_CRUSHED), ItemStack.EMPTY, new FluidStack(ModFluids.SWEET_WORT, 1000), ItemStack.EMPTY, 2400);
+        RecipeStockPotRegistry.addRecipe("hopped_wort", new FluidStack(ModFluids.SWEET_WORT, 1000), new ItemStack(ModItems.HOPS), new ItemStack(ModItems.HOPS), new FluidStack(ModFluids.HOPPED_WORT, 1000), ItemStack.EMPTY, 2400);
     }
 }
