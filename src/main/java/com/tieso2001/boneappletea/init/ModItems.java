@@ -23,4 +23,5 @@ public class ModItems
     public static final ItemMortarAndPestle MORTAR_AND_PESTLE = null;
     public static final ItemFood POPCORN = null;
     public static final ItemFood ROASTED_CORN = null;
+    public static final Item YEAST = null;
 }
