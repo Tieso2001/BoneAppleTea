@@ -2,7 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "boneappletea:mortar_and_pestle"
+      "item": "boneappletea:mortar_and_pestle",
+      "data": 32767
     },
     {
       "item": "boneappletea:barley_malt"
