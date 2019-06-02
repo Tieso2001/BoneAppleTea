@@ -57,7 +57,8 @@ public class EventBusSubscriber
                 new ItemSeeds(ModBlocks.HOPS, Blocks.FARMLAND).setRegistryName("hops_seeds").setTranslationKey(BoneAppleTea.MODID + "." + "hops_seeds").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new ItemMortarAndPestle().setRegistryName("mortar_and_pestle").setTranslationKey(BoneAppleTea.MODID + "." + "mortar_and_pestle").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new ItemFood(2, 0.6F, false).setRegistryName("popcorn").setTranslationKey(BoneAppleTea.MODID + "." + "popcorn").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
-                new ItemFood(4, 0.6F, false).setRegistryName("roasted_corn").setTranslationKey(BoneAppleTea.MODID + "." + "roasted_corn").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA)
+                new ItemFood(4, 0.6F, false).setRegistryName("roasted_corn").setTranslationKey(BoneAppleTea.MODID + "." + "roasted_corn").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
+                new Item().setRegistryName("yeast").setTranslationKey(BoneAppleTea.MODID + "." + "yeast").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA)
         };
 
         final Item[] itemBlocks = {
