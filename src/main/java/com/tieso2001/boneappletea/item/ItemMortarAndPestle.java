@@ -7,7 +7,14 @@ public class ItemMortarAndPestle extends Item
 {
     public ItemMortarAndPestle()
     {
+        this.setMaxStackSize(1);
+        this.setMaxDamage(15);
+    }
 
+    @Override
+    public boolean isRepairable()
+    {
+        return false;
     }
 
     @Override
@@ -19,6 +26,8 @@ public class ItemMortarAndPestle extends Item
     @Override
     public ItemStack getContainerItem(ItemStack itemStack)
     {
-        return itemStack.copy();
+        ItemStack stack = itemStack.copy();
+        stack.setItemDamage(itemStack.getItemDamage() + 1);
+        return stack;
     }
 }
