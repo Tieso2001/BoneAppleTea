@@ -21,11 +21,13 @@ public class PacketFluidTankUpdate implements IMessage
 
     private BlockPos pos;
     private FluidStack fluidStack;
+    private int tankID;
 
-    public PacketFluidTankUpdate(TileStockPot tileStockPot, FluidStack fluidStack)
+    public PacketFluidTankUpdate(TileEntity tileEntity, FluidStack fluidStack, int tankID)
     {
-        this.pos = tileStockPot.getPos();
+        this.pos = tileEntity.getPos();
         this.fluidStack = fluidStack;
+        this.tankID = tankID;
     }
 
     @Override
@@ -38,6 +40,8 @@ public class PacketFluidTankUpdate implements IMessage
         NBTTagCompound compound = new NBTTagCompound();
         fluidStack.writeToNBT(compound);
         ByteBufUtils.writeTag(buf, compound);
+
+        buf.writeInt(tankID);
     }
 
     @Override
@@ -50,6 +54,8 @@ public class PacketFluidTankUpdate implements IMessage
 
         NBTTagCompound compound = ByteBufUtils.readTag(buf);
         fluidStack = FluidStack.loadFluidStackFromNBT(compound);
+
+        tankID = buf.readInt();
     }
 
     @SideOnly(Side.CLIENT)
@@ -59,8 +65,11 @@ public class PacketFluidTankUpdate implements IMessage
         public IMessage onMessage(PacketFluidTankUpdate message, MessageContext ctx)
         {
             EntityPlayerSP player = Minecraft.getMinecraft().player;
+
             BlockPos pos = message.pos;
             FluidStack fluidStack = message.fluidStack;
+            int tankID = message.tankID;
+
             TileEntity tileEntity = player.world.getTileEntity(pos);
 
             if (tileEntity != null)
@@ -69,7 +78,7 @@ public class PacketFluidTankUpdate implements IMessage
                 {
                     if (player.world.isBlockLoaded(pos))
                     {
-                        ((TileStockPot) tileEntity).getFluidTank().setFluid(fluidStack);
+                        ((TileStockPot) tileEntity).getFluidTank(tankID).setFluid(fluidStack);
                     }
                 }
             }

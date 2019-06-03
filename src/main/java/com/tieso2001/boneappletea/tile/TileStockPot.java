@@ -63,7 +63,7 @@ public class TileStockPot extends TileEntity implements ITickable, IInventory
         protected void onContentsChanged() { markDirty(); }
     };
 
-    public FluidTank getFluidTank()
+    public FluidTank getFluidTank(int tankID)
     {
         return fluidTank;
     }
