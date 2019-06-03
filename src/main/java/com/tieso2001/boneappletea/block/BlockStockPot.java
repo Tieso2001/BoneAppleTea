@@ -2,9 +2,7 @@ package com.tieso2001.boneappletea.block;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
 import com.tieso2001.boneappletea.tile.TileStockPot;
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,10 +15,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockStockPot extends Block implements ITileEntityProvider
+public class BlockStockPot extends Block
 {
     public static final AxisAlignedBB POT_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.8125D, 1.0D);
 
@@ -29,25 +28,6 @@ public class BlockStockPot extends Block implements ITileEntityProvider
         this.setHardness(2.0F);
         this.setResistance(10.0F);
         this.setSoundType(SoundType.METAL);
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return POT_AABB;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
-    {
-        return new TileStockPot();
     }
 
     @Override
@@ -67,12 +47,44 @@ public class BlockStockPot extends Block implements ITileEntityProvider
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if (tileEntity instanceof TileStockPot)
+        TileStockPot tileEntity = (TileStockPot) worldIn.getTileEntity(pos);
+        if (tileEntity != null)
         {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (TileStockPot)tileEntity);
-            worldIn.updateComparatorOutputLevel(pos, this);
+            for (int i = 0; i < tileEntity.SLOTS; i++)
+            {
+                if (tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(i).isEmpty()) return;
+                InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(i));
+            }
         }
         super.breakBlock(worldIn, pos, state);
+    }
+
+    // Model
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return POT_AABB;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    // TileEntity
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TileStockPot();
     }
 }
