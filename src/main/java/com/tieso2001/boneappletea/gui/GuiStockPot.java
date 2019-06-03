@@ -44,7 +44,7 @@ public class GuiStockPot extends GuiContainer
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         GuiUtil.drawRectangle(this, background, guiLeft, guiTop,0, 0, xSize, ySize); // background
-        GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(), fluidTankGUI, guiLeft, guiTop); // fluid tank
+        GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(0), fluidTankGUI, guiLeft, guiTop); // fluid tank
         GuiUtil.drawFluidTankOverlay(this, background, xSize, 29, guiLeft, guiTop, fluidTankGUI); // fluid tank overlay
         renderBubbles();
     }
@@ -52,14 +52,14 @@ public class GuiStockPot extends GuiContainer
     protected void renderFluidToolTip(int x, int y)
     {
         Rectangle fluidTank = new Rectangle(guiLeft + fluidTankGUI.x, guiTop + fluidTankGUI.y, 16, 55);
-        if (fluidTank.contains(x, y) && tileEntity.getFluidTank().getFluid() != null)
+        if (fluidTank.contains(x, y) && tileEntity.getFluidTank(0).getFluid() != null)
         {
-            if (tileEntity.getFluidTank().getFluid().amount > 0)
+            if (tileEntity.getFluidTank(0).getFluid().amount > 0)
             {
                 FontRenderer font = this.mc.fontRenderer;
                 List<String> toolTip = new ArrayList<>();
-                toolTip.add(tileEntity.getFluidTank().getFluid().getLocalizedName());
-                toolTip.add(GuiUtil.numberToString(tileEntity.getFluidTank().getFluid().amount) + " / " + GuiUtil.numberToString(tileEntity.getFluidTank().getCapacity()) + " mB");
+                toolTip.add(tileEntity.getFluidTank(0).getFluid().getLocalizedName());
+                toolTip.add(GuiUtil.numberToString(tileEntity.getFluidTank(0).getFluid().amount) + " / " + GuiUtil.numberToString(tileEntity.getFluidTank(0).getCapacity()) + " mB");
                 this.drawHoveringText(toolTip, x, y, (font == null ? fontRenderer : font));
             }
         }
