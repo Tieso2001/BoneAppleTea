@@ -11,11 +11,12 @@
       "data": 0
     },
     "#": {
-      "item": "minecraft:planks",
-      "data": 32767
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
     },
     "$": {
-      "item": "minecraft:stick"
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
     }
   },
   "result": {
