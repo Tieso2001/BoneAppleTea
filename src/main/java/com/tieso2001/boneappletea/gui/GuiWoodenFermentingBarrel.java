@@ -44,7 +44,7 @@ public class GuiWoodenFermentingBarrel extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        GuiUtil.drawRectangle(this, background, guiLeft, guiTop,0, 0, xSize, ySize); // background
+        GuiUtil.drawRectangle(this, background, guiLeft, guiTop,0, 0, xSize, ySize);
 
         GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(0), inputFluidTankGUI, guiLeft, guiTop);
         GuiUtil.drawFluidTankOverlay(this, guiLeft + inputFluidTankGUI.x, guiTop + inputFluidTankGUI.y);

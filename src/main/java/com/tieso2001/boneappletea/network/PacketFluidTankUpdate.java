@@ -1,6 +1,7 @@
 package com.tieso2001.boneappletea.network;
 
 import com.tieso2001.boneappletea.tile.TileStockPot;
+import com.tieso2001.boneappletea.tile.TileWoodenBarrel;
 import com.tieso2001.boneappletea.tile.TileWoodenFermentingBarrel;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -80,6 +81,13 @@ public class PacketFluidTankUpdate implements IMessage
                     if (player.world.isBlockLoaded(pos))
                     {
                         ((TileStockPot) tileEntity).getFluidTank(tankID).setFluid(fluidStack);
+                    }
+                }
+                if (tileEntity instanceof TileWoodenBarrel)
+                {
+                    if (player.world.isBlockLoaded(pos))
+                    {
+                        ((TileWoodenBarrel) tileEntity).getFluidTank(tankID).setFluid(fluidStack);
                     }
                 }
                 if (tileEntity instanceof TileWoodenFermentingBarrel)

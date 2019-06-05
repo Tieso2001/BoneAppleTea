@@ -8,6 +8,7 @@ import com.tieso2001.boneappletea.init.ModBlocks;
 import com.tieso2001.boneappletea.init.ModFluids;
 import com.tieso2001.boneappletea.item.ItemMortarAndPestle;
 import com.tieso2001.boneappletea.tile.TileStockPot;
+import com.tieso2001.boneappletea.tile.TileWoodenBarrel;
 import com.tieso2001.boneappletea.tile.TileWoodenFermentingBarrel;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -39,11 +40,13 @@ public class EventBusSubscriber
                 new BlockCorn().setRegistryName("corn").setTranslationKey(BoneAppleTea.MODID + "." + "corn"),
                 new BlockHops().setRegistryName("hops").setTranslationKey(BoneAppleTea.MODID + "." + "hops"),
                 new BlockStockPot().setRegistryName("stock_pot").setTranslationKey(BoneAppleTea.MODID + "." + "stock_pot").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
+                new BlockWoodenBarrel().setRegistryName("wooden_barrel").setTranslationKey(BoneAppleTea.MODID + "." + "wooden_barrel").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new BlockWoodenFermentingBarrel().setRegistryName("wooden_fermenting_barrel").setTranslationKey(BoneAppleTea.MODID + "." + "wooden_fermenting_barrel").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA)
         };
 
         event.getRegistry().registerAll(blocks);
         GameRegistry.registerTileEntity(TileStockPot.class, new ResourceLocation(BoneAppleTea.MODID, "stock_pot"));
+        GameRegistry.registerTileEntity(TileWoodenBarrel.class, new ResourceLocation(BoneAppleTea.MODID, "wooden_barrel"));
         GameRegistry.registerTileEntity(TileWoodenFermentingBarrel.class, new ResourceLocation(BoneAppleTea.MODID, "wooden_fermenting_barrel"));
     }
 
@@ -68,6 +71,7 @@ public class EventBusSubscriber
 
         final Item[] itemBlocks = {
                 new ItemBlock(ModBlocks.STOCK_POT).setRegistryName(ModBlocks.STOCK_POT.getRegistryName()),
+                new ItemBlock(ModBlocks.WOODEN_BARREL).setRegistryName(ModBlocks.WOODEN_BARREL.getRegistryName()),
                 new ItemBlock(ModBlocks.WOODEN_FERMENTING_BARREL).setRegistryName(ModBlocks.WOODEN_FERMENTING_BARREL.getRegistryName())
         };
 
