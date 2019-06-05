@@ -69,9 +69,7 @@ public class BoneAppleTea
     public static void init(FMLInitializationEvent event)
     {
         proxy.init(event);
-        ModRecipes.initGrassSeeds();
-        ModRecipes.initSmelting();
-        ModRecipes.initBoiling();
+        ModRecipes.initRecipes();
         NetworkRegistry.INSTANCE.registerGuiHandler(BoneAppleTea.instance, new GuiHandler());
         ModPacketHandler.INSTANCE.registerMessage(PacketFluidTankUpdate.PacketHandler.class, PacketFluidTankUpdate.class, 0, Side.CLIENT);
     }

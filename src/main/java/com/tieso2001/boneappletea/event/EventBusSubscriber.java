@@ -8,9 +8,12 @@ import com.tieso2001.boneappletea.init.ModBlocks;
 import com.tieso2001.boneappletea.init.ModFluids;
 import com.tieso2001.boneappletea.item.ItemMortarAndPestle;
 import com.tieso2001.boneappletea.tile.TileStockPot;
+import com.tieso2001.boneappletea.tile.TileWoodenBarrel;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.b3d.B3DModel;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -30,16 +33,19 @@ public class EventBusSubscriber
         FluidRegistry.addBucketForFluid(ModFluids.SWEET_WORT);
 
         final Block[] blocks = {
+                new BlockFluidHoppedWort().setRegistryName("hopped_wort").setTranslationKey(BoneAppleTea.MODID + "." + "hopped_wort"),
+                new BlockFluidSweetWort().setRegistryName("sweet_wort").setTranslationKey(BoneAppleTea.MODID + "." + "sweet_wort"),
+
                 new BlockBarley().setRegistryName("barley").setTranslationKey(BoneAppleTea.MODID + "." + "barley"),
                 new BlockCorn().setRegistryName("corn").setTranslationKey(BoneAppleTea.MODID + "." + "corn"),
                 new BlockHops().setRegistryName("hops").setTranslationKey(BoneAppleTea.MODID + "." + "hops"),
                 new BlockStockPot().setRegistryName("stock_pot").setTranslationKey(BoneAppleTea.MODID + "." + "stock_pot").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
-                new BlockFluidHoppedWort().setRegistryName("hopped_wort").setTranslationKey(BoneAppleTea.MODID + "." + "hopped_wort"),
-                new BlockFluidSweetWort().setRegistryName("sweet_wort").setTranslationKey(BoneAppleTea.MODID + "." + "sweet_wort")
+                new BlockWoodenBarrel().setRegistryName("wooden_barrel").setTranslationKey(BoneAppleTea.MODID + "." + "wooden_barrel").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA)
         };
 
         event.getRegistry().registerAll(blocks);
-        GameRegistry.registerTileEntity(TileStockPot.class, BoneAppleTea.MODID + "_stock_pot");
+        GameRegistry.registerTileEntity(TileStockPot.class, new ResourceLocation(BoneAppleTea.MODID, "stock_pot"));
+        GameRegistry.registerTileEntity(TileWoodenBarrel.class, new ResourceLocation(BoneAppleTea.MODID, "wooden_barrel"));
     }
 
     @SubscribeEvent
@@ -62,7 +68,8 @@ public class EventBusSubscriber
         };
 
         final Item[] itemBlocks = {
-                new ItemBlock(ModBlocks.STOCK_POT).setRegistryName(ModBlocks.STOCK_POT.getRegistryName())
+                new ItemBlock(ModBlocks.STOCK_POT).setRegistryName(ModBlocks.STOCK_POT.getRegistryName()),
+                new ItemBlock(ModBlocks.WOODEN_BARREL).setRegistryName(ModBlocks.WOODEN_BARREL.getRegistryName())
         };
 
         event.getRegistry().registerAll(items);

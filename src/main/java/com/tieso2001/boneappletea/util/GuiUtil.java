@@ -1,5 +1,6 @@
 package com.tieso2001.boneappletea.util;
 
+import com.tieso2001.boneappletea.BoneAppleTea;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -17,6 +18,8 @@ import java.awt.*;
 
 public class GuiUtil
 {
+    // Draw
+
     public static void drawRectangle(GuiContainer container, ResourceLocation rectangle, int xPos, int yPos, int xPosTexture, int yPosTexture, int xSize, int ySize)
     {
         bindTexture(container, rectangle);
@@ -59,10 +62,23 @@ public class GuiUtil
         tessellator.draw();
     }
 
-    public static void drawFluidTankOverlay(GuiContainer container, ResourceLocation guiTexture, int guiWidth, int guiHeight, int guiLeft, int guiTop, Rectangle fluidTankGUI)
+    public static void drawFluidTankOverlay(GuiContainer container, int tankLocationX, int tankLocationY)
     {
-        bindTexture(container, guiTexture);
-        container.drawTexturedModalRect(guiLeft + fluidTankGUI.x, guiTop + fluidTankGUI.y, guiWidth, guiHeight, fluidTankGUI.width, fluidTankGUI.height);
+        bindTexture(container, new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fluidtank_overlay.png"));
+        container.drawTexturedModalRect(tankLocationX, tankLocationY, 0, 0, 16, 55);
+    }
+
+    public static void drawBubbles(GuiContainer container, int bubblesLocationX, int bubblesLocationY, int bubblesHeight)
+    {
+        bindTexture(container, new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/bubbles.png"));
+        container.drawTexturedModalRect(bubblesLocationX, bubblesLocationY, 0, bubblesHeight, 11, 28);
+    }
+
+    // Other
+
+    private static void bindTexture(GuiContainer container, ResourceLocation resource)
+    {
+        container.mc.getTextureManager().bindTexture(resource);
     }
 
     private static TextureAtlasSprite getFluidTexture(GuiContainer container, Fluid fluid)
@@ -81,10 +97,5 @@ public class GuiUtil
         if (thousand > 0 && number >= 10) return thousand + "," + "0" + number;
         if (thousand > 0 && number >= 0) return thousand + "," + "00" + number;
         return "" + number;
-    }
-
-    private static void bindTexture(GuiContainer container, ResourceLocation resource)
-    {
-        container.mc.getTextureManager().bindTexture(resource);
     }
 }

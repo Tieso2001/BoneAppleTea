@@ -1,6 +1,7 @@
-package com.tieso2001.boneappletea.compat.jei;
+package com.tieso2001.boneappletea.compat.jei.stock_pot;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
+import com.tieso2001.boneappletea.compat.jei.PluginJEI;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
@@ -23,8 +24,9 @@ public class JEIRecipeCategoryStockPot implements IRecipeCategory<JEIRecipeWrapp
     public JEIRecipeCategoryStockPot(IGuiHelper guiHelper)
     {
         ResourceLocation location = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/gui_recipes.png");
+        ResourceLocation tankOverlay = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fluidtank_overlay.png");
         this.background = guiHelper.createDrawable(location, 0, 0, 125, 57);
-        this.tankOverlay = guiHelper.createDrawable(location, 125, 0, 16, 55);
+        this.tankOverlay = guiHelper.createDrawable(tankOverlay, 0, 0, 16, 55);
     }
 
     @Override

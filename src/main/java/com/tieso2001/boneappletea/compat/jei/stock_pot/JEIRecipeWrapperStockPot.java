@@ -1,4 +1,4 @@
-package com.tieso2001.boneappletea.compat.jei;
+package com.tieso2001.boneappletea.compat.jei.stock_pot;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
