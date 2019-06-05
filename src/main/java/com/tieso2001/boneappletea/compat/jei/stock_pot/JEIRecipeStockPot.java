@@ -1,4 +1,4 @@
-package com.tieso2001.boneappletea.compat.jei;
+package com.tieso2001.boneappletea.compat.jei.stock_pot;
 
 import com.tieso2001.boneappletea.recipe.RecipeStockPot;
 

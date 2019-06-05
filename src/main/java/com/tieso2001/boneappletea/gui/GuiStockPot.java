@@ -18,6 +18,7 @@ public class GuiStockPot extends GuiContainer
     public static final int HEIGHT = 166;
 
     private Rectangle fluidTankGUI = new Rectangle(80, 14, 16, 55);
+    private Rectangle bubblesGUI = new Rectangle(104, 28, 11, 28);
 
     private TileStockPot tileEntity;
 
@@ -43,9 +44,9 @@ public class GuiStockPot extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        GuiUtil.drawRectangle(this, background, guiLeft, guiTop,0, 0, xSize, ySize); // background
-        GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(0), fluidTankGUI, guiLeft, guiTop); // fluid tank
-        GuiUtil.drawFluidTankOverlay(this, background, xSize, 29, guiLeft, guiTop, fluidTankGUI); // fluid tank overlay
+        GuiUtil.drawRectangle(this, background, guiLeft, guiTop,0, 0, xSize, ySize);
+        GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(0), fluidTankGUI, guiLeft, guiTop);
+        GuiUtil.drawFluidTankOverlay(this, guiLeft + fluidTankGUI.x, guiTop + fluidTankGUI.y);
         renderBubbles();
     }
 
@@ -72,8 +73,9 @@ public class GuiStockPot extends GuiContainer
         if (boilTime > 0)
         {
             int maxBoilTime = this.tileEntity.maxBoilTime;
-            int bubbleHeight = (int) (29 * ((float) (maxBoilTime - boilTime) / maxBoilTime));
-            GuiUtil.drawRectangle(this, background, guiLeft + 103, guiTop + 27 + (29 - bubbleHeight), 176, 29 - bubbleHeight, 12, bubbleHeight);
+            int bubblesHeight = (int) (bubblesGUI.height * ((float) (maxBoilTime - boilTime) / maxBoilTime));
+            GuiUtil.drawBubbles(this, guiLeft + bubblesGUI.x, guiTop + bubblesGUI.y + (bubblesGUI.height - bubblesHeight), (bubblesGUI.height - bubblesHeight));
+            //GuiUtil.drawRectangle(this, background, guiLeft + 103, guiTop + 27 + (29 - bubbleHeight), 176, 29 - bubbleHeight, 12, bubbleHeight);
         }
     }
 }

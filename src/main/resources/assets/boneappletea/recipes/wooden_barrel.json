@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "@#@",
+    "$ $",
+    "@#@"
+  ],
+  "key": {
+    "@": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "#": {
+      "type": "forge:ore_dict",
+      "ore": "slabWood"
+    },
+    "$": {
+      "type": "forge:ore_dict",
+      "ore": "logWood"
+    }
+  },
+  "result": {
+    "item": "boneappletea:wooden_barrel"
+  }
+}

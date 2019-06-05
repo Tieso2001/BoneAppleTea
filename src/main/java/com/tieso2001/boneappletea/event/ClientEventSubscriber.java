@@ -29,8 +29,9 @@ public class ClientEventSubscriber
         registerModel(ModItems.MORTAR_AND_PESTLE);
         registerModel(ModItems.POPCORN);
         registerModel(ModItems.ROASTED_CORN);
-        registerModel(ModItems.YEAST);
         registerModel(Item.getItemFromBlock(ModBlocks.STOCK_POT));
+        registerModel(Item.getItemFromBlock(ModBlocks.WOODEN_BARREL));
+        registerModel(ModItems.YEAST);
     }
 
     private static void registerModel(Item item)
