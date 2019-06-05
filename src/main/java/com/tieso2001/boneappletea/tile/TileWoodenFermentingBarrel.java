@@ -17,7 +17,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileWoodenBarrel extends TileEntity implements ITickable
+public class TileWoodenFermentingBarrel extends TileEntity implements ITickable
 {
     public int slots = 1;
     public int tankCapacity = 1000;

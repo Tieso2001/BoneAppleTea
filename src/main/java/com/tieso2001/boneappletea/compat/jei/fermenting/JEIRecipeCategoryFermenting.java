@@ -23,7 +23,7 @@ public class JEIRecipeCategoryFermenting implements IRecipeCategory<JEIRecipeWra
 
     public JEIRecipeCategoryFermenting(IGuiHelper guiHelper)
     {
-        ResourceLocation location = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/wooden_barrel.png");
+        ResourceLocation location = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/wooden_fermenting_barrel.png");
         ResourceLocation tankOverlay = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fluidtank_overlay.png");
         this.background = guiHelper.createDrawable(location, 25, 14, 99, 57);
         this.tankOverlay = guiHelper.createDrawable(tankOverlay, 0, 0, 16, 55);

@@ -43,6 +43,6 @@ public class ModRecipes
 
     public static void initFermenting()
     {
-        RecipeFermentingRegistry.addRecipe("beer", new ItemStack(ModItems.YEAST), new FluidStack(ModFluids.HOPPED_WORT, 100), new FluidStack(FluidRegistry.LAVA, 100), 100);
+
     }
 }
