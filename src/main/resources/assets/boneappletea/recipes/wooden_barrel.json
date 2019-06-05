@@ -19,10 +19,10 @@
       "ore": "logWood"
     },
     "%": {
-      "item": "minecraft:gold_ingot"
+      "item": "minecraft:iron_ingot"
     }
   },
   "result": {
-    "item": "boneappletea:wooden_fermenting_barrel"
+    "item": "boneappletea:wooden_barrel"
   }
 }

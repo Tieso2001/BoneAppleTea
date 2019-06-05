@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "boneappletea:blocks/wooden_barrel_side",
+    "down": "boneappletea:blocks/wooden_barrel_bottom",
+    "up": "boneappletea:blocks/wooden_fermenting_barrel_top",
+    "north": "boneappletea:blocks/wooden_barrel_side",
+    "east": "boneappletea:blocks/wooden_barrel_side",
+    "south": "boneappletea:blocks/wooden_barrel_side",
+    "west": "boneappletea:blocks/wooden_barrel_side"
+  }
+}

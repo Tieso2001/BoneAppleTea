@@ -1,12 +1,12 @@
 {
     "forge_marker": 1,
     "variants": {
-        "facing=up": { "model": "boneappletea:wooden_barrel" },
-        "facing=down": { "model": "boneappletea:wooden_barrel", "x": 180 },
-        "facing=north": { "model": "boneappletea:wooden_barrel", "x": 90 },
-        "facing=south": { "model": "boneappletea:wooden_barrel", "x": 270 },
-        "facing=west": { "model": "boneappletea:wooden_barrel", "x": 90, "y": 270 },
-        "facing=east": { "model": "boneappletea:wooden_barrel", "x": 90, "y": 90 },
-        "normal": { "model": "boneappletea:wooden_barrel" }
+        "facing=up": { "model": "boneappletea:wooden_fermenting_barrel" },
+        "facing=down": { "model": "boneappletea:wooden_fermenting_barrel", "x": 180 },
+        "facing=north": { "model": "boneappletea:wooden_fermenting_barrel", "x": 90 },
+        "facing=south": { "model": "boneappletea:wooden_fermenting_barrel", "x": 270 },
+        "facing=west": { "model": "boneappletea:wooden_fermenting_barrel", "x": 90, "y": 270 },
+        "facing=east": { "model": "boneappletea:wooden_fermenting_barrel", "x": 90, "y": 90 },
+        "normal": { "model": "boneappletea:wooden_fermenting_barrel" }
     }
 }

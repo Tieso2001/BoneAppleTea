@@ -1,6 +1,7 @@
 package com.tieso2001.boneappletea.init;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
+import com.tieso2001.boneappletea.block.BlockWoodenBarrel;
 import com.tieso2001.boneappletea.block.BlockWoodenFermentingBarrel;
 import com.tieso2001.boneappletea.block.fluids.BlockFluidHoppedWort;
 import com.tieso2001.boneappletea.block.fluids.BlockFluidSweetWort;
@@ -19,5 +20,6 @@ public class ModBlocks
     public static final BlockTallCrops CORN = null;
     public static final BlockTallCrops HOPS = null;
     public static final BlockStockPot STOCK_POT = null;
+    public static final BlockWoodenBarrel WOODEN_BARREL = null;
     public static final BlockWoodenFermentingBarrel WOODEN_FERMENTING_BARREL = null;
 }
