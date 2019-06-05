@@ -50,7 +50,7 @@ public class PluginJEI implements IModPlugin
 
     private void registerFermentingHandler(@Nonnull IModRegistry registry)
     {
-        registry.addRecipeCatalyst(new ItemStack(Item.getItemFromBlock(ModBlocks.WOODEN_BARREL)), FERMENTING_ID);
+        registry.addRecipeCatalyst(new ItemStack(Item.getItemFromBlock(ModBlocks.WOODEN_FERMENTING_BARREL)), FERMENTING_ID);
         List<JEIRecipeFermenting> recipes = new ArrayList<>();
         for (RecipeFermenting recipe : RecipeFermentingRegistry.getRecipeMap().values())
         {

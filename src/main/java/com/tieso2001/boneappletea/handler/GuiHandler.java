@@ -1,11 +1,11 @@
 package com.tieso2001.boneappletea.handler;
 
 import com.tieso2001.boneappletea.container.ContainerStockPot;
-import com.tieso2001.boneappletea.container.ContainerWoodenBarrel;
+import com.tieso2001.boneappletea.container.ContainerWoodenFermentingBarrel;
 import com.tieso2001.boneappletea.gui.GuiStockPot;
-import com.tieso2001.boneappletea.gui.GuiWoodenBarrel;
+import com.tieso2001.boneappletea.gui.GuiWoodenFermentingBarrel;
 import com.tieso2001.boneappletea.tile.TileStockPot;
-import com.tieso2001.boneappletea.tile.TileWoodenBarrel;
+import com.tieso2001.boneappletea.tile.TileWoodenFermentingBarrel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -27,10 +27,10 @@ public class GuiHandler implements IGuiHandler
             TileStockPot tileStockPot = (TileStockPot) tileEntity;
             return new ContainerStockPot(player.inventory, tileStockPot);
         }
-        if (tileEntity instanceof TileWoodenBarrel)
+        if (tileEntity instanceof TileWoodenFermentingBarrel)
         {
-            TileWoodenBarrel tileWoodenBarrel = (TileWoodenBarrel) tileEntity;
-            return new ContainerWoodenBarrel(player.inventory, tileWoodenBarrel);
+            TileWoodenFermentingBarrel tileWoodenFermentingBarrel = (TileWoodenFermentingBarrel) tileEntity;
+            return new ContainerWoodenFermentingBarrel(player.inventory, tileWoodenFermentingBarrel);
         }
         return null;
     }
@@ -46,10 +46,10 @@ public class GuiHandler implements IGuiHandler
             TileStockPot tileStockPot = (TileStockPot) tileEntity;
             return new GuiStockPot(tileStockPot, new ContainerStockPot(player.inventory, tileStockPot));
         }
-        if (tileEntity instanceof TileWoodenBarrel)
+        if (tileEntity instanceof TileWoodenFermentingBarrel)
         {
-            TileWoodenBarrel tileWoodenBarrel = (TileWoodenBarrel) tileEntity;
-            return new GuiWoodenBarrel(tileWoodenBarrel, new ContainerWoodenBarrel(player.inventory, tileWoodenBarrel));
+            TileWoodenFermentingBarrel tileWoodenFermentingBarrel = (TileWoodenFermentingBarrel) tileEntity;
+            return new GuiWoodenFermentingBarrel(tileWoodenFermentingBarrel, new ContainerWoodenFermentingBarrel(player.inventory, tileWoodenFermentingBarrel));
         }
         return null;
     }

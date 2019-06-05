@@ -2,7 +2,7 @@ package com.tieso2001.boneappletea.container;
 
 import com.tieso2001.boneappletea.network.ModPacketHandler;
 import com.tieso2001.boneappletea.network.PacketFluidTankUpdate;
-import com.tieso2001.boneappletea.tile.TileWoodenBarrel;
+import com.tieso2001.boneappletea.tile.TileWoodenFermentingBarrel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -16,11 +16,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerWoodenBarrel extends Container
+public class ContainerWoodenFermentingBarrel extends Container
 {
-    private TileWoodenBarrel tileEntity;
+    private TileWoodenFermentingBarrel tileEntity;
 
-    public ContainerWoodenBarrel(IInventory playerInventory, TileWoodenBarrel tileEntity)
+    public ContainerWoodenFermentingBarrel(IInventory playerInventory, TileWoodenFermentingBarrel tileEntity)
     {
         this.tileEntity = tileEntity;
         addTileSlots();

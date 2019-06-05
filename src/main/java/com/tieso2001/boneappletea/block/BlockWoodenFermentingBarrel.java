@@ -1,7 +1,7 @@
 package com.tieso2001.boneappletea.block;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
-import com.tieso2001.boneappletea.tile.TileWoodenBarrel;
+import com.tieso2001.boneappletea.tile.TileWoodenFermentingBarrel;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -21,9 +21,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockWoodenBarrel extends BlockDirectional
+public class BlockWoodenFermentingBarrel extends BlockDirectional
 {
-    public BlockWoodenBarrel()
+    public BlockWoodenFermentingBarrel()
     {
         super(Material.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
@@ -38,7 +38,7 @@ public class BlockWoodenBarrel extends BlockDirectional
         if (worldIn.isRemote) return true;
 
         TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if (!(tileEntity instanceof TileWoodenBarrel)) return false;
+        if (!(tileEntity instanceof TileWoodenFermentingBarrel)) return false;
 
         if (FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, EnumFacing.DOWN)) return true;
         if (FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, EnumFacing.UP)) return true;
@@ -50,7 +50,7 @@ public class BlockWoodenBarrel extends BlockDirectional
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        TileWoodenBarrel tileEntity = (TileWoodenBarrel) worldIn.getTileEntity(pos);
+        TileWoodenFermentingBarrel tileEntity = (TileWoodenFermentingBarrel) worldIn.getTileEntity(pos);
         if (tileEntity != null)
         {
             for (int i = 0; i < tileEntity.slots; i++)
@@ -94,6 +94,6 @@ public class BlockWoodenBarrel extends BlockDirectional
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return new TileWoodenBarrel();
+        return new TileWoodenFermentingBarrel();
     }
 }
