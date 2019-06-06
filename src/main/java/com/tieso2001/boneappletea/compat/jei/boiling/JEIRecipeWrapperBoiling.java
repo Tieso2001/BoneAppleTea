@@ -1,4 +1,4 @@
-package com.tieso2001.boneappletea.compat.jei.stock_pot;
+package com.tieso2001.boneappletea.compat.jei.boiling;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
@@ -8,11 +8,11 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JEIRecipeWrapperStockPot implements ICraftingRecipeWrapper
+public class JEIRecipeWrapperBoiling implements ICraftingRecipeWrapper
 {
-    private final JEIRecipeStockPot recipe;
+    private final JEIRecipeBoiling recipe;
 
-    public JEIRecipeWrapperStockPot(JEIRecipeStockPot recipe)
+    public JEIRecipeWrapperBoiling(JEIRecipeBoiling recipe)
     {
         this.recipe = recipe;
     }

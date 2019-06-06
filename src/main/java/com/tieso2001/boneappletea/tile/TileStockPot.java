@@ -1,7 +1,7 @@
 package com.tieso2001.boneappletea.tile;
 
-import com.tieso2001.boneappletea.recipe.RecipeStockPot;
-import com.tieso2001.boneappletea.recipe.RecipeStockPotRegistry;
+import com.tieso2001.boneappletea.recipe.RecipeBoiling;
+import com.tieso2001.boneappletea.recipe.RecipeBoilingRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +36,7 @@ public class TileStockPot extends TileEntity implements ITickable
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack)
         {
-            for (RecipeStockPot recipe : RecipeStockPotRegistry.getRecipeMap().values())
+            for (RecipeBoiling recipe : RecipeBoilingRegistry.getRecipeMap().values())
             {
                 if (stack.getItem() == recipe.getInputItemFirst().getItem() || stack.getItem() == recipe.getInputItemSecond().getItem() || stack.isEmpty()) return true;
             }
@@ -86,7 +86,7 @@ public class TileStockPot extends TileEntity implements ITickable
             return;
         }
 
-        RecipeStockPot recipe = RecipeStockPotRegistry.getRecipe(fluidStack, itemFirst, itemSecond);
+        RecipeBoiling recipe = RecipeBoilingRegistry.getRecipe(fluidStack, itemFirst, itemSecond);
 
         if (recipe == null || fluidStack.amount < recipe.getInputFluid().amount || (!itemOutput.isEmpty() && !itemOutput.isItemEqual(recipe.getOutputItem())) || (itemOutput.getCount() + recipe.getOutputItem().getCount() > 64))
         {

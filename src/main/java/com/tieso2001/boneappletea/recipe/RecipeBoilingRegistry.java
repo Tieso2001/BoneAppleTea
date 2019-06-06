@@ -6,38 +6,38 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RecipeStockPotRegistry
+public class RecipeBoilingRegistry
 {
-    private static Map<String, RecipeStockPot> recipeMap = new HashMap<>();
+    private static Map<String, RecipeBoiling> recipeMap = new HashMap<>();
 
-    public static void addRecipe(String recipeName, RecipeStockPot recipe)
+    public static void addRecipe(String recipeName, RecipeBoiling recipe)
     {
         recipeMap.put(recipeName, recipe);
     }
 
     public static void addRecipe(String recipeName, FluidStack inputFluid, ItemStack inputItemFirst, ItemStack inputItemSecond, FluidStack outputFluid, ItemStack outputItem, int boilTime)
     {
-        recipeMap.put(recipeName, new RecipeStockPot(inputFluid, inputItemFirst, inputItemSecond, outputFluid, outputItem, boilTime));
+        recipeMap.put(recipeName, new RecipeBoiling(inputFluid, inputItemFirst, inputItemSecond, outputFluid, outputItem, boilTime));
     }
 
-    public static Map<String, RecipeStockPot> getRecipeMap()
+    public static Map<String, RecipeBoiling> getRecipeMap()
     {
         return recipeMap;
     }
 
-    public static RecipeStockPot getRecipe(String recipeName)
+    public static RecipeBoiling getRecipe(String recipeName)
     {
         if (recipeMap.containsKey(recipeName))
         {
-            RecipeStockPot recipe = recipeMap.get(recipeName);
+            RecipeBoiling recipe = recipeMap.get(recipeName);
             return recipe;
         }
         return null;
     }
 
-    public static RecipeStockPot getRecipe(FluidStack inputFluid, ItemStack inputItemFirst, ItemStack inputItemSecond)
+    public static RecipeBoiling getRecipe(FluidStack inputFluid, ItemStack inputItemFirst, ItemStack inputItemSecond)
     {
-        for (RecipeStockPot recipe : recipeMap.values())
+        for (RecipeBoiling recipe : recipeMap.values())
         {
             if (recipe.getInputFluid().getFluid() == inputFluid.getFluid())
             {
