@@ -3,7 +3,7 @@ package com.tieso2001.boneappletea.recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RecipeStockPot
+public class RecipeBoiling
 {
     private final FluidStack inputFluid;
     private final ItemStack inputItemFirst;
@@ -12,7 +12,7 @@ public class RecipeStockPot
     private final ItemStack outputItem;
     private final int boilTime;
 
-    public RecipeStockPot(FluidStack inputFluid, ItemStack inputItemFirst, ItemStack inputItemSecond, FluidStack outputFluid, ItemStack outputItem, int boilTime)
+    public RecipeBoiling(FluidStack inputFluid, ItemStack inputItemFirst, ItemStack inputItemSecond, FluidStack outputFluid, ItemStack outputItem, int boilTime)
     {
         this.inputFluid = inputFluid;
         this.inputItemFirst = inputItemFirst;

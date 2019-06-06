@@ -1,4 +1,4 @@
-package com.tieso2001.boneappletea.compat.jei.stock_pot;
+package com.tieso2001.boneappletea.compat.jei.boiling;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
 import com.tieso2001.boneappletea.compat.jei.PluginJEI;
@@ -16,12 +16,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
 
-public class JEIRecipeCategoryStockPot implements IRecipeCategory<JEIRecipeWrapperStockPot>
+public class JEIRecipeCategoryBoiling implements IRecipeCategory<JEIRecipeWrapperBoiling>
 {
     private final IDrawable background;
     private final IDrawable tankOverlay;
 
-    public JEIRecipeCategoryStockPot(IGuiHelper guiHelper)
+    public JEIRecipeCategoryBoiling(IGuiHelper guiHelper)
     {
         ResourceLocation location = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/gui_recipes.png");
         ResourceLocation tankOverlay = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fluidtank_overlay.png");
@@ -32,13 +32,13 @@ public class JEIRecipeCategoryStockPot implements IRecipeCategory<JEIRecipeWrapp
     @Override
     public String getUid()
     {
-        return PluginJEI.STOCK_POT_ID;
+        return PluginJEI.BOILING_ID;
     }
 
     @Override
     public String getTitle()
     {
-        return "Stock Pot";
+        return "Boiling";
     }
 
     @Override
@@ -54,7 +54,7 @@ public class JEIRecipeCategoryStockPot implements IRecipeCategory<JEIRecipeWrapp
     }
 
     @Override
-    public void setRecipe(IRecipeLayout iRecipeLayout, JEIRecipeWrapperStockPot jeiRecipeWrapperStockPot, IIngredients iIngredients)
+    public void setRecipe(IRecipeLayout iRecipeLayout, JEIRecipeWrapperBoiling jeiRecipeWrapperBoiling, IIngredients iIngredients)
     {
         IGuiFluidStackGroup guiFluidStacks = iRecipeLayout.getFluidStacks();
         IGuiItemStackGroup guiItemStacks = iRecipeLayout.getItemStacks();

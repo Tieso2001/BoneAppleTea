@@ -22,7 +22,7 @@ public class GuiStockPot extends GuiContainer
 
     private TileStockPot tileEntity;
 
-    private static final ResourceLocation background = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/stock_pot.png");
+    private static final ResourceLocation background = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/boiling.png");
 
     public GuiStockPot(TileStockPot tileEntity, ContainerStockPot container)
     {
