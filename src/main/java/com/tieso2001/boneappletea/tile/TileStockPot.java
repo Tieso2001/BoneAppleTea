@@ -2,7 +2,6 @@ package com.tieso2001.boneappletea.tile;
 
 import com.tieso2001.boneappletea.recipe.RecipeBoiling;
 import com.tieso2001.boneappletea.recipe.RecipeBoilingRegistry;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -21,80 +20,112 @@ import javax.annotation.Nullable;
 
 public class TileStockPot extends TileEntity implements ITickable
 {
-    public int SLOTS_INPUT = 2;
-    public int SLOTS_OUTPUT = 1;
-    public int SLOTS = SLOTS_INPUT + SLOTS_OUTPUT;
+    public int inputSlots = 1;
+    public int outputSlots = 1;
+    public int slots = inputSlots + outputSlots;
+    public int tankCapacity = 1000;
     public int boilTime = 0;
-    public int maxBoilTime = 200;
-    public boolean isActive = false;
+    public int maxBoilTime = 1;
+    public boolean hasFire = false;
 
-    private ItemStackHandler inputItemStackHandler = new ItemStackHandler(SLOTS_INPUT)
+    private ItemStackHandler inputItemStackHandler = new ItemStackHandler(inputSlots)
     {
         @Override
-        protected void onContentsChanged(int slot) { markDirty(); }
+        protected void onContentsChanged(int slot)
+        {
+            markDirty();
+        }
+    };
+
+    private ItemStackHandler outputItemStackHandler = new ItemStackHandler(outputSlots)
+    {
+        @Override
+        protected void onContentsChanged(int slot)
+        {
+            markDirty();
+        }
 
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack)
         {
-            for (RecipeBoiling recipe : RecipeBoilingRegistry.getRecipeMap().values())
-            {
-                if (stack.getItem() == recipe.getInputItemFirst().getItem() || stack.getItem() == recipe.getInputItemSecond().getItem() || stack.isEmpty()) return true;
-            }
             return false;
         }
     };
 
-    private ItemStackHandler outputItemStackHandler = new ItemStackHandler(SLOTS_OUTPUT)
-    {
-        @Override
-        protected void onContentsChanged(int slot) { markDirty(); }
-
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) { return false; }
-    };
-
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputItemStackHandler, outputItemStackHandler);
 
-    private FluidTank fluidTank = new FluidTank(1000)
+    private FluidTank inputFluidTank = new FluidTank(tankCapacity)
     {
         @Override
-        protected void onContentsChanged() { markDirty(); }
+        protected void onContentsChanged()
+        {
+            markDirty();
+        }
+    };
+
+    private FluidTank outputFluidTank = new FluidTank(tankCapacity)
+    {
+        @Override
+        protected void onContentsChanged()
+        {
+            markDirty();
+        }
+
+        @Override
+        public boolean canFill()
+        {
+            return false;
+        }
     };
 
     public FluidTank getFluidTank(int tankID)
     {
-        return fluidTank;
+        if (tankID == 0) return inputFluidTank;
+        if (tankID == 1) return outputFluidTank;
+        return inputFluidTank;
     }
 
     @Override
     public void update()
     {
-        FluidStack fluidStack = fluidTank.getFluid();
-        ItemStack itemFirst = inputItemStackHandler.getStackInSlot(0);
-        ItemStack itemSecond = inputItemStackHandler.getStackInSlot(1);
-        ItemStack itemOutput = outputItemStackHandler.getStackInSlot(0);
+        ItemStack inputItem = inputItemStackHandler.getStackInSlot(0);
+        FluidStack inputFluid = inputFluidTank.getFluid();
+        RecipeBoiling recipe = RecipeBoilingRegistry.getRecipe(inputItem, inputFluid);
 
-        if (world.getBlockState(pos.down()).getBlock() != Blocks.FIRE)
+        if (recipe == null)
         {
-            boilTime = 0;
+            resetRecipe();
             return;
         }
 
-        if (fluidStack == null)
+        if (!inputFluid.containsFluid(recipe.getInputFluid().copy()))
         {
-            boilTime = 0;
+            resetRecipe();
             return;
         }
 
-        RecipeBoiling recipe = RecipeBoilingRegistry.getRecipe(fluidStack, itemFirst, itemSecond);
-
-        if (recipe == null || fluidStack.amount < recipe.getInputFluid().amount || (!itemOutput.isEmpty() && !itemOutput.isItemEqual(recipe.getOutputItem())) || (itemOutput.getCount() + recipe.getOutputItem().getCount() > 64))
+        if (recipe.getInputItem().getCount() > inputItem.getCount())
         {
-            boilTime = 0;
+            resetRecipe();
             return;
         }
 
-        if (boilTime == 0)
+        if (outputItemStackHandler.insertItem(0, recipe.getOutputItem().copy(), true).isItemEqual(recipe.getOutputItem().copy()))
+        {
+            resetRecipe();
+            return;
+        }
+
+        if (recipe.getOutputFluid() != null)
+        {
+            if (outputFluidTank.fillInternal(recipe.getOutputFluid().copy(), false) != recipe.getOutputFluid().amount)
+            {
+                resetRecipe();
+                return;
+            }
+        }
+
+        if (boilTime <= 0)
         {
             boilTime = recipe.getBoilTime();
             maxBoilTime = recipe.getBoilTime();
@@ -102,29 +133,23 @@ public class TileStockPot extends TileEntity implements ITickable
 
         if (boilTime == 1)
         {
-            boilTime--;
-
-            if (recipe.getOutputFluid() == null) fluidTank.setFluid(null);
-            else fluidTank.setFluid(new FluidStack(recipe.getOutputFluid().copy(), fluidStack.amount));
-
-            if (itemFirst != ItemStack.EMPTY) inputItemStackHandler.getStackInSlot(0).shrink(1);
-            if (itemSecond != ItemStack.EMPTY) inputItemStackHandler.getStackInSlot(1).shrink(1);
-
-            if (!recipe.getOutputItem().isEmpty())
-            {
-                if (itemOutput.isEmpty()) outputItemStackHandler.setStackInSlot(0, recipe.getOutputItem().copy());
-                else if (itemOutput.isItemEqual(recipe.getOutputItem())) outputItemStackHandler.getStackInSlot(0).setCount(itemOutput.getCount() + recipe.getOutputItem().getCount());
-            }
-
-            markDirty();
+            if (!recipe.getInputItem().isEmpty()) inputItemStackHandler.getStackInSlot(0).shrink(recipe.getInputItem().getCount());
+            inputFluidTank.drain(recipe.getInputFluid().amount, true);
+            if (!recipe.getOutputItem().isEmpty()) outputItemStackHandler.insertItem(0, recipe.getOutputItem().copy(), false);
+            if (recipe.getOutputFluid() != null) outputFluidTank.fillInternal(recipe.getOutputFluid().copy(), true);
+            resetRecipe();
         }
 
-        if (boilTime > 1)
+        if (boilTime >= 2)
         {
             boilTime--;
-            isActive = true;
         }
-        else isActive = false;
+    }
+
+    private void resetRecipe()
+    {
+        boilTime = 0;
+        maxBoilTime = 1;
     }
 
     @Override
@@ -133,7 +158,8 @@ public class TileStockPot extends TileEntity implements ITickable
         super.readFromNBT(compound);
         if (compound.hasKey("itemsInput")) inputItemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsInput"));
         if (compound.hasKey("itemsOutput")) outputItemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsOutput"));
-        if (compound.hasKey("fluids")) fluidTank.readFromNBT(compound.getCompoundTag("fluids"));
+        if (compound.hasKey("fluidsInput")) inputFluidTank.readFromNBT(compound.getCompoundTag("fluidsInput"));
+        if (compound.hasKey("fluidsOutput")) outputFluidTank.readFromNBT(compound.getCompoundTag("fluidsOutput"));
         boilTime = compound.getInteger("boilTime");
     }
 
@@ -141,12 +167,20 @@ public class TileStockPot extends TileEntity implements ITickable
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
+
         compound.setTag("itemsInput", inputItemStackHandler.serializeNBT());
         compound.setTag("itemsOutput", outputItemStackHandler.serializeNBT());
-        NBTTagCompound fluidTankNBT = new NBTTagCompound();
-        fluidTank.writeToNBT(fluidTankNBT);
-        compound.setTag("fluids", fluidTankNBT);
+
+        NBTTagCompound inputFluidTankNBT = new NBTTagCompound();
+        inputFluidTank.writeToNBT(inputFluidTankNBT);
+        compound.setTag("fluidsInput", inputFluidTankNBT);
+
+        NBTTagCompound outputFluidTankNBT = new NBTTagCompound();
+        outputFluidTank.writeToNBT(outputFluidTankNBT);
+        compound.setTag("fluidsOutput", outputFluidTankNBT);
+
         compound.setInteger("boilTime", boilTime);
+
         return compound;
     }
 
@@ -162,7 +196,8 @@ public class TileStockPot extends TileEntity implements ITickable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(combinedHandler);
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidTank);
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == EnumFacing.DOWN) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(outputFluidTank);
+        else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(inputFluidTank);
         return super.getCapability(capability, facing);
     }
 }

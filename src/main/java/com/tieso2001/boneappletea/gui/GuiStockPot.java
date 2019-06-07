@@ -17,12 +17,12 @@ public class GuiStockPot extends GuiContainer
     public static final int WIDTH = 176;
     public static final int HEIGHT = 166;
 
-    private Rectangle fluidTankGUI = new Rectangle(80, 14, 16, 55);
-    private Rectangle bubblesGUI = new Rectangle(104, 28, 11, 28);
+    private Rectangle inputFluidTankGUI = new Rectangle(53, 15, 16, 55);
+    private Rectangle outputFluidTankGUI = new Rectangle(107, 15, 16, 55);
 
     private TileStockPot tileEntity;
 
-    private static final ResourceLocation background = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/boiling.png");
+    private static final ResourceLocation background = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/stock_pot.png");
 
     public GuiStockPot(TileStockPot tileEntity, ContainerStockPot container)
     {
@@ -45,15 +45,20 @@ public class GuiStockPot extends GuiContainer
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         GuiUtil.drawRectangle(this, background, guiLeft, guiTop,0, 0, xSize, ySize);
-        GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(0), fluidTankGUI, guiLeft, guiTop);
-        GuiUtil.drawFluidTankOverlay(this, guiLeft + fluidTankGUI.x, guiTop + fluidTankGUI.y);
-        renderBubbles();
+
+        GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(0), inputFluidTankGUI, guiLeft, guiTop);
+        GuiUtil.drawFluidTankOverlay(this, guiLeft + inputFluidTankGUI.x, guiTop + inputFluidTankGUI.y);
+
+        GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(1), outputFluidTankGUI, guiLeft, guiTop);
+        GuiUtil.drawFluidTankOverlay(this, guiLeft + outputFluidTankGUI.x, guiTop + outputFluidTankGUI.y);
     }
 
     protected void renderFluidToolTip(int x, int y)
     {
-        Rectangle fluidTank = new Rectangle(guiLeft + fluidTankGUI.x, guiTop + fluidTankGUI.y, 16, 55);
-        if (fluidTank.contains(x, y) && tileEntity.getFluidTank(0).getFluid() != null)
+        Rectangle inputFluidTank = new Rectangle(guiLeft + inputFluidTankGUI.x, guiTop + inputFluidTankGUI.y, 16, 55);
+        Rectangle outputFluidTank = new Rectangle(guiLeft + outputFluidTankGUI.x, guiTop + outputFluidTankGUI.y, 16, 55);
+
+        if (inputFluidTank.contains(x, y) && tileEntity.getFluidTank(0).getFluid() != null)
         {
             if (tileEntity.getFluidTank(0).getFluid().amount > 0)
             {
@@ -64,18 +69,16 @@ public class GuiStockPot extends GuiContainer
                 this.drawHoveringText(toolTip, x, y, (font == null ? fontRenderer : font));
             }
         }
-    }
-
-    protected void renderBubbles()
-    {
-        int boilTime = this.tileEntity.boilTime;
-
-        if (boilTime > 0)
+        else if (outputFluidTank.contains(x, y) && tileEntity.getFluidTank(1).getFluid() != null)
         {
-            int maxBoilTime = this.tileEntity.maxBoilTime;
-            int bubblesHeight = (int) (bubblesGUI.height * ((float) (maxBoilTime - boilTime) / maxBoilTime));
-            GuiUtil.drawBubbles(this, guiLeft + bubblesGUI.x, guiTop + bubblesGUI.y + (bubblesGUI.height - bubblesHeight), (bubblesGUI.height - bubblesHeight));
-            //GuiUtil.drawRectangle(this, background, guiLeft + 103, guiTop + 27 + (29 - bubbleHeight), 176, 29 - bubbleHeight, 12, bubbleHeight);
+            if (tileEntity.getFluidTank(1).getFluid().amount > 0)
+            {
+                FontRenderer font = this.mc.fontRenderer;
+                List<String> toolTip = new ArrayList<>();
+                toolTip.add(tileEntity.getFluidTank(1).getFluid().getLocalizedName());
+                toolTip.add(GuiUtil.numberToString(tileEntity.getFluidTank(1).getFluid().amount) + " / " + GuiUtil.numberToString(tileEntity.getFluidTank(1).getCapacity()) + " mB");
+                this.drawHoveringText(toolTip, x, y, (font == null ? fontRenderer : font));
+            }
         }
     }
 }
