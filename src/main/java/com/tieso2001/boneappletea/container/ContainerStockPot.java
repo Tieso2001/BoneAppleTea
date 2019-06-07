@@ -34,14 +34,11 @@ public class ContainerStockPot extends Container
         IItemHandler itemHandler = this.tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         int x; int y;
 
-        x = 53; y = 21;
+        x = 26; y = 34;
         addSlotToContainer(new SlotItemHandler(itemHandler, 0, x, y));
 
-        x = 53; y = 47;
+        x = 134; y = 34;
         addSlotToContainer(new SlotItemHandler(itemHandler, 1, x, y));
-
-        x = 122; y = 34;
-        addSlotToContainer(new SlotItemHandler(itemHandler, 2, x, y));
     }
 
     private void addPlayerSlots(IInventory playerInventory)
@@ -77,14 +74,14 @@ public class ContainerStockPot extends Container
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index < tileEntity.SLOTS)
+            if (index < tileEntity.slots)
             {
-                if (!this.mergeItemStack(itemstack1, tileEntity.SLOTS, this.inventorySlots.size(), true))
+                if (!this.mergeItemStack(itemstack1, tileEntity.slots, this.inventorySlots.size(), true))
                 {
                     return ItemStack.EMPTY;
                 }
             }
-            else if (!this.mergeItemStack(itemstack1, 0, tileEntity.SLOTS, false))
+            else if (!this.mergeItemStack(itemstack1, 0, tileEntity.slots, false))
             {
                 return ItemStack.EMPTY;
             }
@@ -117,6 +114,9 @@ public class ContainerStockPot extends Container
             {
                 if (tileEntity.getFluidTank(0).getFluid() != null) ModPacketHandler.INSTANCE.sendToAll(new PacketFluidTankUpdate(tileEntity, tileEntity.getFluidTank(0).getFluid(), 0));
                 else ModPacketHandler.INSTANCE.sendToAll(new PacketFluidTankUpdate(tileEntity, new FluidStack(FluidRegistry.WATER, 0), 0));
+
+                if (tileEntity.getFluidTank(1).getFluid() != null) ModPacketHandler.INSTANCE.sendToAll(new PacketFluidTankUpdate(tileEntity, tileEntity.getFluidTank(1).getFluid(), 1));
+                else ModPacketHandler.INSTANCE.sendToAll(new PacketFluidTankUpdate(tileEntity, new FluidStack(FluidRegistry.WATER, 0), 1));
             }
         }
 

@@ -3,23 +3,28 @@ package com.tieso2001.boneappletea.recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nonnull;
+
 public class RecipeBoiling
 {
+    private final ItemStack inputItem;
     private final FluidStack inputFluid;
-    private final ItemStack inputItemFirst;
-    private final ItemStack inputItemSecond;
-    private final FluidStack outputFluid;
     private final ItemStack outputItem;
+    private final FluidStack outputFluid;
     private final int boilTime;
 
-    public RecipeBoiling(FluidStack inputFluid, ItemStack inputItemFirst, ItemStack inputItemSecond, FluidStack outputFluid, ItemStack outputItem, int boilTime)
+    public RecipeBoiling(ItemStack inputItem, @Nonnull FluidStack inputFluid, ItemStack outputItem, FluidStack outputFluid, int boilTime)
     {
+        this.inputItem = inputItem;
         this.inputFluid = inputFluid;
-        this.inputItemFirst = inputItemFirst;
-        this.inputItemSecond = inputItemSecond;
-        this.outputFluid = outputFluid;
         this.outputItem = outputItem;
+        this.outputFluid = outputFluid;
         this.boilTime = boilTime;
+    }
+
+    public ItemStack getInputItem()
+    {
+        return inputItem;
     }
 
     public FluidStack getInputFluid()
@@ -27,24 +32,14 @@ public class RecipeBoiling
         return inputFluid;
     }
 
-    public ItemStack getInputItemFirst()
+    public ItemStack getOutputItem()
     {
-        return inputItemFirst;
-    }
-
-    public ItemStack getInputItemSecond()
-    {
-        return inputItemSecond;
+        return outputItem;
     }
 
     public FluidStack getOutputFluid()
     {
         return outputFluid;
-    }
-
-    public ItemStack getOutputItem()
-    {
-        return outputItem;
     }
 
     public int getBoilTime()

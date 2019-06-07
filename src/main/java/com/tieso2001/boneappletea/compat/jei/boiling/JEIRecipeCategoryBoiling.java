@@ -23,9 +23,9 @@ public class JEIRecipeCategoryBoiling implements IRecipeCategory<JEIRecipeWrappe
 
     public JEIRecipeCategoryBoiling(IGuiHelper guiHelper)
     {
-        ResourceLocation location = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/gui_recipes.png");
+        ResourceLocation location = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/stock_pot.png");
         ResourceLocation tankOverlay = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fluidtank_overlay.png");
-        this.background = guiHelper.createDrawable(location, 0, 0, 125, 57);
+        this.background = guiHelper.createDrawable(location, 25, 14, 126, 57);
         this.tankOverlay = guiHelper.createDrawable(tankOverlay, 0, 0, 16, 55);
     }
 
@@ -56,26 +56,22 @@ public class JEIRecipeCategoryBoiling implements IRecipeCategory<JEIRecipeWrappe
     @Override
     public void setRecipe(IRecipeLayout iRecipeLayout, JEIRecipeWrapperBoiling jeiRecipeWrapperBoiling, IIngredients iIngredients)
     {
-        IGuiFluidStackGroup guiFluidStacks = iRecipeLayout.getFluidStacks();
         IGuiItemStackGroup guiItemStacks = iRecipeLayout.getItemStacks();
+        IGuiFluidStackGroup guiFluidStacks = iRecipeLayout.getFluidStacks();
 
-        guiFluidStacks.init(0, true, 28, 1, 16, 55, 1000, true, tankOverlay); // input fluid
-        guiFluidStacks.init(1, true, 81, 1, 16, 55, 1000, true, tankOverlay); // output fluid
-
-        guiItemStacks.init(2, false, 0, 7); // input item 1
-        guiItemStacks.init(3, false, 0, 33); // input item 2
-        guiItemStacks.init(4, true, 107, 20); // output item
-
+        List<ItemStack> inputItems = iIngredients.getInputs(VanillaTypes.ITEM).get(0);
         List<FluidStack> inputFluids = iIngredients.getInputs(VanillaTypes.FLUID).get(0);
-        List<FluidStack> outputFluids = iIngredients.getOutputs(VanillaTypes.FLUID).get(0);
-        List<ItemStack> inputItemsFirst = iIngredients.getInputs(VanillaTypes.ITEM).get(0);
-        List<ItemStack> inputItemsSecond = iIngredients.getInputs(VanillaTypes.ITEM).get(1);
         List<ItemStack> outputItems = iIngredients.getOutputs(VanillaTypes.ITEM).get(0);
+        List<FluidStack> outputFluids = iIngredients.getOutputs(VanillaTypes.FLUID).get(0);
 
-        guiFluidStacks.set(0, inputFluids);
-        guiFluidStacks.set(1, outputFluids);
-        guiItemStacks.set(2, inputItemsFirst);
-        guiItemStacks.set(3, inputItemsSecond);
-        guiItemStacks.set(4, outputItems);
+        guiItemStacks.init(0, true, 0, 19);
+        guiFluidStacks.init(1, true, 28, 1, 16, 55, 1000, true, tankOverlay);
+        guiItemStacks.init(2, true, 108, 19);
+        guiFluidStacks.init(3, true, 82, 1, 16, 55, 1000, true, tankOverlay);
+
+        guiItemStacks.set(0, inputItems);
+        guiFluidStacks.set(1, inputFluids);
+        guiItemStacks.set(2, outputItems);
+        guiFluidStacks.set(3, outputFluids);
     }
 }

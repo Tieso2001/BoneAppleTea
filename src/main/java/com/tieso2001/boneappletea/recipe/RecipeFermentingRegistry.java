@@ -3,6 +3,7 @@ package com.tieso2001.boneappletea.recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class RecipeFermentingRegistry
         recipeMap.put(recipeName, recipe);
     }
 
-    public static void addRecipe(String recipeName, ItemStack fermentItem, FluidStack inputFluid, FluidStack outputFluid, int fermentTime)
+    public static void addRecipe(String recipeName, ItemStack fermentItem, @Nonnull FluidStack inputFluid, FluidStack outputFluid, int fermentTime)
     {
         recipeMap.put(recipeName, new RecipeFermenting(fermentItem, inputFluid, outputFluid, fermentTime));
     }
@@ -39,12 +40,9 @@ public class RecipeFermentingRegistry
     {
         for (RecipeFermenting recipe : recipeMap.values())
         {
-            if (!recipe.getFermentItem().isEmpty() && recipe.getInputFluid() != null)
+            if (recipe.getInputFluid().isFluidEqual(inputFluid))
             {
-                if (recipe.getFermentItem().isItemEqual(fermentItem) && recipe.getInputFluid().getFluid() == inputFluid.getFluid())
-                {
-                    return recipe;
-                }
+                if (recipe.getFermentItem().isItemEqual(fermentItem)) return recipe;
             }
         }
         return null;

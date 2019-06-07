@@ -3,6 +3,8 @@ package com.tieso2001.boneappletea.recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nonnull;
+
 public class RecipeFermenting
 {
     private final ItemStack fermentItem;
@@ -10,7 +12,7 @@ public class RecipeFermenting
     private final FluidStack outputFluid;
     private final int fermentTime;
 
-    public RecipeFermenting(ItemStack fermentItem, FluidStack inputFluid, FluidStack outputFluid, int fermentTime)
+    public RecipeFermenting(ItemStack fermentItem, @Nonnull FluidStack inputFluid, FluidStack outputFluid, int fermentTime)
     {
         this.fermentItem = fermentItem;
         this.inputFluid = inputFluid;

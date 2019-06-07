@@ -36,10 +36,11 @@ public class BlockStockPot extends Block
     {
         if (worldIn.isRemote) return true;
 
-        if (FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing)) return true;
-
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if (!(tileEntity instanceof TileStockPot)) return false;
+
+        if (FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, EnumFacing.DOWN)) return true;
+        if (FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, EnumFacing.UP)) return true;
 
         playerIn.openGui(BoneAppleTea.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
@@ -51,7 +52,7 @@ public class BlockStockPot extends Block
         TileStockPot tileEntity = (TileStockPot) worldIn.getTileEntity(pos);
         if (tileEntity != null)
         {
-            for (int i = 0; i < tileEntity.SLOTS; i++)
+            for (int i = 0; i < tileEntity.slots; i++)
             {
                 if (tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(i).isEmpty()) return;
                 InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(i));
