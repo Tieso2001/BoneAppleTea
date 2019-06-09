@@ -68,10 +68,16 @@ public class GuiUtil
         container.drawTexturedModalRect(tankLocationX, tankLocationY, 0, 0, 16, 55);
     }
 
-    public static void drawBubbles(GuiContainer container, int bubblesLocationX, int bubblesLocationY, int bubblesHeight)
+    public static void drawFire(GuiContainer container, int fireLocationX, int fireLocationY)
     {
-        bindTexture(container, new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/bubbles.png"));
-        container.drawTexturedModalRect(bubblesLocationX, bubblesLocationY, 0, bubblesHeight, 11, 28);
+        bindTexture(container, new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fire.png"));
+        container.drawTexturedModalRect(fireLocationX, fireLocationY, 0, 0, 14, 14);
+    }
+
+    public static void drawArrow0(GuiContainer container, int arrowLocationX, int arrowLocationY, float progress)
+    {
+        bindTexture(container, new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/arrow_0.png"));
+        container.drawTexturedModalRect(arrowLocationX, arrowLocationY, 0, 0, (int) (progress * 22), 16);
     }
 
     // Other

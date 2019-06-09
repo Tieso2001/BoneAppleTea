@@ -2,6 +2,7 @@ package com.tieso2001.boneappletea.tile;
 
 import com.tieso2001.boneappletea.recipe.RecipeBoiling;
 import com.tieso2001.boneappletea.recipe.RecipeBoilingRegistry;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -88,6 +89,14 @@ public class TileStockPot extends TileEntity implements ITickable
     @Override
     public void update()
     {
+        hasFire = (world.getBlockState(pos.down()).getBlock() == Blocks.FIRE);
+        if (!hasFire)
+        {
+            resetRecipe();
+            return;
+        }
+
+
         ItemStack inputItem = inputItemStackHandler.getStackInSlot(0);
         FluidStack inputFluid = inputFluidTank.getFluid();
         RecipeBoiling recipe = RecipeBoilingRegistry.getRecipe(inputItem, inputFluid);
@@ -161,6 +170,7 @@ public class TileStockPot extends TileEntity implements ITickable
         if (compound.hasKey("fluidsInput")) inputFluidTank.readFromNBT(compound.getCompoundTag("fluidsInput"));
         if (compound.hasKey("fluidsOutput")) outputFluidTank.readFromNBT(compound.getCompoundTag("fluidsOutput"));
         boilTime = compound.getInteger("boilTime");
+        maxBoilTime = compound.getInteger("maxBoilTime");
     }
 
     @Override
@@ -180,6 +190,7 @@ public class TileStockPot extends TileEntity implements ITickable
         compound.setTag("fluidsOutput", outputFluidTankNBT);
 
         compound.setInteger("boilTime", boilTime);
+        compound.setInteger("maxBoilTime", maxBoilTime);
 
         return compound;
     }

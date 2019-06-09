@@ -51,6 +51,8 @@ public class GuiWoodenFermentingBarrel extends GuiContainer
 
         GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(1), outputFluidTankGUI, guiLeft, guiTop);
         GuiUtil.drawFluidTankOverlay(this, guiLeft + outputFluidTankGUI.x, guiTop + outputFluidTankGUI.y);
+
+        if (tileEntity.fermentTime > 0) GuiUtil.drawArrow0(this, guiLeft + 77, guiTop + 34, (float) (tileEntity.maxFermentTime - tileEntity.fermentTime) / tileEntity.maxFermentTime);
     }
 
     protected void renderFluidToolTip(int x, int y)

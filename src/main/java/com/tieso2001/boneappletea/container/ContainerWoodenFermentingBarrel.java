@@ -19,6 +19,8 @@ import net.minecraftforge.items.SlotItemHandler;
 public class ContainerWoodenFermentingBarrel extends Container
 {
     private TileWoodenFermentingBarrel tileEntity;
+    private int fermentTime;
+    private int maxFermentTime;
 
     public ContainerWoodenFermentingBarrel(IInventory playerInventory, TileWoodenFermentingBarrel tileEntity)
     {
@@ -114,5 +116,19 @@ public class ContainerWoodenFermentingBarrel extends Container
                 else ModPacketHandler.INSTANCE.sendToAll(new PacketFluidTankUpdate(tileEntity, new FluidStack(FluidRegistry.WATER, 0), 1));
             }
         }
+
+        for (int i = 0; i < this.listeners.size(); ++i)
+        {
+            IContainerListener iContainerListener = this.listeners.get(i);
+            if (this.fermentTime != this.tileEntity.fermentTime) iContainerListener.sendWindowProperty(this, 0, tileEntity.fermentTime);
+            if (this.maxFermentTime != this.tileEntity.maxFermentTime) iContainerListener.sendWindowProperty(this, 1, tileEntity.maxFermentTime);
+        }
+    }
+
+    @Override
+    public void updateProgressBar(int id, int data)
+    {
+        if (id == 0) this.tileEntity.fermentTime = data;
+        if (id == 1) this.tileEntity.maxFermentTime = data;
     }
 }

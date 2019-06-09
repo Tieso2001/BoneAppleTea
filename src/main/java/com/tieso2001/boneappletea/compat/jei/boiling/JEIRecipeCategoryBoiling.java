@@ -10,6 +10,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategory;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,13 +21,18 @@ public class JEIRecipeCategoryBoiling implements IRecipeCategory<JEIRecipeWrappe
 {
     private final IDrawable background;
     private final IDrawable tankOverlay;
+    private final IDrawable fire;
 
     public JEIRecipeCategoryBoiling(IGuiHelper guiHelper)
     {
         ResourceLocation location = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/stock_pot.png");
         ResourceLocation tankOverlay = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fluidtank_overlay.png");
+        ResourceLocation fire = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fire.png");
+
         this.background = guiHelper.createDrawable(location, 25, 14, 126, 57);
         this.tankOverlay = guiHelper.createDrawable(tankOverlay, 0, 0, 16, 55);
+        this.fire = guiHelper.createDrawable(fire, 0, 0, 14, 14);
+
     }
 
     @Override
@@ -51,6 +57,12 @@ public class JEIRecipeCategoryBoiling implements IRecipeCategory<JEIRecipeWrappe
     public String getModName()
     {
         return BoneAppleTea.NAME;
+    }
+
+    @Override
+    public void drawExtras(Minecraft minecraft)
+    {
+        fire.draw(minecraft, 56, 41);
     }
 
     @Override

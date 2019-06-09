@@ -51,6 +51,10 @@ public class GuiStockPot extends GuiContainer
 
         GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(1), outputFluidTankGUI, guiLeft, guiTop);
         GuiUtil.drawFluidTankOverlay(this, guiLeft + outputFluidTankGUI.x, guiTop + outputFluidTankGUI.y);
+
+        if (tileEntity.boilTime > 0) GuiUtil.drawArrow0(this, guiLeft + 77, guiTop + 34, (float) (tileEntity.maxBoilTime - tileEntity.boilTime) / tileEntity.maxBoilTime);
+
+        if (tileEntity.hasFire) GuiUtil.drawFire(this, guiLeft + 81, guiTop + 55);
     }
 
     protected void renderFluidToolTip(int x, int y)
