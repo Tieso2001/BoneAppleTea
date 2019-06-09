@@ -131,6 +131,8 @@ public class TileWoodenFermentingBarrel extends TileEntity implements ITickable
         if (compound.hasKey("items")) itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
         if (compound.hasKey("fluidsInput")) inputFluidTank.readFromNBT(compound.getCompoundTag("fluidsInput"));
         if (compound.hasKey("fluidsOutput")) outputFluidTank.readFromNBT(compound.getCompoundTag("fluidsOutput"));
+        fermentTime = compound.getInteger("fermentTime");
+        maxFermentTime = compound.getInteger("maxFermentTime");
     }
 
     @Override
@@ -147,6 +149,9 @@ public class TileWoodenFermentingBarrel extends TileEntity implements ITickable
         NBTTagCompound outputFluidTankNBT = new NBTTagCompound();
         outputFluidTank.writeToNBT(outputFluidTankNBT);
         compound.setTag("fluidsOutput", outputFluidTankNBT);
+
+        compound.setInteger("fermentTime", fermentTime);
+        compound.setInteger("maxFermentTime", maxFermentTime);
 
         return compound;
     }

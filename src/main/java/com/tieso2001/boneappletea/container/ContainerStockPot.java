@@ -21,6 +21,7 @@ public class ContainerStockPot extends Container
     private TileStockPot tileEntity;
     private int boilTime;
     private int maxBoilTime;
+    private boolean hasFire;
 
     public ContainerStockPot(IInventory playerInventory, TileStockPot tileEntity)
     {
@@ -123,8 +124,9 @@ public class ContainerStockPot extends Container
         for (int i = 0; i < this.listeners.size(); ++i)
         {
             IContainerListener iContainerListener = this.listeners.get(i);
-            if (this.boilTime != this.tileEntity.boilTime) iContainerListener.sendWindowProperty(this, 0, this.tileEntity.boilTime);
-            if (this.maxBoilTime != this.tileEntity.maxBoilTime) iContainerListener.sendWindowProperty(this, 1, this.tileEntity.maxBoilTime);
+            if (this.boilTime != this.tileEntity.boilTime) iContainerListener.sendWindowProperty(this, 0, tileEntity.boilTime);
+            if (this.maxBoilTime != this.tileEntity.maxBoilTime) iContainerListener.sendWindowProperty(this, 1, tileEntity.maxBoilTime);
+            if (this.hasFire != this.tileEntity.hasFire) iContainerListener.sendWindowProperty(this, 2, tileEntity.hasFire ? 1 : 0);
         }
     }
 
@@ -133,5 +135,10 @@ public class ContainerStockPot extends Container
     {
         if (id == 0) this.tileEntity.boilTime = data;
         if (id == 1) this.tileEntity.maxBoilTime = data;
+        if (id == 2)
+        {
+            if (data == 0) this.tileEntity.hasFire = false;
+            if (data == 1) this.tileEntity.hasFire = true;
+        }
     }
 }
