@@ -22,6 +22,7 @@ public class ClientEventSubscriber
         registerModel(ModItems.BARLEY_MALT);
         registerModel(ModItems.BARLEY_MALT_CRUSHED);
         registerModel(ModItems.BARLEY_SEEDS);
+        registerModel(ModItems.BOTTLE_BEER);
         registerModel(ModItems.CORN);
         registerModel(ModItems.CORN_KERNELS);
         registerModel(ModItems.HOPS);
