@@ -1,8 +1,8 @@
 package com.tieso2001.boneappletea.gui;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
-import com.tieso2001.boneappletea.container.ContainerStockPot;
-import com.tieso2001.boneappletea.tile.TileStockPot;
+import com.tieso2001.boneappletea.container.ContainerCauldron;
+import com.tieso2001.boneappletea.tile.TileCauldron;
 import com.tieso2001.boneappletea.util.GuiUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiStockPot extends GuiContainer
+public class GuiCauldron extends GuiContainer
 {
     public static final int WIDTH = 176;
     public static final int HEIGHT = 166;
@@ -20,11 +20,11 @@ public class GuiStockPot extends GuiContainer
     private Rectangle inputFluidTankGUI = new Rectangle(53, 15, 16, 55);
     private Rectangle outputFluidTankGUI = new Rectangle(107, 15, 16, 55);
 
-    private TileStockPot tileEntity;
+    private TileCauldron tileEntity;
 
-    private static final ResourceLocation background = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/stock_pot.png");
+    private static final ResourceLocation background = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/cauldron.png");
 
-    public GuiStockPot(TileStockPot tileEntity, ContainerStockPot container)
+    public GuiCauldron(TileCauldron tileEntity, ContainerCauldron container)
     {
         super(container);
         this.xSize = WIDTH;

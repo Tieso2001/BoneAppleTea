@@ -38,7 +38,7 @@ public class PluginJEI implements IModPlugin
 
     private void registerStockPotHandler(@Nonnull IModRegistry registry)
     {
-        registry.addRecipeCatalyst(new ItemStack(Item.getItemFromBlock(ModBlocks.STOCK_POT)), BOILING_ID);
+        registry.addRecipeCatalyst(new ItemStack(Item.getItemFromBlock(ModBlocks.CAULDRON)), BOILING_ID);
         List<JEIRecipeBoiling> recipes = new ArrayList<>();
         for (RecipeBoiling recipe : RecipeBoilingRegistry.getRecipeMap().values())
         {

@@ -2,7 +2,7 @@ package com.tieso2001.boneappletea.container;
 
 import com.tieso2001.boneappletea.network.ModPacketHandler;
 import com.tieso2001.boneappletea.network.PacketFluidTankUpdate;
-import com.tieso2001.boneappletea.tile.TileStockPot;
+import com.tieso2001.boneappletea.tile.TileCauldron;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -16,14 +16,14 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerStockPot extends Container
+public class ContainerCauldron extends Container
 {
-    private TileStockPot tileEntity;
+    private TileCauldron tileEntity;
     private int boilTime;
     private int maxBoilTime;
     private boolean hasFire;
 
-    public ContainerStockPot(IInventory playerInventory, TileStockPot tileEntity)
+    public ContainerCauldron(IInventory playerInventory, TileCauldron tileEntity)
     {
         this.tileEntity = tileEntity;
         addTileSlots();
