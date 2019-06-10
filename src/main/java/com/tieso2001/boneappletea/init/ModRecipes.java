@@ -1,6 +1,8 @@
 package com.tieso2001.boneappletea.init;
 
 import com.tieso2001.boneappletea.recipe.RecipeBoilingRegistry;
+import com.tieso2001.boneappletea.recipe.RecipeFermenting;
+import com.tieso2001.boneappletea.recipe.RecipeFermentingRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -42,6 +44,6 @@ public class ModRecipes
 
     public static void initFermenting()
     {
-
+        RecipeFermentingRegistry.addRecipe("beer", new ItemStack(ModItems.YEAST), new FluidStack(ModFluids.HOPPED_WORT, 125), new FluidStack(ModFluids.BEER, 125), 2400);
     }
 }
