@@ -2,6 +2,7 @@ package com.tieso2001.boneappletea.event;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
 import com.tieso2001.boneappletea.block.*;
+import com.tieso2001.boneappletea.block.fluids.BlockFluidBeer;
 import com.tieso2001.boneappletea.block.fluids.BlockFluidHoppedWort;
 import com.tieso2001.boneappletea.block.fluids.BlockFluidSweetWort;
 import com.tieso2001.boneappletea.init.ModBlocks;
@@ -26,13 +27,16 @@ public class EventBusSubscriber
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event)
     {
+        FluidRegistry.registerFluid(ModFluids.BEER);
         FluidRegistry.registerFluid(ModFluids.HOPPED_WORT);
         FluidRegistry.registerFluid(ModFluids.SWEET_WORT);
 
+        FluidRegistry.addBucketForFluid(ModFluids.BEER);
         FluidRegistry.addBucketForFluid(ModFluids.HOPPED_WORT);
         FluidRegistry.addBucketForFluid(ModFluids.SWEET_WORT);
 
         final Block[] blocks = {
+                new BlockFluidBeer().setRegistryName("beer").setTranslationKey(BoneAppleTea.MODID + "." + "beer"),
                 new BlockFluidHoppedWort().setRegistryName("hopped_wort").setTranslationKey(BoneAppleTea.MODID + "." + "hopped_wort"),
                 new BlockFluidSweetWort().setRegistryName("sweet_wort").setTranslationKey(BoneAppleTea.MODID + "." + "sweet_wort"),
 
