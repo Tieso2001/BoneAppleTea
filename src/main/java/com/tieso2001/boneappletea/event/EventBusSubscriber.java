@@ -7,6 +7,7 @@ import com.tieso2001.boneappletea.block.fluids.BlockFluidHoppedWort;
 import com.tieso2001.boneappletea.block.fluids.BlockFluidSweetWort;
 import com.tieso2001.boneappletea.init.ModBlocks;
 import com.tieso2001.boneappletea.init.ModFluids;
+import com.tieso2001.boneappletea.item.ItemBottleBeer;
 import com.tieso2001.boneappletea.item.ItemMortarAndPestle;
 import com.tieso2001.boneappletea.tile.TileStockPot;
 import com.tieso2001.boneappletea.tile.TileWoodenBarrel;
@@ -63,6 +64,7 @@ public class EventBusSubscriber
                 new Item().setRegistryName("barley_malt").setTranslationKey(BoneAppleTea.MODID + "." + "barley_malt").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new Item().setRegistryName("barley_malt_crushed").setTranslationKey(BoneAppleTea.MODID + "." + "barley_malt_crushed").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new ItemSeeds(ModBlocks.BARLEY, Blocks.FARMLAND).setRegistryName("barley_seeds").setTranslationKey(BoneAppleTea.MODID + "." + "barley_seeds").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
+                new ItemBottleBeer().setRegistryName("bottle_beer").setTranslationKey(BoneAppleTea.MODID + "." + "bottle_beer").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new ItemFood(1, 0.6F,false).setRegistryName("corn").setTranslationKey(BoneAppleTea.MODID + "." + "corn").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new ItemSeedFood(1, 0.3F, ModBlocks.CORN, Blocks.FARMLAND).setRegistryName("corn_kernels").setTranslationKey(BoneAppleTea.MODID + "." + "corn_kernels").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),
                 new Item().setRegistryName("hops").setTranslationKey(BoneAppleTea.MODID + "." + "hops").setCreativeTab(BoneAppleTea.TAB_BONE_APPLE_TEA),

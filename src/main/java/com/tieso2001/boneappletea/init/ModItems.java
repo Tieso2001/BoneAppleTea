@@ -1,6 +1,7 @@
 package com.tieso2001.boneappletea.init;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
+import com.tieso2001.boneappletea.item.ItemBottleBeer;
 import com.tieso2001.boneappletea.item.ItemMortarAndPestle;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -16,6 +17,7 @@ public class ModItems
     public static final Item BARLEY_MALT = null;
     public static final Item BARLEY_MALT_CRUSHED = null;
     public static final ItemSeeds BARLEY_SEEDS = null;
+    public static final ItemBottleBeer BOTTLE_BEER = null;
     public static final ItemFood CORN = null;
     public static final ItemSeedFood CORN_KERNELS = null;
     public static final Item HOPS = null;
