@@ -1,12 +1,12 @@
 package com.tieso2001.boneappletea.handler;
 
-import com.tieso2001.boneappletea.container.ContainerStockPot;
+import com.tieso2001.boneappletea.container.ContainerCauldron;
 import com.tieso2001.boneappletea.container.ContainerWoodenBarrel;
 import com.tieso2001.boneappletea.container.ContainerWoodenFermentingBarrel;
-import com.tieso2001.boneappletea.gui.GuiStockPot;
+import com.tieso2001.boneappletea.gui.GuiCauldron;
 import com.tieso2001.boneappletea.gui.GuiWoodenBarrel;
 import com.tieso2001.boneappletea.gui.GuiWoodenFermentingBarrel;
-import com.tieso2001.boneappletea.tile.TileStockPot;
+import com.tieso2001.boneappletea.tile.TileCauldron;
 import com.tieso2001.boneappletea.tile.TileWoodenBarrel;
 import com.tieso2001.boneappletea.tile.TileWoodenFermentingBarrel;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,10 +25,10 @@ public class GuiHandler implements IGuiHandler
     {
         BlockPos pos = new BlockPos(x, y, z);
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileStockPot)
+        if (tileEntity instanceof TileCauldron)
         {
-            TileStockPot tileStockPot = (TileStockPot) tileEntity;
-            return new ContainerStockPot(player.inventory, tileStockPot);
+            TileCauldron tileCauldron = (TileCauldron) tileEntity;
+            return new ContainerCauldron(player.inventory, tileCauldron);
         }
         if (tileEntity instanceof TileWoodenBarrel)
         {
@@ -49,10 +49,10 @@ public class GuiHandler implements IGuiHandler
     {
         BlockPos pos = new BlockPos(x, y, z);
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileStockPot)
+        if (tileEntity instanceof TileCauldron)
         {
-            TileStockPot tileStockPot = (TileStockPot) tileEntity;
-            return new GuiStockPot(tileStockPot, new ContainerStockPot(player.inventory, tileStockPot));
+            TileCauldron tileCauldron = (TileCauldron) tileEntity;
+            return new GuiCauldron(tileCauldron, new ContainerCauldron(player.inventory, tileCauldron));
         }
         if (tileEntity instanceof TileWoodenBarrel)
         {

@@ -25,7 +25,7 @@ public class JEIRecipeCategoryBoiling implements IRecipeCategory<JEIRecipeWrappe
 
     public JEIRecipeCategoryBoiling(IGuiHelper guiHelper)
     {
-        ResourceLocation location = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/stock_pot.png");
+        ResourceLocation location = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/cauldron.png");
         ResourceLocation tankOverlay = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fluidtank_overlay.png");
         ResourceLocation fire = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fire.png");
 

@@ -7,7 +7,7 @@ fluid.hopped_wort=Hopped Wort
 fluid.sweet_wort=Sweet Wort
 
 # Blocks
-tile.boneappletea.stock_pot.name=Stock Pot
+tile.boneappletea.cauldron.name=Cauldron
 tile.boneappletea.wooden_barrel.name=Wooden Barrel
 tile.boneappletea.wooden_fermenting_barrel.name=Wooden Fermenting Barrel
 

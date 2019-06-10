@@ -19,7 +19,7 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileStockPot extends TileEntity implements ITickable
+public class TileCauldron extends TileEntity implements ITickable
 {
     public int inputSlots = 1;
     public int outputSlots = 1;

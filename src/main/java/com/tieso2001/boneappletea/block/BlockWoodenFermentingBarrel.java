@@ -3,7 +3,6 @@ package com.tieso2001.boneappletea.block;
 import com.tieso2001.boneappletea.BoneAppleTea;
 import com.tieso2001.boneappletea.init.ModFluids;
 import com.tieso2001.boneappletea.init.ModItems;
-import com.tieso2001.boneappletea.tile.TileWoodenBarrel;
 import com.tieso2001.boneappletea.tile.TileWoodenFermentingBarrel;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;

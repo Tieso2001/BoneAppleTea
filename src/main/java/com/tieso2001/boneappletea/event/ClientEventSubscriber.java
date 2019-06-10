@@ -23,6 +23,7 @@ public class ClientEventSubscriber
         registerModel(ModItems.BARLEY_MALT_CRUSHED);
         registerModel(ModItems.BARLEY_SEEDS);
         registerModel(ModItems.BOTTLE_BEER);
+        registerModel(Item.getItemFromBlock(ModBlocks.CAULDRON));
         registerModel(ModItems.CORN);
         registerModel(ModItems.CORN_KERNELS);
         registerModel(ModItems.HOPS);
@@ -30,7 +31,6 @@ public class ClientEventSubscriber
         registerModel(ModItems.MORTAR_AND_PESTLE);
         registerModel(ModItems.POPCORN);
         registerModel(ModItems.ROASTED_CORN);
-        registerModel(Item.getItemFromBlock(ModBlocks.STOCK_POT));
         registerModel(Item.getItemFromBlock(ModBlocks.WOODEN_BARREL));
         registerModel(Item.getItemFromBlock(ModBlocks.WOODEN_FERMENTING_BARREL));
         registerModel(ModItems.YEAST);

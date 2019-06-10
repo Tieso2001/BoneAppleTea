@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [{
-      "item": "boneappletea:barley_grains"
+    "item": "boneappletea:cauldron"
   }],
   "result": {
-    "item": "boneappletea:barley_seeds"
+    "item": "minecraft:cauldron"
   }
 }
