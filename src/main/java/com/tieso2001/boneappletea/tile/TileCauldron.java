@@ -48,7 +48,6 @@ public class TileCauldron extends TileEntity implements ITickable
             return false;
         }
 
-        /*
         @Nonnull
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
@@ -56,7 +55,6 @@ public class TileCauldron extends TileEntity implements ITickable
             if (!isItemValid(slot, stack)) return stack;
             return super.insertItem(slot, stack, simulate);
         }
-        */
     };
 
     private ItemStackHandler outputItemStackHandler = new ItemStackHandler(outputSlots)
@@ -73,7 +71,6 @@ public class TileCauldron extends TileEntity implements ITickable
             return false;
         }
 
-        /*
         @Nonnull
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
@@ -81,7 +78,6 @@ public class TileCauldron extends TileEntity implements ITickable
             if (!isItemValid(slot, stack)) return stack;
             return super.insertItem(slot, stack, simulate);
         }
-        */
     };
 
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputItemStackHandler, outputItemStackHandler);
@@ -155,7 +151,7 @@ public class TileCauldron extends TileEntity implements ITickable
             return;
         }
 
-        if (outputItemStackHandler.insertItem(0, recipe.getOutputItem().copy(), true).isItemEqual(recipe.getOutputItem().copy()))
+        if (!outputItem.isEmpty() && !outputItem.isItemEqual(recipe.getOutputItem().copy()) || outputItem.getCount() + recipe.getOutputItem().getCount() > outputItemStackHandler.getSlotLimit(0))
         {
             resetRecipe();
             return;
@@ -180,7 +176,7 @@ public class TileCauldron extends TileEntity implements ITickable
         {
             if (!recipe.getInputItem().isEmpty()) inputItemStackHandler.getStackInSlot(0).shrink(recipe.getInputItem().getCount());
             inputFluidTank.drain(recipe.getInputFluid().amount, true);
-            if (!recipe.getOutputItem().isEmpty()) outputItemStackHandler.insertItem(0, recipe.getOutputItem().copy(), false);
+            if (!recipe.getOutputItem().isEmpty()) outputItemStackHandler.setStackInSlot(0, new ItemStack(recipe.getOutputItem().getItem(), outputItem.getCount() + recipe.getOutputItem().getCount()));
             if (recipe.getOutputFluid() != null) outputFluidTank.fillInternal(recipe.getOutputFluid().copy(), true);
             resetRecipe();
         }

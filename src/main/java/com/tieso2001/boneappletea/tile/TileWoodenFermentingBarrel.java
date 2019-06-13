@@ -41,6 +41,14 @@ public class TileWoodenFermentingBarrel extends TileEntity implements ITickable
             }
             return false;
         }
+
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
+        {
+            if (!isItemValid(slot, stack)) return stack;
+            return super.insertItem(slot, stack, simulate);
+        }
     };
 
     private FluidTank inputFluidTank = new FluidTank(tankCapacity)
