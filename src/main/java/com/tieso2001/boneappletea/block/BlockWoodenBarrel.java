@@ -88,6 +88,12 @@ public class BlockWoodenBarrel extends BlockDirectional
     }
 
     @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
+    }
+
+    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {FACING});
