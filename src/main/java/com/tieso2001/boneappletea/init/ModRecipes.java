@@ -35,15 +35,16 @@ public class ModRecipes
 
     public static void initBoiling()
     {
-        RecipeBoilingRegistry.addRecipe("barley_malt", new ItemStack(ModItems.BARLEY_GRAINS), new FluidStack(FluidRegistry.WATER, 250), new ItemStack(ModItems.BARLEY_MALT), null, 1200);
-        RecipeBoilingRegistry.addRecipe("sweet_wort", new ItemStack(ModItems.BARLEY_MALT_CRUSHED), new FluidStack(FluidRegistry.WATER, 250), ItemStack.EMPTY, new FluidStack(ModFluids.SWEET_WORT, 250), 2400);
-        RecipeBoilingRegistry.addRecipe("hopped_wort", new ItemStack(ModItems.HOPS), new FluidStack(ModFluids.SWEET_WORT, 100), ItemStack.EMPTY, new FluidStack(ModFluids.HOPPED_WORT, 100), 2400);
-        RecipeBoilingRegistry.addRecipe("yeast_creation", new ItemStack(Items.DYE, 1, 15), new FluidStack(FluidRegistry.WATER, 250), new ItemStack(ModItems.YEAST), null, 6000);
-        RecipeBoilingRegistry.addRecipe("yeast_production", new ItemStack(ModItems.YEAST), new FluidStack(ModFluids.SWEET_WORT, 100), new ItemStack(ModItems.YEAST, 2), new FluidStack(FluidRegistry.WATER, 100), 1500);
+        RecipeBoilingRegistry.addRecipe("barley_malt", new ItemStack(ModItems.BARLEY_GRAINS), new FluidStack(FluidRegistry.WATER, 250), new ItemStack(ModItems.BARLEY_MALT), null, 1000);
+        RecipeBoilingRegistry.addRecipe("sweet_wort", new ItemStack(ModItems.BARLEY_MALT_CRUSHED), new FluidStack(FluidRegistry.WATER, 250), ItemStack.EMPTY, new FluidStack(ModFluids.SWEET_WORT, 250), 1000);
+        RecipeBoilingRegistry.addRecipe("hopped_wort", new ItemStack(ModItems.HOPS), new FluidStack(ModFluids.SWEET_WORT, 250), ItemStack.EMPTY, new FluidStack(ModFluids.HOPPED_WORT, 250), 500);
+        RecipeBoilingRegistry.addRecipe("yeast_creation", new ItemStack(Items.DYE, 1, 15), new FluidStack(FluidRegistry.WATER, 250), new ItemStack(ModItems.YEAST), null, 8000);
+        RecipeBoilingRegistry.addRecipe("yeast_production", new ItemStack(ModItems.YEAST), new FluidStack(ModFluids.SWEET_WORT, 125), new ItemStack(ModItems.YEAST, 2), new FluidStack(FluidRegistry.WATER, 125), 2000);
     }
 
     public static void initFermenting()
     {
-        RecipeFermentingRegistry.addRecipe("beer", new ItemStack(ModItems.YEAST), new FluidStack(ModFluids.HOPPED_WORT, 125), new FluidStack(ModFluids.BEER, 125), 2400);
+        RecipeFermentingRegistry.addRecipe("uncarbonated_beer", new ItemStack(ModItems.YEAST), new FluidStack(ModFluids.HOPPED_WORT, 125), new FluidStack(ModFluids.UNCARBONATED_BEER, 125), 6000);
+        RecipeFermentingRegistry.addRecipe("beer", new ItemStack(Items.SUGAR), new FluidStack(ModFluids.UNCARBONATED_BEER, 250), new FluidStack(ModFluids.BEER, 250), 3000);
     }
 }
