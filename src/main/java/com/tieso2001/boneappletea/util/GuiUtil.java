@@ -92,6 +92,44 @@ public class GuiUtil
         return container.mc.getTextureMapBlocks().getTextureExtry(fluid.getStill().toString());
     }
 
+    public static String ticksToTime(int ticks)
+    {
+        if (ticks < 20) return "0";
+
+        int timeSeconds = ticks / 20;
+
+        int timeMinutes = 0;
+        for (int i = timeSeconds; i >= 60; i = i - 60)
+        {
+            timeMinutes++;
+            timeSeconds = timeSeconds - 60;
+        }
+
+        int timeHours = 0;
+        for (int i = timeMinutes; i >= 60; i = i - 60)
+        {
+            timeHours++;
+            timeMinutes = timeMinutes - 60;
+        }
+
+        String string = timeSeconds + "s";
+
+        if (timeHours > 0)
+        {
+            if (timeSeconds < 10) string = "0" + string;
+
+            if (timeMinutes < 10) string = timeHours + "h 0" + timeMinutes + "m " + string;
+            else string = timeHours + "h " + timeMinutes + "m " + string;
+        }
+        else if (timeMinutes > 0)
+        {
+            if (timeSeconds < 10) string = timeMinutes + "m 0" + string;
+            else string = timeMinutes + "m " + string;
+        }
+
+        return string;
+    }
+
     public static String numberToString(int number)
     {
         int thousand;
