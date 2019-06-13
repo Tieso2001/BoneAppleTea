@@ -29,15 +29,18 @@ public class EventBusSubscriber
     public static void registerBlocks(RegistryEvent.Register<Block> event)
     {
         FluidRegistry.registerFluid(ModFluids.BEER);
+        FluidRegistry.registerFluid(ModFluids.UNCARBONATED_BEER);
         FluidRegistry.registerFluid(ModFluids.HOPPED_WORT);
         FluidRegistry.registerFluid(ModFluids.SWEET_WORT);
 
         FluidRegistry.addBucketForFluid(ModFluids.BEER);
+        FluidRegistry.addBucketForFluid(ModFluids.UNCARBONATED_BEER);
         FluidRegistry.addBucketForFluid(ModFluids.HOPPED_WORT);
         FluidRegistry.addBucketForFluid(ModFluids.SWEET_WORT);
 
         final Block[] blocks = {
                 new BlockFluidBeer().setRegistryName("beer").setTranslationKey(BoneAppleTea.MODID + "." + "beer"),
+                new BlockFluidBeer().setRegistryName("uncarbonated_beer").setTranslationKey(BoneAppleTea.MODID + "." + "uncarbonated_beer"),
                 new BlockFluidHoppedWort().setRegistryName("hopped_wort").setTranslationKey(BoneAppleTea.MODID + "." + "hopped_wort"),
                 new BlockFluidSweetWort().setRegistryName("sweet_wort").setTranslationKey(BoneAppleTea.MODID + "." + "sweet_wort"),
 

@@ -49,6 +49,7 @@ public class BoneAppleTea
         public void displayAllRelevantItems(NonNullList<ItemStack> p_78018_1_)
         {
             p_78018_1_.add(FluidUtil.getFilledBucket(new FluidStack(ModFluids.BEER, 1000)));
+            p_78018_1_.add(FluidUtil.getFilledBucket(new FluidStack(ModFluids.UNCARBONATED_BEER, 1000)));
             p_78018_1_.add(FluidUtil.getFilledBucket(new FluidStack(ModFluids.HOPPED_WORT, 1000)));
             p_78018_1_.add(FluidUtil.getFilledBucket(new FluidStack(ModFluids.SWEET_WORT, 1000)));
             super.displayAllRelevantItems(p_78018_1_);
