@@ -54,7 +54,7 @@ public class GuiCauldron extends GuiContainer
 
         if (tileEntity.boilTime > 0) GuiUtil.drawArrow0(this, guiLeft + 77, guiTop + 34, (float) (tileEntity.maxBoilTime - tileEntity.boilTime) / tileEntity.maxBoilTime);
 
-        if (tileEntity.hasFire) GuiUtil.drawFire(this, guiLeft + 81, guiTop + 55);
+        if (tileEntity.heatAmount > 0) GuiUtil.drawFire(this, guiLeft + 81, guiTop + 55, (float) tileEntity.heatAmount / tileEntity.maxHeatAmount);
     }
 
     protected void renderFluidToolTip(int x, int y)
