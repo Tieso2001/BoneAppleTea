@@ -27,7 +27,8 @@ public class TileCauldron extends TileEntity implements ITickable
     public int tankCapacity = 1000;
     public int boilTime = 0;
     public int maxBoilTime = 1;
-    public boolean hasFire = false;
+    public int heatAmount = 0;
+    public int maxHeatAmount = 300;
 
     private ItemStackHandler inputItemStackHandler = new ItemStackHandler(inputSlots)
     {
@@ -36,6 +37,26 @@ public class TileCauldron extends TileEntity implements ITickable
         {
             markDirty();
         }
+
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack)
+        {
+            for (RecipeBoiling recipe : RecipeBoilingRegistry.getRecipeMap().values())
+            {
+                if (recipe.getInputItem().isItemEqual(stack)) return true;
+            }
+            return false;
+        }
+
+        /*
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
+        {
+            if (!isItemValid(slot, stack)) return stack;
+            return super.insertItem(slot, stack, simulate);
+        }
+        */
     };
 
     private ItemStackHandler outputItemStackHandler = new ItemStackHandler(outputSlots)
@@ -51,6 +72,16 @@ public class TileCauldron extends TileEntity implements ITickable
         {
             return false;
         }
+
+        /*
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
+        {
+            if (!isItemValid(slot, stack)) return stack;
+            return super.insertItem(slot, stack, simulate);
+        }
+        */
     };
 
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputItemStackHandler, outputItemStackHandler);
@@ -89,16 +120,21 @@ public class TileCauldron extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        hasFire = (world.getBlockState(pos.down()).getBlock() == Blocks.FIRE);
-        if (!hasFire)
+        if (world.getBlockState(pos.down()).getBlock() == Blocks.FIRE)
+        {
+            if (heatAmount < maxHeatAmount) heatAmount++;
+        }
+        else if (heatAmount > 0) heatAmount--;
+
+        if (heatAmount <= 0)
         {
             resetRecipe();
             return;
         }
 
-
         ItemStack inputItem = inputItemStackHandler.getStackInSlot(0);
         FluidStack inputFluid = inputFluidTank.getFluid();
+        ItemStack outputItem = outputItemStackHandler.getStackInSlot(0);
         RecipeBoiling recipe = RecipeBoilingRegistry.getRecipe(inputItem, inputFluid);
 
         if (recipe == null)
@@ -206,9 +242,16 @@ public class TileCauldron extends TileEntity implements ITickable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
     {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(combinedHandler);
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == EnumFacing.DOWN) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(outputFluidTank);
-        else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(inputFluidTank);
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            if (facing == EnumFacing.DOWN) return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(outputItemStackHandler);
+            else return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(combinedHandler);
+        }
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            if (facing == EnumFacing.DOWN) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(outputFluidTank);
+            else return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(inputFluidTank);
+        }
         return super.getCapability(capability, facing);
     }
 }

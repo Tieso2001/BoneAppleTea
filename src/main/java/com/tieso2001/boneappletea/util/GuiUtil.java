@@ -68,10 +68,10 @@ public class GuiUtil
         container.drawTexturedModalRect(tankLocationX, tankLocationY, 0, 0, 16, 55);
     }
 
-    public static void drawFire(GuiContainer container, int fireLocationX, int fireLocationY)
+    public static void drawFire(GuiContainer container, int fireLocationX, int fireLocationY, float progress)
     {
         bindTexture(container, new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fire.png"));
-        container.drawTexturedModalRect(fireLocationX, fireLocationY, 0, 0, 14, 14);
+        container.drawTexturedModalRect(fireLocationX, fireLocationY + 14 - (int) (progress * 14), 0, 14 - (int) (progress * 14), 14, (int) (progress * 14));
     }
 
     public static void drawArrow0(GuiContainer container, int arrowLocationX, int arrowLocationY, float progress)
