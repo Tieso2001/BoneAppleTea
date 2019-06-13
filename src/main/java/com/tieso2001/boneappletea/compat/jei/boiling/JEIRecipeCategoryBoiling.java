@@ -29,10 +29,9 @@ public class JEIRecipeCategoryBoiling implements IRecipeCategory<JEIRecipeWrappe
         ResourceLocation tankOverlay = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fluidtank_overlay.png");
         ResourceLocation fire = new ResourceLocation(BoneAppleTea.MODID, "textures/gui/elements/fire.png");
 
-        this.background = guiHelper.createDrawable(location, 25, 14, 126, 57);
+        this.background = guiHelper.drawableBuilder(location, 25, 14, 126, 57).addPadding(0, 13, 0, 0).build();
         this.tankOverlay = guiHelper.createDrawable(tankOverlay, 0, 0, 16, 55);
         this.fire = guiHelper.createDrawable(fire, 0, 0, 14, 14);
-
     }
 
     @Override
