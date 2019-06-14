@@ -60,27 +60,16 @@ public class GuiWoodenFermentingBarrel extends GuiContainer
         Rectangle inputFluidTank = new Rectangle(guiLeft + inputFluidTankGUI.x, guiTop + inputFluidTankGUI.y, 16, 55);
         Rectangle outputFluidTank = new Rectangle(guiLeft + outputFluidTankGUI.x, guiTop + outputFluidTankGUI.y, 16, 55);
 
-        if (inputFluidTank.contains(x, y) && tileEntity.getFluidTank(0).getFluid() != null)
+        int tankID = -1;
+        if (inputFluidTank.contains(x, y) && tileEntity.getFluidTank(0).getFluidAmount() > 0) tankID = 0;
+        else if (outputFluidTank.contains(x, y) && tileEntity.getFluidTank(1).getFluidAmount() > 0) tankID = 1;
+
+        if (tankID > -1)
         {
-            if (tileEntity.getFluidTank(0).getFluid().amount > 0)
-            {
-                FontRenderer font = this.mc.fontRenderer;
-                List<String> toolTip = new ArrayList<>();
-                toolTip.add(tileEntity.getFluidTank(0).getFluid().getLocalizedName());
-                toolTip.add(GuiUtil.numberToString(tileEntity.getFluidTank(0).getFluid().amount) + " / " + GuiUtil.numberToString(tileEntity.getFluidTank(0).getCapacity()) + " mB");
-                this.drawHoveringText(toolTip, x, y, (font == null ? fontRenderer : font));
-            }
-        }
-        else if (outputFluidTank.contains(x, y) && tileEntity.getFluidTank(1).getFluid() != null)
-        {
-            if (tileEntity.getFluidTank(1).getFluid().amount > 0)
-            {
-                FontRenderer font = this.mc.fontRenderer;
-                List<String> toolTip = new ArrayList<>();
-                toolTip.add(tileEntity.getFluidTank(1).getFluid().getLocalizedName());
-                toolTip.add(GuiUtil.numberToString(tileEntity.getFluidTank(1).getFluid().amount) + " / " + GuiUtil.numberToString(tileEntity.getFluidTank(1).getCapacity()) + " mB");
-                this.drawHoveringText(toolTip, x, y, (font == null ? fontRenderer : font));
-            }
+            List<String> toolTip = new ArrayList<>();
+            toolTip.add(tileEntity.getFluidTank(tankID).getFluid().getLocalizedName());
+            toolTip.add(GuiUtil.getFluidTankAmount(tileEntity.getFluidTank(tankID)));
+            this.drawHoveringText(toolTip, x, y);
         }
     }
 }
