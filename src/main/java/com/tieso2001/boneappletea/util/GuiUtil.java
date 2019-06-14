@@ -92,7 +92,7 @@ public class GuiUtil
         return container.mc.getTextureMapBlocks().getTextureExtry(fluid.getStill().toString());
     }
 
-    public static String ticksToTime(int ticks)
+    public static String getRealTime(int ticks)
     {
         if (ticks < 20) return "0";
 
@@ -130,16 +130,24 @@ public class GuiUtil
         return string;
     }
 
-    public static String numberToString(int number)
+    public static String getFluidTankAmount(FluidTank tank)
     {
-        int thousand;
-        for (thousand = 0; number >= 1000; thousand++)
+        String tankCapacity = Integer.toString(tank.getCapacity());
+        if (tank.getCapacity() >= 1000)
         {
-            number = number - 1000;
+            StringBuilder builder = new StringBuilder();
+            builder.append(tankCapacity).insert(tankCapacity.length() - 3, ",");
+            tankCapacity = builder.toString();
         }
-        if (thousand > 0 && number >= 100) return thousand + "," + number;
-        if (thousand > 0 && number >= 10) return thousand + "," + "0" + number;
-        if (thousand > 0 && number >= 0) return thousand + "," + "00" + number;
-        return "" + number;
+
+        String fluidAmount = Integer.toString(tank.getFluidAmount());
+        if (tank.getFluidAmount() >= 1000)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.append(fluidAmount).insert(fluidAmount.length() - 3, ",");
+            fluidAmount = builder.toString();
+        }
+
+        return fluidAmount + " / " + tankCapacity + " mB";
     }
 }

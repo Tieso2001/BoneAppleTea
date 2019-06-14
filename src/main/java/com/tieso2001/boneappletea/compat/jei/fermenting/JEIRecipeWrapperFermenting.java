@@ -28,7 +28,7 @@ public class JEIRecipeWrapperFermenting implements ICraftingRecipeWrapper
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
-        String time = GuiUtil.ticksToTime(recipe.getRecipe().getFermentTime());
+        String time = GuiUtil.getRealTime(recipe.getRecipe().getFermentTime());
         minecraft.fontRenderer.drawString(time, 99 - minecraft.fontRenderer.getStringWidth(time), 62, Color.gray.getRGB());
     }
 }

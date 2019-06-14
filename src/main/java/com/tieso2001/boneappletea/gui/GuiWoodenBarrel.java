@@ -54,16 +54,15 @@ public class GuiWoodenBarrel extends GuiContainer
     {
         Rectangle fluidTank = new Rectangle(guiLeft + fluidTankGUI.x, guiTop + fluidTankGUI.y, 16, 55);
 
-        if (fluidTank.contains(x, y) && tileEntity.getFluidTank(0).getFluid() != null)
+        int tankID = -1;
+        if (fluidTank.contains(x, y) && tileEntity.getFluidTank(0).getFluidAmount() > 0) tankID = 0;
+
+        if (tankID > -1)
         {
-            if (tileEntity.getFluidTank(0).getFluid().amount > 0)
-            {
-                FontRenderer font = this.mc.fontRenderer;
-                List<String> toolTip = new ArrayList<>();
-                toolTip.add(tileEntity.getFluidTank(0).getFluid().getLocalizedName());
-                toolTip.add(GuiUtil.numberToString(tileEntity.getFluidTank(0).getFluid().amount) + " / " + GuiUtil.numberToString(tileEntity.getFluidTank(0).getCapacity()) + " mB");
-                this.drawHoveringText(toolTip, x, y, (font == null ? fontRenderer : font));
-            }
+            List<String> toolTip = new ArrayList<>();
+            toolTip.add(tileEntity.getFluidTank(tankID).getFluid().getLocalizedName());
+            toolTip.add(GuiUtil.getFluidTankAmount(tileEntity.getFluidTank(tankID)));
+            this.drawHoveringText(toolTip, x, y);
         }
     }
 }

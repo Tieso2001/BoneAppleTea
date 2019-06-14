@@ -29,7 +29,7 @@ public class JEIRecipeWrapperBoiling implements ICraftingRecipeWrapper
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
-        String time = GuiUtil.ticksToTime(recipe.getRecipe().getBoilTime());
+        String time = GuiUtil.getRealTime(recipe.getRecipe().getBoilTime());
         minecraft.fontRenderer.drawString(time, 126 - minecraft.fontRenderer.getStringWidth(time), 62, Color.gray.getRGB());
     }
 }
