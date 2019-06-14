@@ -2,10 +2,8 @@ package com.tieso2001.boneappletea.gui;
 
 import com.tieso2001.boneappletea.BoneAppleTea;
 import com.tieso2001.boneappletea.container.ContainerWoodenBarrel;
-import com.tieso2001.boneappletea.container.ContainerWoodenFermentingBarrel;
 import com.tieso2001.boneappletea.tile.TileWoodenBarrel;
 import com.tieso2001.boneappletea.util.GuiUtil;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
 
@@ -46,8 +44,11 @@ public class GuiWoodenBarrel extends GuiContainer
     {
         GuiUtil.drawRectangle(this, background, guiLeft, guiTop,0, 0, xSize, ySize);
 
-        GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(0), fluidTankGUI, guiLeft, guiTop);
-        GuiUtil.drawFluidTankOverlay(this, guiLeft + fluidTankGUI.x, guiTop + fluidTankGUI.y);
+        if (tileEntity.getFluidTank(0).getFluidAmount() > 0)
+        {
+            GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(0), fluidTankGUI, guiLeft, guiTop);
+            GuiUtil.drawFluidTankOverlay(this, guiLeft + fluidTankGUI.x, guiTop + fluidTankGUI.y);
+        }
     }
 
     protected void renderFluidToolTip(int x, int y)

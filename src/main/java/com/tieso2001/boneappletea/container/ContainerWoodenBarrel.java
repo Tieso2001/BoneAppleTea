@@ -59,8 +59,7 @@ public class ContainerWoodenBarrel extends Container
         {
             if (listener instanceof EntityPlayerMP)
             {
-                if (tileEntity.getFluidTank(0).getFluid() != null) ModPacketHandler.INSTANCE.sendToAll(new PacketFluidTankUpdate(tileEntity, tileEntity.getFluidTank(0).getFluid(), 0));
-                else ModPacketHandler.INSTANCE.sendToAll(new PacketFluidTankUpdate(tileEntity, new FluidStack(FluidRegistry.WATER, 0), 0));
+                ModPacketHandler.INSTANCE.sendToAll(new PacketFluidTankUpdate(tileEntity, tileEntity.getFluidTank(0).getFluid(), 0));
             }
         }
     }
