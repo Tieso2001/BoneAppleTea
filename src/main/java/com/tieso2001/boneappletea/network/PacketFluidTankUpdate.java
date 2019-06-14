@@ -17,6 +17,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+
 public class PacketFluidTankUpdate implements IMessage
 {
     public PacketFluidTankUpdate() {}
@@ -25,7 +27,7 @@ public class PacketFluidTankUpdate implements IMessage
     private FluidStack fluidStack;
     private int tankID;
 
-    public PacketFluidTankUpdate(TileEntity tileEntity, FluidStack fluidStack, int tankID)
+    public PacketFluidTankUpdate(TileEntity tileEntity, @Nullable FluidStack fluidStack, int tankID)
     {
         this.pos = tileEntity.getPos();
         this.fluidStack = fluidStack;
@@ -40,7 +42,7 @@ public class PacketFluidTankUpdate implements IMessage
         buf.writeInt(pos.getZ());
 
         NBTTagCompound compound = new NBTTagCompound();
-        fluidStack.writeToNBT(compound);
+        if (fluidStack != null) fluidStack.writeToNBT(compound);
         ByteBufUtils.writeTag(buf, compound);
 
         buf.writeInt(tankID);
@@ -74,28 +76,19 @@ public class PacketFluidTankUpdate implements IMessage
 
             TileEntity tileEntity = player.world.getTileEntity(pos);
 
-            if (tileEntity != null)
+            if (tileEntity != null && player.world.isBlockLoaded(pos))
             {
                 if (tileEntity instanceof TileCauldron)
                 {
-                    if (player.world.isBlockLoaded(pos))
-                    {
-                        ((TileCauldron) tileEntity).getFluidTank(tankID).setFluid(fluidStack);
-                    }
+                    ((TileCauldron) tileEntity).getFluidTank(tankID).setFluid(fluidStack);
                 }
                 if (tileEntity instanceof TileWoodenBarrel)
                 {
-                    if (player.world.isBlockLoaded(pos))
-                    {
-                        ((TileWoodenBarrel) tileEntity).getFluidTank(tankID).setFluid(fluidStack);
-                    }
+                    ((TileWoodenBarrel) tileEntity).getFluidTank(tankID).setFluid(fluidStack);
                 }
                 if (tileEntity instanceof TileWoodenFermentingBarrel)
                 {
-                    if (player.world.isBlockLoaded(pos))
-                    {
-                        ((TileWoodenFermentingBarrel) tileEntity).getFluidTank(tankID).setFluid(fluidStack);
-                    }
+                    ((TileWoodenFermentingBarrel) tileEntity).getFluidTank(tankID).setFluid(fluidStack);
                 }
             }
             return null;

@@ -4,10 +4,8 @@ import com.tieso2001.boneappletea.BoneAppleTea;
 import com.tieso2001.boneappletea.container.ContainerCauldron;
 import com.tieso2001.boneappletea.tile.TileCauldron;
 import com.tieso2001.boneappletea.util.GuiUtil;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.config.GuiUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -47,11 +45,16 @@ public class GuiCauldron extends GuiContainer
     {
         GuiUtil.drawRectangle(this, background, guiLeft, guiTop,0, 0, xSize, ySize);
 
-        GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(0), inputFluidTankGUI, guiLeft, guiTop);
-        GuiUtil.drawFluidTankOverlay(this, guiLeft + inputFluidTankGUI.x, guiTop + inputFluidTankGUI.y);
+        if (tileEntity.getFluidTank(0).getFluidAmount() > 0)
+        {
+            GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(0), inputFluidTankGUI, guiLeft, guiTop);
+            GuiUtil.drawFluidTankOverlay(this, guiLeft + inputFluidTankGUI.x, guiTop + inputFluidTankGUI.y);
+        }
 
-        GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(1), outputFluidTankGUI, guiLeft, guiTop);
-        GuiUtil.drawFluidTankOverlay(this, guiLeft + outputFluidTankGUI.x, guiTop + outputFluidTankGUI.y);
+        if (tileEntity.getFluidTank(1).getFluidAmount() > 0) {
+            GuiUtil.drawFluidTank(this, tileEntity.getFluidTank(1), outputFluidTankGUI, guiLeft, guiTop);
+            GuiUtil.drawFluidTankOverlay(this, guiLeft + outputFluidTankGUI.x, guiTop + outputFluidTankGUI.y);
+        }
 
         if (tileEntity.boilTime > 0) GuiUtil.drawArrow0(this, guiLeft + 77, guiTop + 34, (float) (tileEntity.maxBoilTime - tileEntity.boilTime) / tileEntity.maxBoilTime);
 
