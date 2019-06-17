@@ -14,8 +14,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
@@ -62,7 +60,6 @@ public class PacketFluidTankUpdate implements IMessage
         tankID = buf.readInt();
     }
 
-    @SideOnly(Side.CLIENT)
     public static class PacketHandler implements IMessageHandler<PacketFluidTankUpdate, IMessage>
     {
         @Override
