@@ -1,25 +1,31 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
+  "pattern":
+  [
     "  $",
     "@#@",
     "@@@"
   ],
-  "key": {
-    "@": {
+  "key":
+  {
+    "@":
+    {
       "item": "minecraft:stone",
       "data": 0
     },
-    "#": {
+    "#":
+    {
       "type": "forge:ore_dict",
       "ore": "plankWood"
     },
-    "$": {
+    "$":
+    {
       "type": "forge:ore_dict",
       "ore": "stickWood"
     }
   },
-  "result": {
+  "result":
+  {
     "item": "boneappletea:mortar_and_pestle"
   }
 }

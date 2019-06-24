@@ -1,15 +1,18 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "ingredients": [
+  "ingredients":
+  [
     {
       "item": "boneappletea:mortar_and_pestle",
       "data": 32767
     },
     {
-      "item": "boneappletea:barley"
+      "type": "forge:ore_dict",
+      "ore": "cropBarley"
     }
   ],
-  "result": {
+  "result":
+  {
     "item": "boneappletea:barley_grains"
   }
 }

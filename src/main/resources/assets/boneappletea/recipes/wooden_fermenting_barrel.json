@@ -1,25 +1,32 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
+  "pattern":
+  [
     "@%@",
     "$ $",
     "@#@"
   ],
-  "key": {
-    "@": {
+  "key":
+  {
+    "@":
+    {
       "type": "forge:ore_dict",
       "ore": "plankWood"
     },
-    "#": {
+    "#":
+    {
       "type": "forge:ore_dict",
       "ore": "slabWood"
     },
-    "$": {
+    "$":
+    {
       "type": "forge:ore_dict",
       "ore": "logWood"
     },
-    "%": {
-      "item": "minecraft:gold_ingot"
+    "%":
+    {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
     }
   },
   "result": {
