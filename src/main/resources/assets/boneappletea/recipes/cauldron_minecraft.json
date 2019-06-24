@@ -1,9 +1,13 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "ingredients": [{
-    "item": "boneappletea:cauldron"
-  }],
-  "result": {
+  "ingredients":
+  [
+    {
+      "item": "boneappletea:cauldron"
+    }
+  ],
+  "result":
+  {
     "item": "minecraft:cauldron"
   }
 }

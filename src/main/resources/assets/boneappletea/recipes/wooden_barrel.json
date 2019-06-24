@@ -1,28 +1,36 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
+  "pattern":
+  [
     "@%@",
     "$ $",
     "@#@"
   ],
-  "key": {
-    "@": {
+  "key":
+  {
+    "@":
+    {
       "type": "forge:ore_dict",
       "ore": "plankWood"
     },
-    "#": {
+    "#":
+    {
       "type": "forge:ore_dict",
       "ore": "slabWood"
     },
-    "$": {
+    "$":
+    {
       "type": "forge:ore_dict",
       "ore": "logWood"
     },
-    "%": {
-      "item": "minecraft:iron_ingot"
+    "%":
+    {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     }
   },
-  "result": {
+  "result":
+  {
     "item": "boneappletea:wooden_barrel"
   }
 }
