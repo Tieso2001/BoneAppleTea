@@ -1,5 +1,6 @@
 package com.tieso2001.boneappletea;
 
+import com.tieso2001.boneappletea.compat.oredict.ModOreDictionary;
 import com.tieso2001.boneappletea.init.ModFluids;
 import com.tieso2001.boneappletea.init.ModItems;
 import com.tieso2001.boneappletea.init.ModRecipes;
@@ -70,6 +71,7 @@ public class BoneAppleTea
         proxy.init(event);
         ModRecipes.initRecipes();
         NetworkRegistry.INSTANCE.registerGuiHandler(BoneAppleTea.instance, new GuiHandler());
+        ModOreDictionary.init();
     }
 
     @Mod.EventHandler

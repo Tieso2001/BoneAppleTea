@@ -1,7 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [{
-      "item": "boneappletea:hops"
+    "type": "forge:ore_dict",
+    "ore": "cropHops"
   }],
   "result": {
     "item": "boneappletea:hops_seeds"

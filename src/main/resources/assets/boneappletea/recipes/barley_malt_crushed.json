@@ -6,7 +6,8 @@
       "data": 32767
     },
     {
-      "item": "boneappletea:barley_malt"
+      "type": "forge:ore_dict",
+      "ore": "maltBarley"
     }
   ],
   "result": {

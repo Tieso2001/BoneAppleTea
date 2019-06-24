@@ -6,7 +6,8 @@
       "data": 32767
     },
     {
-      "item": "boneappletea:barley"
+      "type": "forge:ore_dict",
+      "ore": "cropBarley"
     }
   ],
   "result": {
