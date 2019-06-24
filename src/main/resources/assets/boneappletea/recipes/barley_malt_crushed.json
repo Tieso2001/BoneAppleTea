@@ -8,7 +8,6 @@
     {
       "type": "forge:ore_dict",
       "ore": "maltBarley"
-    }
   ],
   "result": {
     "item": "boneappletea:barley_malt_crushed"
