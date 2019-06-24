@@ -245,8 +245,8 @@ public class TileCauldron extends TileEntity implements ITickable
         }
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
-            if (facing == EnumFacing.DOWN) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(outputFluidTank);
-            else return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(inputFluidTank);
+            if (facing == EnumFacing.UP) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(inputFluidTank);
+            else return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(outputFluidTank);
         }
         return super.getCapability(capability, facing);
     }
