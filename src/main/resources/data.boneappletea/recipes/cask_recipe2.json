@@ -1,0 +1,12 @@
+{
+  "type": "boneappletea:cask",
+  "ingredient": [
+    {
+      "item": "boneappletea:barley"
+    }
+  ],
+  "result": {
+    "item": "boneappletea:barley_grains"
+  },
+  "caskTime": 10
+}

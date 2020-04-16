@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "boneappletea:barley"
+    }
+  ],
+  "result": {
+    "item": "boneappletea:barley_grains"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "block.boneappletea.barley": "Barley",
+
+  "block.boneappletea.oak_cask": "Oak Cask",
+  "block.boneappletea.spruce_cask": "Spruce Cask",
+  "block.boneappletea.birch_cask": "Birch Cask",
+  "block.boneappletea.jungle_cask": "Jungle Cask",
+  "block.boneappletea.acacia_cask": "Acacia Cask",
+  "block.boneappletea.dark_oak_cask": "Dark Oak Cask",
+
+  "item.boneappletea.barley": "Barley",
+  "item.boneappletea.barley_grains": "Barley Grains",
+  "item.boneappletea.barley_seeds": "Barley Seeds",
+  "item.boneappletea.wheat_grains": "Wheat Grains",
+
+  "itemGroup.boneappletea": "Bone Apple Tea"
+}
