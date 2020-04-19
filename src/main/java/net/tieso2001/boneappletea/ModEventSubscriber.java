@@ -49,8 +49,6 @@ public class ModEventSubscriber {
     @SubscribeEvent
     public static void onRegisterItems(final RegistryEvent.Register<Item> event) {
         event.getRegistry().registerAll(
-
-
                 setup(new Item(new Item.Properties().group(ModItemGroups.BONE_APPLE_TEA_GROUP)), "barley"),
                 setup(new Item(new Item.Properties().group(ModItemGroups.BONE_APPLE_TEA_GROUP)), "barley_grains"),
                 setup(new BlockNamedItem(ModBlocks.BARLEY, new Item.Properties().group(ModItemGroups.BONE_APPLE_TEA_GROUP)), "barley_seeds"),
