@@ -10,6 +10,8 @@ public class ModBlocks {
 
     public static final Block BARLEY = ModUtil.Null();
 
+    public static final Block FRUIT_PRESS = ModUtil.Null();
+
     public static final Block OAK_CASK = ModUtil.Null();
     public static final Block SPRUCE_CASK = ModUtil.Null();
     public static final Block BIRCH_CASK = ModUtil.Null();

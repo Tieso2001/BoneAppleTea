@@ -1,8 +1,0 @@
-{
-  "type": "boneappletea:cask",
-  "ingredientFluid": "minecraft:lava",
-  "ingredientFluidAmount": 1000,
-  "resultFluid": "minecraft:water",
-  "resultFluidAmount": 1000,
-  "caskTime": 10
-}

@@ -2,12 +2,16 @@ package net.tieso2001.boneappletea;
 
 import net.tieso2001.boneappletea.block.BarleyBlock;
 import net.tieso2001.boneappletea.block.CaskBlock;
+import net.tieso2001.boneappletea.block.FruitPressBlock;
 import net.tieso2001.boneappletea.init.ModBlocks;
 import net.tieso2001.boneappletea.init.ModItemGroups;
 import net.tieso2001.boneappletea.inventory.container.CaskContainer;
 import net.tieso2001.boneappletea.recipe.CaskRecipe;
 import net.tieso2001.boneappletea.recipe.CaskRecipeSerializer;
+import net.tieso2001.boneappletea.recipe.FruitPressRecipe;
+import net.tieso2001.boneappletea.recipe.FruitPressRecipeSerializer;
 import net.tieso2001.boneappletea.tileentity.CaskTileEntity;
+import net.tieso2001.boneappletea.tileentity.FruitPressTileEntity;
 import net.tieso2001.boneappletea.world.feature.BarleyFeature;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -37,6 +41,8 @@ public class ModEventSubscriber {
         event.getRegistry().registerAll(
                 setup(new BarleyBlock(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.0F).sound(SoundType.CROP)), "barley"),
 
+                setup(new FruitPressBlock(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0)), "fruit_press"),
+
                 setup(new CaskBlock(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0)), "oak_cask"),
                 setup(new CaskBlock(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0)), "spruce_cask"),
                 setup(new CaskBlock(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0)), "birch_cask"),
@@ -54,6 +60,8 @@ public class ModEventSubscriber {
                 setup(new BlockNamedItem(ModBlocks.BARLEY, new Item.Properties().group(ModItemGroups.BONE_APPLE_TEA_GROUP)), "barley_seeds"),
                 setup(new Item(new Item.Properties().group(ModItemGroups.BONE_APPLE_TEA_GROUP)), "wheat_grains"),
 
+                setup(new BlockItem(ModBlocks.FRUIT_PRESS, new Item.Properties().group(ModItemGroups.BONE_APPLE_TEA_GROUP)), "fruit_press"),
+
                 setup(new BlockItem(ModBlocks.OAK_CASK, new Item.Properties().group(ModItemGroups.BONE_APPLE_TEA_GROUP)), "oak_cask"),
                 setup(new BlockItem(ModBlocks.SPRUCE_CASK, new Item.Properties().group(ModItemGroups.BONE_APPLE_TEA_GROUP)), "spruce_cask"),
                 setup(new BlockItem(ModBlocks.BIRCH_CASK, new Item.Properties().group(ModItemGroups.BONE_APPLE_TEA_GROUP)), "birch_cask"),
@@ -66,6 +74,7 @@ public class ModEventSubscriber {
     @SubscribeEvent
     public static void onRegisterTileEntityTypes(final RegistryEvent.Register<TileEntityType<?>> event) {
         event.getRegistry().registerAll(
+                setup(TileEntityType.Builder.create(FruitPressTileEntity::new, ModBlocks.FRUIT_PRESS).build(null), "fruit_press"),
                 setup(TileEntityType.Builder.create(CaskTileEntity::new, ModBlocks.OAK_CASK, ModBlocks.SPRUCE_CASK, ModBlocks.BIRCH_CASK, ModBlocks.JUNGLE_CASK, ModBlocks.ACACIA_CASK, ModBlocks.DARK_OAK_CASK).build(null), "cask")
         );
     }
@@ -83,6 +92,7 @@ public class ModEventSubscriber {
     @SubscribeEvent
     public static void onRegisterRecipeSerializers(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
         event.getRegistry().registerAll(
+                new FruitPressRecipeSerializer<>(FruitPressRecipe::new).setRegistryName(BoneAppleTea.MOD_ID, "fruit_press"),
                 new CaskRecipeSerializer<>(CaskRecipe::new).setRegistryName(BoneAppleTea.MOD_ID, "cask")
         );
     }

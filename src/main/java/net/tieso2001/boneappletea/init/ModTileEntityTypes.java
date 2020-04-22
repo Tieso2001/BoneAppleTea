@@ -8,5 +8,6 @@ import net.tieso2001.boneappletea.util.ModUtil;
 @ObjectHolder(BoneAppleTea.MOD_ID)
 public class ModTileEntityTypes {
 
+    public static final TileEntityType<?> FRUIT_PRESS = ModUtil.Null();
     public static final TileEntityType<?> CASK = ModUtil.Null();
 }
