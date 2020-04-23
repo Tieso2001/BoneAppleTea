@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LSL",
+    "W W",
+    "LSL"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:acacia_planks"
+    },
+    "L": {
+      "item": "minecraft:acacia_log"
+    },
+    "S": {
+      "item": "minecraft:acacia_slab"
+    }
+  },
+  "result": {
+    "item": "boneappletea:acacia_cask"
+  }
+}
