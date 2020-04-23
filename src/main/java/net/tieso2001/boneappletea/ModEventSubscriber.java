@@ -41,7 +41,7 @@ public class ModEventSubscriber {
         event.getRegistry().registerAll(
                 setup(new BarleyBlock(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.0F).sound(SoundType.CROP)), "barley"),
 
-                setup(new FruitPressBlock(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0)), "fruit_press"),
+                setup(new FruitPressBlock(Block.Properties.create(Material.WOOD).notSolid().hardnessAndResistance(2.0F).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0)), "fruit_press"),
 
                 setup(new CaskBlock(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0)), "oak_cask"),
                 setup(new CaskBlock(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0)), "spruce_cask"),

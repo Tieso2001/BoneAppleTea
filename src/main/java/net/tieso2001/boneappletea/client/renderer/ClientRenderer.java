@@ -8,11 +8,12 @@ import net.tieso2001.boneappletea.init.ModBlocks;
 public class ClientRenderer {
 
     public static void registerBlockRenderLayer() {
-        Block[] crops = {
-                ModBlocks.BARLEY
+        Block[] cutout_blocks = {
+                ModBlocks.BARLEY,
+                ModBlocks.FRUIT_PRESS
         };
 
-        for (Block block : crops) {
+        for (Block block : cutout_blocks) {
             RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
         }
     }
