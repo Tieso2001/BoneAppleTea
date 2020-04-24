@@ -1,7 +1,7 @@
 package net.tieso2001.boneappletea.setup;
 
 import net.tieso2001.boneappletea.client.gui.screen.CaskScreen;
-import net.tieso2001.boneappletea.client.renderer.ClientRenderer;
+import net.tieso2001.boneappletea.client.render.ClientRenderer;
 import net.tieso2001.boneappletea.init.ModContainerTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;

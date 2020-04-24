@@ -1,4 +1,4 @@
-package net.tieso2001.boneappletea.client.renderer;
+package net.tieso2001.boneappletea.client.render;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
