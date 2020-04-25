@@ -7,6 +7,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tieso2001.boneappletea.init.ModItems;
 import net.tieso2001.boneappletea.init.ModRecipeSerializers;
 import net.tieso2001.boneappletea.init.ModTileEntityTypes;
+import net.tieso2001.boneappletea.network.ModPackets;
 
 @Mod(BoneAppleTea.MOD_ID)
 public final class BoneAppleTea {
@@ -20,5 +21,7 @@ public final class BoneAppleTea {
         ModItems.ITEMS.register(modEventBus);
         ModTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+
+        ModPackets.register();
     }
 }
