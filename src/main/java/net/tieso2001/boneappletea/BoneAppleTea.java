@@ -1,28 +1,24 @@
 package net.tieso2001.boneappletea;
 
-import net.tieso2001.boneappletea.setup.ClientProxy;
-import net.tieso2001.boneappletea.setup.IProxy;
-import net.tieso2001.boneappletea.setup.ServerProxy;
-import net.tieso2001.boneappletea.world.WorldGen;
-import net.minecraftforge.fml.DeferredWorkQueue;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.tieso2001.boneappletea.init.ModBlocks;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.tieso2001.boneappletea.init.ModItems;
+import net.tieso2001.boneappletea.init.ModRecipeSerializers;
+import net.tieso2001.boneappletea.init.ModTileEntityTypes;
 
 @Mod(BoneAppleTea.MOD_ID)
-public class BoneAppleTea {
+public final class BoneAppleTea {
 
     public static final String MOD_ID = "boneappletea";
 
-    public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
-
     public BoneAppleTea() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-    }
+        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-    private void setup(final FMLCommonSetupEvent event) {
-        proxy.init();
-        DeferredWorkQueue.runLater(WorldGen::setupWorldGen);
+        ModBlocks.BLOCKS.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
+        ModTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
     }
 }

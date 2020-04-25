@@ -41,7 +41,7 @@ public class FruitPressTileEntity extends TileEntity implements ITickableTileEnt
     private RecipeWrapper recipeWrapper;
 
     public FruitPressTileEntity() {
-        super(ModTileEntityTypes.FRUIT_PRESS);
+        super(ModTileEntityTypes.FRUIT_PRESS.get());
         slot = createItemStackHandler();
         tank = new FluidTank(8000);
         recipeWrapper = new RecipeWrapper(slot);

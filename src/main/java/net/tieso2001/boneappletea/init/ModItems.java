@@ -1,15 +1,33 @@
 package net.tieso2001.boneappletea.init;
 
+import net.minecraft.item.BlockNamedItem;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.tieso2001.boneappletea.BoneAppleTea;
 import net.minecraft.item.Item;
-import net.minecraftforge.registries.ObjectHolder;
-import net.tieso2001.boneappletea.util.ModUtil;
 
-@ObjectHolder(BoneAppleTea.MOD_ID)
-public class ModItems {
+public final class ModItems {
 
-    public static final Item BARLEY = ModUtil.Null();
-    public static final Item BARLEY_GRAINS = ModUtil.Null();
-    public static final Item BARLEY_SEEDS = ModUtil.Null();
-    public static final Item WHEAT_GRAINS = ModUtil.Null();
+    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, BoneAppleTea.MOD_ID);
+
+    public static final RegistryObject<Item> BARLEY = ITEMS.register("barley", () ->
+            new Item(new Item.Properties()
+                    .group(ModItemGroups.BONE_APPLE_TEA_GROUP)
+            ));
+
+    public static final RegistryObject<Item> BARLEY_GRAINS = ITEMS.register("barley_grains", () ->
+            new Item(new Item.Properties()
+                    .group(ModItemGroups.BONE_APPLE_TEA_GROUP)
+            ));
+
+    public static final RegistryObject<Item> BARLEY_SEEDS = ITEMS.register("barley_seeds", () ->
+            new BlockNamedItem(ModBlocks.BARLEY.get(), new Item.Properties()
+                    .group(ModItemGroups.BONE_APPLE_TEA_GROUP)
+            ));
+
+    public static final RegistryObject<Item> WHEAT_GRAINS = ITEMS.register("wheat_grains", () ->
+            new Item(new Item.Properties()
+                    .group(ModItemGroups.BONE_APPLE_TEA_GROUP)
+            ));
 }

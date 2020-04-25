@@ -1,20 +1,12 @@
 package net.tieso2001.boneappletea.tileentity;
 
 import net.tieso2001.boneappletea.init.ModTileEntityTypes;
-import net.tieso2001.boneappletea.inventory.container.CaskContainer;
-import net.tieso2001.boneappletea.inventory.container.OutputFluidTank;
 import net.tieso2001.boneappletea.recipe.CaskRecipe;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -30,7 +22,7 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CaskTileEntity extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
+public class CaskTileEntity extends TileEntity implements ITickableTileEntity {
 
     public ItemStackHandler inputSlot;
     public ItemStackHandler outputSlot;
@@ -46,11 +38,11 @@ public class CaskTileEntity extends TileEntity implements ITickableTileEntity, I
     private RecipeWrapper recipeWrapper;
 
     public CaskTileEntity() {
-        super(ModTileEntityTypes.CASK);
+        super(ModTileEntityTypes.CASK.get());
         inputSlot = new ItemStackHandler();
         outputSlot = new ItemStackHandler();
         inputTank = new FluidTank(1000);
-        outputTank = new OutputFluidTank(1000);
+        outputTank = new FluidTank(1000);
         recipeWrapper = new RecipeWrapper(inputSlot);
     }
 
@@ -109,16 +101,5 @@ public class CaskTileEntity extends TileEntity implements ITickableTileEntity, I
         boolean fluidOutputType = outputTank.isEmpty() || outputTank.getFluid().containsFluid(recipe.getResultFluid().copy());
         boolean fluidOutputAmount = outputTank.getFluidAmount() + recipe.getResultFluid().getAmount() <= outputTank.getCapacity();
         return itemInput && fluidInput && outputItemType && outputItemAmount && fluidOutputType && fluidOutputAmount;
-    }
-
-    @Override
-    public ITextComponent getDisplayName() {
-        return new StringTextComponent(getType().getRegistryName().getPath());
-    }
-
-    @Nullable
-    @Override
-    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new CaskContainer(i, world, pos, playerInventory, playerEntity);
     }
 }

@@ -7,9 +7,10 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-public class ModItemGroups {
+public final class ModItemGroups {
 
-    public static final ItemGroup BONE_APPLE_TEA_GROUP = new ModItemGroup(BoneAppleTea.MOD_ID, () -> new ItemStack(ModItems.BARLEY));
+    public static final ItemGroup BONE_APPLE_TEA_GROUP = new ModItemGroup(BoneAppleTea.MOD_ID, () ->
+            new ItemStack(ModItems.BARLEY.get()));
 
     public static final class ModItemGroup extends ItemGroup {
 

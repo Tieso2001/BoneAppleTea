@@ -63,7 +63,7 @@ public class CaskBlock extends Block {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return ModTileEntityTypes.CASK.create();
+        return ModTileEntityTypes.CASK.get().create();
     }
 
     @Override

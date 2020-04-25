@@ -45,7 +45,7 @@ public class FruitPressBlock extends Block {
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         if (state.get(HALF) == DoubleBlockHalf.UPPER) return null;
-        return ModTileEntityTypes.FRUIT_PRESS.create();
+        return ModTileEntityTypes.FRUIT_PRESS.get().create();
     }
 
     @Override

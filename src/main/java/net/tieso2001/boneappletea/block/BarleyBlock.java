@@ -13,6 +13,6 @@ public class BarleyBlock extends CropsBlock {
 
     @Override
     protected IItemProvider getSeedsItem() {
-        return ModItems.BARLEY_SEEDS;
+        return ModItems.BARLEY_SEEDS.get();
     }
 }

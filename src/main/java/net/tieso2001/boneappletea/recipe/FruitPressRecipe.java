@@ -56,7 +56,7 @@ public class FruitPressRecipe implements IRecipe<RecipeWrapper> {
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return ModRecipeSerializers.FRUIT_PRESS;
+        return ModRecipeSerializers.FRUIT_PRESS.get();
     }
 
     @Override
@@ -73,7 +73,7 @@ public class FruitPressRecipe implements IRecipe<RecipeWrapper> {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(ModBlocks.FRUIT_PRESS);
+        return new ItemStack(ModBlocks.FRUIT_PRESS.get());
     }
 
     public Ingredient getIngredient() {

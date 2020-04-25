@@ -8,7 +8,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = BoneAppleTea.MOD_ID)
-public class EventHandlers {
+public final class ForgeEventSubscriber {
 
     @SubscribeEvent
     public static void onLootLoad(LootTableLoadEvent event) {

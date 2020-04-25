@@ -64,7 +64,7 @@ public class CaskRecipe implements IRecipe<RecipeWrapper> {
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return ModRecipeSerializers.CASK;
+        return ModRecipeSerializers.CASK.get();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class CaskRecipe implements IRecipe<RecipeWrapper> {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(ModBlocks.OAK_CASK);
+        return new ItemStack(ModBlocks.OAK_CASK.get());
     }
 
     public FluidStack getIngredientFluid() {
