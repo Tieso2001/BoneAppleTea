@@ -148,7 +148,7 @@ public class FruitPressBlock extends Block {
         BlockPos blockpos = pos.down();
         BlockState blockstate = worldIn.getBlockState(blockpos);
         if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-            return blockstate.isSolidSide(worldIn, blockpos, Direction.UP); // FIXME: can't place on certain blocks when shift placing (e.g. hopper)
+            return super.isValidPosition(state, worldIn, pos);
         } else {
             return blockstate.getBlock() == this;
         }
