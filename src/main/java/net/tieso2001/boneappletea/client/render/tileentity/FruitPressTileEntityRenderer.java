@@ -2,6 +2,7 @@ package net.tieso2001.boneappletea.client.render.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.tieso2001.boneappletea.tileentity.FruitPressTileEntity;
@@ -35,6 +37,8 @@ public class FruitPressTileEntityRenderer extends TileEntityRenderer<FruitPressT
 
     @Override
     public void render(FruitPressTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+
+        Direction FACING = tileEntityIn.getBlockState().get(HorizontalBlock.HORIZONTAL_FACING);
 
         // RENDER FOR FLUIDSTACK
         FluidStack fluid = tileEntityIn.tank.getFluid();
@@ -89,8 +93,13 @@ public class FruitPressTileEntityRenderer extends TileEntityRenderer<FruitPressT
 
                 matrixStackIn.translate(0.5F, 0.38671875F + 0.0390625 * i, 0.5F);
                 matrixStackIn.rotate(Vector3f.XN.rotationDegrees(90));
-                matrixStackIn.rotate(Vector3f.ZN.rotationDegrees(135 * i));
+                matrixStackIn.rotate(Vector3f.ZN.rotationDegrees(120 * i));
                 matrixStackIn.scale(0.625F, 0.625F, 0.625F);
+
+                if (FACING == Direction.NORTH) matrixStackIn.rotate(Vector3f.ZN.rotationDegrees(180));
+                if (FACING == Direction.SOUTH) matrixStackIn.rotate(Vector3f.ZN.rotationDegrees(0));
+                if (FACING == Direction.WEST) matrixStackIn.rotate(Vector3f.ZN.rotationDegrees(90));
+                if (FACING == Direction.EAST) matrixStackIn.rotate(Vector3f.ZN.rotationDegrees(270));
 
                 itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.FIXED, true, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, iBakedModel);
 

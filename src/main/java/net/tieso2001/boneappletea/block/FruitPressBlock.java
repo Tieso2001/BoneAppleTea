@@ -3,12 +3,14 @@ package net.tieso2001.boneappletea.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -18,6 +20,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -33,12 +36,13 @@ import javax.annotation.Nullable;
 
 public class FruitPressBlock extends Block {
 
+    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public FruitPressBlock(Block.Properties properties) {
         super(properties);
-        this.setDefaultState(this.getDefaultState().with(HALF, DoubleBlockHalf.LOWER).with(POWERED, Boolean.FALSE));
+        this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(HALF, DoubleBlockHalf.LOWER).with(POWERED, Boolean.FALSE));
     }
 
     @Override
@@ -114,6 +118,7 @@ public class FruitPressBlock extends Block {
                 }
             }
         }
+        if (state.get(HALF) == DoubleBlockHalf.UPPER) return ActionResultType.PASS;
         return ActionResultType.CONSUME;
     }
 
@@ -161,8 +166,13 @@ public class FruitPressBlock extends Block {
     }
 
     @Override
+    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction) {
+        return state.with(FACING, direction.rotate(state.get(FACING)));
+    }
+
+    @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(HALF).add(POWERED);
+        builder.add(FACING).add(HALF).add(POWERED);
     }
 
     @Nullable
@@ -174,7 +184,7 @@ public class FruitPressBlock extends Block {
         if (pos.getY() < 255 && context.getWorld().getBlockState(pos.up()).isReplaceable(context)) {
             World world = context.getWorld();
             boolean powered = world.isBlockPowered(pos.up());
-            return this.getDefaultState().with(HALF, DoubleBlockHalf.LOWER).with(POWERED, powered);
+            return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(HALF, DoubleBlockHalf.LOWER).with(POWERED, powered);
         }
         return null;
     }
