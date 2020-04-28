@@ -17,10 +17,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.tieso2001.boneappletea.init.ModTileEntityTypes;
 import net.tieso2001.boneappletea.tileentity.FruitPressTileEntity;
 
@@ -64,16 +69,52 @@ public class FruitPressBlock extends Block {
         super.onBlockHarvested(worldIn, pos, state, player);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 
-        if (!worldIn.isRemote && handIn == Hand.MAIN_HAND && state.get(HALF) == DoubleBlockHalf.LOWER) {
+        if (!worldIn.isRemote && handIn == Hand.MAIN_HAND && state.get(HALF) == DoubleBlockHalf.LOWER && !player.isCrouching()) {
+
             FruitPressTileEntity tileEntity = (FruitPressTileEntity) worldIn.getTileEntity(pos);
-            String fluidName = tileEntity.tank.getFluid().getDisplayName().getString();
-            String fluidAmount = Integer.toString(tileEntity.tank.getFluidAmount());
-            player.sendMessage(new StringTextComponent(fluidAmount + " mB " + fluidName));
+            ItemStack heldStack = player.getHeldItem(handIn).copy();
+            ItemStack stack = ItemHandlerHelper.copyStackWithSize(heldStack, 1);
+
+            // fluid
+            IFluidHandler fluidHandler = FluidUtil.getFluidHandler(worldIn, pos, hit.getFace()).map(handler -> handler).orElse(null);
+            IItemHandler playerInventory = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inventory -> inventory).orElse(null);
+            FluidActionResult fluidActionResult = FluidUtil.tryFillContainerAndStow(player.getHeldItem(handIn), fluidHandler, playerInventory, Integer.MAX_VALUE, player, true);
+
+            if (fluidActionResult.isSuccess()) {
+                player.setHeldItem(handIn, fluidActionResult.getResult().copy());
+                worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                return ActionResultType.CONSUME;
+            }
+
+            // insert
+            ItemStack insertion = tileEntity.slot.insertItem(0, stack.copy(), true).copy();
+            if (!insertion.isItemEqual(stack)) {
+
+                if (!heldStack.isEmpty()) {
+                    tileEntity.slot.insertItem(0, stack.copy(), false);
+                    if (!player.isCreative()) player.setHeldItem(handIn, ItemHandlerHelper.copyStackWithSize(heldStack, heldStack.getCount() - 1));
+                    worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.5F, worldIn.rand.nextFloat() * 0.25F + 0.6F);
+                    return ActionResultType.CONSUME;
+                }
+            }
+
+            // extract
+            ItemStack extraction = tileEntity.slot.extractItem(0, 1, true).copy();
+            if (!extraction.isEmpty()) {
+
+                if (heldStack.isEmpty()) {
+
+                    tileEntity.slot.extractItem(0, 1, false);
+                    ItemHandlerHelper.giveItemToPlayer(player, extraction.copy());
+                    return ActionResultType.SUCCESS;
+                }
+            }
         }
-        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+        return ActionResultType.CONSUME;
     }
 
     @Override
@@ -81,6 +122,7 @@ public class FruitPressBlock extends Block {
         worldIn.setBlockState(pos.up(), state.with(HALF, DoubleBlockHalf.UPPER), 3);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 
@@ -100,17 +142,19 @@ public class FruitPressBlock extends Block {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
         BlockPos blockpos = pos.down();
         BlockState blockstate = worldIn.getBlockState(blockpos);
         if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-            return blockstate.isSolidSide(worldIn, blockpos, Direction.UP);
+            return blockstate.isSolidSide(worldIn, blockpos, Direction.UP); // FIXME: can't place on certain blocks when shift placing (e.g. hopper)
         } else {
             return blockstate.getBlock() == this;
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public PushReaction getPushReaction(BlockState state) {
         return PushReaction.BLOCK;
