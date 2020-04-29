@@ -77,9 +77,7 @@ public class FruitPressBlock extends Block {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 
-        if (!worldIn.isRemote && handIn == Hand.MAIN_HAND && state.get(HALF) == DoubleBlockHalf.LOWER && !player.isCrouching()) {
-
-            // TODO: only insert and extract when powered = false
+        if (!worldIn.isRemote && handIn == Hand.MAIN_HAND && state.get(HALF) == DoubleBlockHalf.LOWER && !state.get(POWERED) && !player.isCrouching()) {
 
             FruitPressTileEntity tileEntity = (FruitPressTileEntity) worldIn.getTileEntity(pos);
             ItemStack heldStack = player.getHeldItem(handIn).copy();
