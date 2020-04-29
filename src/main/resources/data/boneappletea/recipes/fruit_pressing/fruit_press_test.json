@@ -1,0 +1,11 @@
+{
+  "type": "boneappletea:fruit_pressing",
+  "ingredient": {
+    "item": "minecraft:apple",
+    "count": 3
+  },
+  "result": {
+    "fluid": "minecraft:water",
+    "amount": 250
+  }
+}

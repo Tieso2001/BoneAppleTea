@@ -1,8 +1,0 @@
-{
-  "type": "boneappletea:fruit_press",
-  "ingredient": {
-    "item": "minecraft:apple"
-  },
-  "fluid": "minecraft:water",
-  "fluidAmount": 250
-}

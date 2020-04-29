@@ -2,12 +2,13 @@ package net.tieso2001.boneappletea.tileentity;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,13 +24,15 @@ import net.tieso2001.boneappletea.init.ModTileEntityTypes;
 import net.tieso2001.boneappletea.network.ModPackets;
 import net.tieso2001.boneappletea.network.packet.setFluidInTankPacket;
 import net.tieso2001.boneappletea.network.packet.setStackInSlotPacket;
-import net.tieso2001.boneappletea.recipe.FruitPressRecipe;
+import net.tieso2001.boneappletea.recipe.FruitPressingRecipe;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public class FruitPressTileEntity extends TileEntity implements ITickableTileEntity {
+
+    private boolean poweredPrevious = true;
 
     public ItemStackHandler slot;
     private final LazyOptional<IItemHandler> itemHolder = LazyOptional.of(() -> slot);
@@ -38,7 +41,7 @@ public class FruitPressTileEntity extends TileEntity implements ITickableTileEnt
         return new ItemStackHandler() {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return super.isItemValid(slot, stack);
+                return FruitPressingRecipe.serializer.ingredientList.contains(stack.getItem());
             }
 
             @Override
@@ -68,6 +71,7 @@ public class FruitPressTileEntity extends TileEntity implements ITickableTileEnt
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
+        super.write(compound);
         compound.put("slot", slot.serializeNBT());
         tank.writeToNBT(compound);
         return compound;
@@ -82,24 +86,28 @@ public class FruitPressTileEntity extends TileEntity implements ITickableTileEnt
 
     @Override
     public void tick() {
+
        if (world.isRemote) return;
 
-       FruitPressRecipe recipe = world.getRecipeManager().getRecipe(FruitPressRecipe.fruit_press, recipeWrapper, world).orElse(null);
+       FruitPressingRecipe recipe = world.getRecipeManager().getRecipe(FruitPressingRecipe.recipeType, recipeWrapper, world).orElse(null);
+       boolean powered = this.getBlockState().get(BlockStateProperties.POWERED);
 
-       if (canProcess(recipe)) {
-           slot.extractItem(0, 1, false);
-           FluidStack fluidstack = new FluidStack(recipe.getFluid().getFluid(), tank.getFluidAmount() + recipe.getFluid().getAmount());
+       if (canProcess(recipe) && !poweredPrevious && powered) {
+           slot.extractItem(0, recipe.getIngredientCount(), false);
+           FluidStack fluidstack = new FluidStack(recipe.getResult().getFluid(), tank.getFluidAmount() + recipe.getResult().getAmount());
            tank.setFluid(fluidstack);
+           world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_HIT, SoundCategory.BLOCKS, 2.0F, world.rand.nextFloat() * 0.25F + 0.6F);
            markDirty();
        }
 
+       poweredPrevious = this.getBlockState().get(BlockStateProperties.POWERED);
        if (world.isBlockLoaded(pos)) synchronizeClient();
     }
 
-    private boolean canProcess(FruitPressRecipe recipe) {
+    private boolean canProcess(FruitPressingRecipe recipe) {
         if (recipe == null) return false;
 
-        FluidStack recipeFluid = recipe.getFluid().copy();
+        FluidStack recipeFluid = recipe.getResult().copy();
         boolean empty = tank.isEmpty() && tank.getCapacity() >= recipeFluid.getAmount();
         boolean fluid = tank.getFluid().isFluidEqual(recipeFluid) && ((tank.getFluidAmount() + recipeFluid.getAmount()) <= tank.getCapacity());
         return empty || fluid;

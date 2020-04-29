@@ -79,6 +79,8 @@ public class FruitPressBlock extends Block {
 
         if (!worldIn.isRemote && handIn == Hand.MAIN_HAND && state.get(HALF) == DoubleBlockHalf.LOWER && !player.isCrouching()) {
 
+            // TODO: only insert and extract when powered = false
+
             FruitPressTileEntity tileEntity = (FruitPressTileEntity) worldIn.getTileEntity(pos);
             ItemStack heldStack = player.getHeldItem(handIn).copy();
             ItemStack stack = ItemHandlerHelper.copyStackWithSize(heldStack, 1);
