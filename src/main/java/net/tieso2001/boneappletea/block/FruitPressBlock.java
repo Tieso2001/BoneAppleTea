@@ -19,6 +19,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -40,9 +44,86 @@ public class FruitPressBlock extends Block {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
+    // LOWER HALF
+    private static final VoxelShape NW_CORNER = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 3.0D, 4.0D, 3.0D);
+    private static final VoxelShape NE_CORNER = Block.makeCuboidShape(13.0D, 0.0D, 0.0D, 16.0D, 4.0D, 3.0D);
+    private static final VoxelShape SW_CORNER = Block.makeCuboidShape(0.0D, 0.0D, 13.0D, 3.0D, 4.0D, 16.0D);
+    private static final VoxelShape SE_CORNER = Block.makeCuboidShape(13.0D, 0.0D, 13.0D, 16.0D, 4.0D, 16.0D);
+    private static final VoxelShape CORNERS = VoxelShapes.or(NW_CORNER, NE_CORNER, SW_CORNER, SE_CORNER);
+
+    private static final VoxelShape FLUID_CONTAINER_BOX = Block.makeCuboidShape(0.0D, 4.0D, 0.0D, 16.0D, 11.0D, 16.0D);
+    private static final VoxelShape FLUID_CONTAINER_HOLE = Block.makeCuboidShape(2.0D, 6.0D, 2.0D, 14.0D, 11.0D, 14.0D);
+    private static final VoxelShape FLUID_CONTAINER = VoxelShapes.combineAndSimplify(FLUID_CONTAINER_BOX, FLUID_CONTAINER_HOLE, IBooleanFunction.ONLY_FIRST);
+
+    private static final VoxelShape LOWER_NS_W_FENCE = Block.makeCuboidShape(0.0D, 11.0D, 7.0D, 2.0D, 16.0D, 9.0D);
+    private static final VoxelShape LOWER_NS_E_FENCE = Block.makeCuboidShape(14.0D, 11.0D, 7.0D, 16.0D, 16.0D, 9.0D);
+    private static final VoxelShape LOWER_WE_W_FENCE = Block.makeCuboidShape(7.0D, 11.0D, 14.0D, 9.0D, 16.0D, 16.0D);
+    private static final VoxelShape LOWER_WE_E_FENCE = Block.makeCuboidShape(7.0D, 11.0D, 0.0D, 9.0D, 16.0D, 2.0D);
+
+    private static final VoxelShape PISTON_HEAD_POWERED = Block.makeCuboidShape(3.0D, 10.0D, 3.0D, 13.0D, 12.0D, 13.0D);
+    private static final VoxelShape LOWER_PISTON_EXTENSION = Block.makeCuboidShape(7.0D, 12.0D, 7.0D, 9.0D, 16.0D, 9.0D);
+
+    // UPPER HALF
+    private static final VoxelShape UPPER_NS_W_POLE = Block.makeCuboidShape(0.0D, 0.0D, 7.0D, 2.0D, 13.0D, 9.0D);
+    private static final VoxelShape BOTTOM_NS_W_CONNECTOR = Block.makeCuboidShape(2.0D, 7.0D, 7.0D, 3.0D, 8.0D, 9.0D);
+    private static final VoxelShape TOP_NS_W_CONNECTOR = Block.makeCuboidShape(2.0D, 9.0D, 7.0D, 3.0D, 10.0D, 9.0D);
+    private static final VoxelShape UPPER_NS_W_FENCE = VoxelShapes.or(UPPER_NS_W_POLE, BOTTOM_NS_W_CONNECTOR, TOP_NS_W_CONNECTOR);
+
+    private static final VoxelShape UPPER_WE_W_POLE = Block.makeCuboidShape(7.0D, 0.0D, 14.0D, 9.0D, 13.0D, 16.0D);
+    private static final VoxelShape BOTTOM_WE_W_CONNECTOR = Block.makeCuboidShape(7.0D, 7.0D, 13.0D, 9.0D, 8.0D, 14.0D);
+    private static final VoxelShape TOP_WE_W_CONNECTOR = Block.makeCuboidShape(7.0D, 9.0D, 13.0D, 9.0D, 10.0D, 14.0D);
+    private static final VoxelShape UPPER_WE_W_FENCE = VoxelShapes.or(UPPER_WE_W_POLE, BOTTOM_WE_W_CONNECTOR, TOP_WE_W_CONNECTOR);
+
+
+    private static final VoxelShape UPPER_NS_E_POLE = Block.makeCuboidShape(14.0D, 0.0D, 7.0D, 16.0D, 13.0D, 9.0D);
+    private static final VoxelShape BOTTOM_NS_E_CONNECTOR = Block.makeCuboidShape(13.0D, 7.0D, 7.0D, 14.0D, 8.0D, 9.0D);
+    private static final VoxelShape TOP_NS_E_CONNECTOR = Block.makeCuboidShape(13.0D, 9.0D, 7.0D, 14.0D, 10.0D, 9.0D);
+    private static final VoxelShape UPPER_NS_E_FENCE = VoxelShapes.or(UPPER_NS_E_POLE, BOTTOM_NS_E_CONNECTOR, TOP_NS_E_CONNECTOR);
+
+    private static final VoxelShape UPPER_WE_E_POLE = Block.makeCuboidShape(7.0D, 0.0D, 0.0D, 9.0D, 13.0D, 2.0D);
+    private static final VoxelShape BOTTOM_WE_E_CONNECTOR = Block.makeCuboidShape(7.0D, 7.0D, 2.0D, 9.0D, 8.0D, 3.0D);
+    private static final VoxelShape TOP_WE_E_CONNECTOR = Block.makeCuboidShape(7.0D, 9.0D, 2.0D, 9.0D, 10.0D, 3.0D);
+    private static final VoxelShape UPPER_WE_E_FENCE = VoxelShapes.or(UPPER_WE_E_POLE, BOTTOM_WE_E_CONNECTOR, TOP_WE_E_CONNECTOR);
+
+
+    private static final VoxelShape PISTON_BASE = Block.makeCuboidShape(3.0D, 4.0D, 3.0D, 13.0D, 12.0D, 13.0D);
+    private static final VoxelShape UPPER_PISTON_HEAD = Block.makeCuboidShape(3.0D, 2.0D, 3.0D, 13.0D, 4.0D, 13.0D);
+    private static final VoxelShape UPPER_PISTON_EXTENSION = Block.makeCuboidShape(7.0D, 0.0D, 7.0D, 9.0D, 4.0D, 9.0D);
+
+    // FULL SHAPE
+    private static final VoxelShape LOWER_SHAPE = VoxelShapes.or(CORNERS, FLUID_CONTAINER);
+    private static final VoxelShape LOWER_SHAPE_UNPOWERED_NS = VoxelShapes.or(LOWER_SHAPE, LOWER_NS_W_FENCE, LOWER_NS_E_FENCE);
+    private static final VoxelShape LOWER_SHAPE_POWERED_NS = VoxelShapes.or(LOWER_SHAPE_UNPOWERED_NS, PISTON_HEAD_POWERED, LOWER_PISTON_EXTENSION);
+    private static final VoxelShape LOWER_SHAPE_UNPOWERED_WE = VoxelShapes.or(LOWER_SHAPE, LOWER_WE_W_FENCE, LOWER_WE_E_FENCE);
+    private static final VoxelShape LOWER_SHAPE_POWERED_WE = VoxelShapes.or(LOWER_SHAPE_UNPOWERED_WE, PISTON_HEAD_POWERED, LOWER_PISTON_EXTENSION);
+
+    private static final VoxelShape UPPER_SHAPE_UNPOWERED_NS = VoxelShapes.or(PISTON_BASE, UPPER_PISTON_HEAD, UPPER_NS_W_FENCE, UPPER_NS_E_FENCE);
+    private static final VoxelShape UPPER_SHAPE_UNPOWERED_WE = VoxelShapes.or(PISTON_BASE, UPPER_PISTON_HEAD, UPPER_WE_W_FENCE, UPPER_WE_E_FENCE);
+    private static final VoxelShape UPPER_SHAPE_POWERED_NS = VoxelShapes.or(PISTON_BASE, UPPER_PISTON_EXTENSION, UPPER_NS_W_FENCE, UPPER_NS_E_FENCE);
+    private static final VoxelShape UPPER_SHAPE_POWERED_WE = VoxelShapes.or(PISTON_BASE, UPPER_PISTON_EXTENSION, UPPER_WE_W_FENCE, UPPER_WE_E_FENCE);
+
     public FruitPressBlock(Block.Properties properties) {
         super(properties);
         this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(HALF, DoubleBlockHalf.LOWER).with(POWERED, Boolean.FALSE));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        if (state.get(HALF) == DoubleBlockHalf.UPPER) {
+            if (state.get(POWERED)) {
+                if (state.get(FACING) == Direction.WEST || state.get(FACING) == Direction.EAST) return UPPER_SHAPE_POWERED_WE;
+                return UPPER_SHAPE_POWERED_NS;
+            }
+            if (state.get(FACING) == Direction.WEST || state.get(FACING) == Direction.EAST) return UPPER_SHAPE_UNPOWERED_WE;
+            return UPPER_SHAPE_UNPOWERED_NS;
+        }
+        if (state.get(POWERED)) {
+            if (state.get(FACING) == Direction.WEST || state.get(FACING) == Direction.EAST) return LOWER_SHAPE_POWERED_WE;
+            return LOWER_SHAPE_POWERED_NS;
+        }
+        if (state.get(FACING) == Direction.WEST || state.get(FACING) == Direction.EAST) return LOWER_SHAPE_UNPOWERED_WE;
+        return LOWER_SHAPE_UNPOWERED_NS;
     }
 
     @Override
