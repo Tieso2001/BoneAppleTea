@@ -7,6 +7,7 @@ import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -33,6 +34,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.ItemStackHandler;
 import net.tieso2001.boneappletea.init.ModTileEntityTypes;
 import net.tieso2001.boneappletea.tileentity.FruitPressTileEntity;
 
@@ -150,8 +152,22 @@ public class FruitPressBlock extends Block {
             worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
             worldIn.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
         }
-
         super.onBlockHarvested(worldIn, pos, state, player);
+    }
+
+    @Override
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        BlockPos lowerPos = pos;
+        if (state.get(HALF) == DoubleBlockHalf.UPPER) lowerPos = pos.down();
+
+        TileEntity tileEntity = worldIn.getTileEntity(lowerPos);
+        if (tileEntity instanceof FruitPressTileEntity) {
+            final ItemStackHandler inventory = ((FruitPressTileEntity) tileEntity).slot;
+            for (int slot = 0; slot < inventory.getSlots(); ++slot) {
+                InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(0));
+            }
+        }
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @SuppressWarnings("deprecation")
