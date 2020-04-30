@@ -1,0 +1,6 @@
+{
+    "parent": "boneappletea:block/fruit_press_upper",
+    "textures": {
+        "texture": "block/spruce_planks"
+    }
+}

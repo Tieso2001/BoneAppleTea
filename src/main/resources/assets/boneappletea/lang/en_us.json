@@ -1,12 +1,17 @@
 {
   "block.boneappletea.barley": "Barley",
-  "block.boneappletea.fruit_press": "Fruit Press",
   "block.boneappletea.oak_cask": "Oak Cask",
   "block.boneappletea.spruce_cask": "Spruce Cask",
   "block.boneappletea.birch_cask": "Birch Cask",
   "block.boneappletea.jungle_cask": "Jungle Cask",
   "block.boneappletea.acacia_cask": "Acacia Cask",
   "block.boneappletea.dark_oak_cask": "Dark Oak Cask",
+  "block.boneappletea.oak_fruit_press": "Oak Fruit Press",
+  "block.boneappletea.spruce_fruit_press": "Spruce Fruit Press",
+  "block.boneappletea.birch_fruit_press": "Birch Fruit Press",
+  "block.boneappletea.jungle_fruit_press": "Jungle Fruit Press",
+  "block.boneappletea.acacia_fruit_press": "Acacia Fruit Press",
+  "block.boneappletea.dark_oak_fruit_press": "Dark Oak Fruit Press",
 
   "item.boneappletea.barley": "Barley",
   "item.boneappletea.barley_grains": "Barley Grains",

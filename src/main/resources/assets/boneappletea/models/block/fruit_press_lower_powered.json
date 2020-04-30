@@ -1,9 +1,9 @@
 {
 	"textures": {
-		"0": "block/oak_planks",
+		"0": "#texture",
 		"1": "boneappletea:block/fruit_press_piston_side",
 		"2": "boneappletea:block/fruit_press_piston_top",
-		"particle": "block/oak_planks"
+		"particle": "#texture"
 	},
 	"elements": [
 		{

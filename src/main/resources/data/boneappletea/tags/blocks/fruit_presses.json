@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "boneappletea:oak_fruit_press",
+    "boneappletea:spruce_fruit_press",
+    "boneappletea:birch_fruit_press",
+    "boneappletea:jungle_fruit_press",
+    "boneappletea:acacia_fruit_press",
+    "boneappletea:dark_oak_fruit_press"
+  ]
+}

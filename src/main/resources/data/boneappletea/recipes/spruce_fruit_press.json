@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FPF",
+    "F F",
+    "WSW"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "W": {
+      "item": "minecraft:spruce_planks"
+    },
+    "S": {
+      "item": "minecraft:spruce_slab"
+    },
+    "F": {
+      "item": "minecraft:spruce_fence"
+    }
+  },
+  "result": {
+    "item": "boneappletea:spruce_fruit_press"
+  }
+}

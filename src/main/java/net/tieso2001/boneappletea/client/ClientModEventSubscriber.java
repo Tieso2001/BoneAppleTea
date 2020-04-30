@@ -20,13 +20,18 @@ public final class ClientModEventSubscriber {
     public static void onFMLClientSetupEvent(final FMLClientSetupEvent event) {
         Block[] cutout_blocks = {
                 ModBlocks.BARLEY.get(),
-                ModBlocks.FRUIT_PRESS.get(),
                 ModBlocks.OAK_CASK.get(),
                 ModBlocks.SPRUCE_CASK.get(),
                 ModBlocks.BIRCH_CASK.get(),
                 ModBlocks.JUNGLE_CASK.get(),
                 ModBlocks.ACACIA_CASK.get(),
-                ModBlocks.DARK_OAK_CASK.get()
+                ModBlocks.DARK_OAK_CASK.get(),
+                ModBlocks.OAK_FRUIT_PRESS.get(),
+                ModBlocks.SPRUCE_FRUIT_PRESS.get(),
+                ModBlocks.BIRCH_FRUIT_PRESS.get(),
+                ModBlocks.JUNGLE_FRUIT_PRESS.get(),
+                ModBlocks.ACACIA_FRUIT_PRESS.get(),
+                ModBlocks.DARK_OAK_FRUIT_PRESS.get()
         };
 
         for (Block block : cutout_blocks) {

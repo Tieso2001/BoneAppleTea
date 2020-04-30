@@ -1,0 +1,6 @@
+{
+    "parent": "boneappletea:block/fruit_press_lower_powered",
+    "textures": {
+        "texture": "block/birch_planks"
+    }
+}

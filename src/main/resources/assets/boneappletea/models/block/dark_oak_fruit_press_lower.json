@@ -1,0 +1,6 @@
+{
+    "parent": "boneappletea:block/fruit_press_lower",
+    "textures": {
+        "texture": "block/dark_oak_planks"
+    }
+}

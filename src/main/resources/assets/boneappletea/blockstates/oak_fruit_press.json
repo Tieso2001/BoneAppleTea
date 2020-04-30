@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "facing=north,half=lower,powered=false": { "model" : "boneappletea:block/oak_fruit_press_lower" },
+    "facing=north,half=lower,powered=true": { "model" : "boneappletea:block/oak_fruit_press_lower_powered" },
+    "facing=north,half=upper,powered=false": { "model" : "boneappletea:block/oak_fruit_press_upper" },
+    "facing=north,half=upper,powered=true": { "model" : "boneappletea:block/oak_fruit_press_upper_powered" },
+    "facing=south,half=lower,powered=false": { "model" : "boneappletea:block/oak_fruit_press_lower", "y": 180 },
+    "facing=south,half=lower,powered=true": { "model" : "boneappletea:block/oak_fruit_press_lower_powered", "y": 180 },
+    "facing=south,half=upper,powered=false": { "model" : "boneappletea:block/oak_fruit_press_upper", "y": 180 },
+    "facing=south,half=upper,powered=true": { "model" : "boneappletea:block/oak_fruit_press_upper_powered", "y": 180 },
+    "facing=west,half=lower,powered=false": { "model" : "boneappletea:block/oak_fruit_press_lower", "y": 270 },
+    "facing=west,half=lower,powered=true": { "model" : "boneappletea:block/oak_fruit_press_lower_powered", "y": 270 },
+    "facing=west,half=upper,powered=false": { "model" : "boneappletea:block/oak_fruit_press_upper", "y": 270 },
+    "facing=west,half=upper,powered=true": { "model" : "boneappletea:block/oak_fruit_press_upper_powered", "y": 270 },
+    "facing=east,half=lower,powered=false": { "model" : "boneappletea:block/oak_fruit_press_lower", "y": 90 },
+    "facing=east,half=lower,powered=true": { "model" : "boneappletea:block/oak_fruit_press_lower_powered", "y": 90 },
+    "facing=east,half=upper,powered=false": { "model" : "boneappletea:block/oak_fruit_press_upper", "y": 90 },
+    "facing=east,half=upper,powered=true": { "model" : "boneappletea:block/oak_fruit_press_upper_powered", "y": 90 }
+  }
+}

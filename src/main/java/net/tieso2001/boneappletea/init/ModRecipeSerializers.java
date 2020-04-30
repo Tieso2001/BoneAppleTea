@@ -13,9 +13,9 @@ public final class ModRecipeSerializers {
 
     public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = new DeferredRegister<>(ForgeRegistries.RECIPE_SERIALIZERS, BoneAppleTea.MOD_ID);
 
-    public static final RegistryObject<IRecipeSerializer<?>> FRUIT_PRESSING = RECIPE_SERIALIZERS.register("fruit_pressing", () ->
-            FruitPressingRecipe.serializer);
-
     public static final RegistryObject<IRecipeSerializer<?>> CASK = RECIPE_SERIALIZERS.register("cask", () ->
             new CaskRecipeSerializer<>(CaskRecipe::new));
+
+    public static final RegistryObject<IRecipeSerializer<?>> FRUIT_PRESSING = RECIPE_SERIALIZERS.register("fruit_pressing", () ->
+            FruitPressingRecipe.serializer);
 }

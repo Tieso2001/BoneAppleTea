@@ -10,16 +10,16 @@
       "item": "minecraft:piston"
     },
     "W": {
-      "tag": "minecraft:planks"
+      "item": "minecraft:jungle_planks"
     },
     "S": {
-      "tag": "minecraft:wooden_slabs"
+      "item": "minecraft:jungle_slab"
     },
     "F": {
-      "tag": "minecraft:wooden_fences"
+      "item": "minecraft:jungle_fence"
     }
   },
   "result": {
-    "item": "boneappletea:fruit_press"
+    "item": "boneappletea:jungle_fruit_press"
   }
 }

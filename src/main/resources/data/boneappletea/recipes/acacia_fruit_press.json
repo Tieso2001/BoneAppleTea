@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FPF",
+    "F F",
+    "WSW"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "W": {
+      "item": "minecraft:acacia_planks"
+    },
+    "S": {
+      "item": "minecraft:acacia_slab"
+    },
+    "F": {
+      "item": "minecraft:acacia_fence"
+    }
+  },
+  "result": {
+    "item": "boneappletea:acacia_fruit_press"
+  }
+}

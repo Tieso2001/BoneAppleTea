@@ -12,12 +12,6 @@ public final class ModTileEntityTypes {
 
     public static final DeferredRegister<TileEntityType<?>> TILE_ENTITY_TYPES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, BoneAppleTea.MOD_ID);
 
-    public static final RegistryObject<TileEntityType<FruitPressTileEntity>> FRUIT_PRESS = TILE_ENTITY_TYPES.register("fruit_press", () ->
-            TileEntityType.Builder.create(
-                    FruitPressTileEntity::new,
-                    ModBlocks.FRUIT_PRESS.get()
-            ).build(null));
-
     public static final RegistryObject<TileEntityType<CaskTileEntity>> CASK = TILE_ENTITY_TYPES.register("cask", () ->
             TileEntityType.Builder.create(
                     CaskTileEntity::new,
@@ -27,5 +21,16 @@ public final class ModTileEntityTypes {
                     ModBlocks.JUNGLE_CASK.get(),
                     ModBlocks.ACACIA_CASK.get(),
                     ModBlocks.DARK_OAK_CASK.get()
+            ).build(null));
+
+    public static final RegistryObject<TileEntityType<FruitPressTileEntity>> FRUIT_PRESS = TILE_ENTITY_TYPES.register("fruit_press", () ->
+            TileEntityType.Builder.create(
+                    FruitPressTileEntity::new,
+                    ModBlocks.OAK_FRUIT_PRESS.get(),
+                    ModBlocks.SPRUCE_FRUIT_PRESS.get(),
+                    ModBlocks.BIRCH_FRUIT_PRESS.get(),
+                    ModBlocks.JUNGLE_FRUIT_PRESS.get(),
+                    ModBlocks.ACACIA_FRUIT_PRESS.get(),
+                    ModBlocks.DARK_OAK_FRUIT_PRESS.get()
             ).build(null));
 }

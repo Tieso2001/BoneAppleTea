@@ -27,16 +27,6 @@ public final class ModBlocks {
                     .sound(SoundType.CROP)
             ));
 
-    public static final RegistryObject<Block> FRUIT_PRESS = BLOCKS.register("fruit_press", () ->
-            new FruitPressBlock(Block.Properties
-                    .create(Material.WOOD)
-                    .notSolid()
-                    .hardnessAndResistance(2.0F)
-                    .sound(SoundType.WOOD)
-                    .harvestTool(ToolType.AXE)
-                    .harvestLevel(0)
-            ));
-
     private static final Supplier<? extends Block> caskSupplier = () ->
             new CaskBlock(Block.Properties
                     .create(Material.WOOD)
@@ -53,4 +43,21 @@ public final class ModBlocks {
     public static final RegistryObject<Block> JUNGLE_CASK = BLOCKS.register("jungle_cask", caskSupplier);
     public static final RegistryObject<Block> ACACIA_CASK = BLOCKS.register("acacia_cask", caskSupplier);
     public static final RegistryObject<Block> DARK_OAK_CASK = BLOCKS.register("dark_oak_cask", caskSupplier);
+
+    private static final Supplier<Block> fruitPressSupplier = () ->
+            new FruitPressBlock(Block.Properties
+                    .create(Material.WOOD)
+                    .notSolid()
+                    .hardnessAndResistance(2.0F)
+                    .sound(SoundType.WOOD)
+                    .harvestTool(ToolType.AXE)
+                    .harvestLevel(0)
+            );
+
+    public static final RegistryObject<Block> OAK_FRUIT_PRESS = BLOCKS.register("oak_fruit_press", fruitPressSupplier);
+    public static final RegistryObject<Block> SPRUCE_FRUIT_PRESS = BLOCKS.register("spruce_fruit_press", fruitPressSupplier);
+    public static final RegistryObject<Block> BIRCH_FRUIT_PRESS = BLOCKS.register("birch_fruit_press", fruitPressSupplier);
+    public static final RegistryObject<Block> JUNGLE_FRUIT_PRESS = BLOCKS.register("jungle_fruit_press", fruitPressSupplier);
+    public static final RegistryObject<Block> ACACIA_FRUIT_PRESS = BLOCKS.register("acacia_fruit_press", fruitPressSupplier);
+    public static final RegistryObject<Block> DARK_OAK_FRUIT_PRESS = BLOCKS.register("dark_oak_fruit_press", fruitPressSupplier);
 }

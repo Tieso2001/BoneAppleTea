@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FPF",
+    "F F",
+    "WSW"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "W": {
+      "item": "minecraft:birch_planks"
+    },
+    "S": {
+      "item": "minecraft:birch_slab"
+    },
+    "F": {
+      "item": "minecraft:birch_fence"
+    }
+  },
+  "result": {
+    "item": "boneappletea:birch_fruit_press"
+  }
+}
