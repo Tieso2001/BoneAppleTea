@@ -1,3 +1,6 @@
 {
-    "parent": "block/birch_planks"
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "boneappletea:item/birch_fruit_press"
+    }
 }

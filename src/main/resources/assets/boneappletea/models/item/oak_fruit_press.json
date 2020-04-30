@@ -1,3 +1,6 @@
 {
-    "parent": "block/oak_planks"
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "boneappletea:item/oak_fruit_press"
+    }
 }
