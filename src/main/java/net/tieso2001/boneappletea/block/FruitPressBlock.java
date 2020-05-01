@@ -155,16 +155,19 @@ public class FruitPressBlock extends Block {
         super.onBlockHarvested(worldIn, pos, state, player);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        BlockPos lowerPos = pos;
-        if (state.get(HALF) == DoubleBlockHalf.UPPER) lowerPos = pos.down();
+        if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
+            BlockPos lowerPos = pos;
+            if (state.get(HALF) == DoubleBlockHalf.UPPER) lowerPos = pos.down();
 
-        TileEntity tileEntity = worldIn.getTileEntity(lowerPos);
-        if (tileEntity instanceof FruitPressTileEntity) {
-            final ItemStackHandler inventory = ((FruitPressTileEntity) tileEntity).slot;
-            for (int slot = 0; slot < inventory.getSlots(); ++slot) {
-                InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(0));
+            TileEntity tileEntity = worldIn.getTileEntity(lowerPos);
+            if (tileEntity instanceof FruitPressTileEntity) {
+                final ItemStackHandler inventory = ((FruitPressTileEntity) tileEntity).slot;
+                for (int slot = 0; slot < inventory.getSlots(); ++slot) {
+                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(0));
+                }
             }
         }
         super.onReplaced(state, worldIn, pos, newState, isMoving);
