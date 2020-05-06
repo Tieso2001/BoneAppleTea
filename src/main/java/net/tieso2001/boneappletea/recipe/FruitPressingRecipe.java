@@ -28,6 +28,7 @@ public class FruitPressingRecipe implements IRecipe<IInventory> {
     private Ingredient ingredient;
     private int ingredientCount;
     private FluidStack result;
+    private int processTime;
 
     public FruitPressingRecipe(ResourceLocation recipeId) {
         this.recipeId = recipeId;
@@ -43,6 +44,10 @@ public class FruitPressingRecipe implements IRecipe<IInventory> {
 
     public FluidStack getResult() {
         return result;
+    }
+
+    public int getProcessTime() {
+        return processTime;
     }
 
     @Override
@@ -74,7 +79,7 @@ public class FruitPressingRecipe implements IRecipe<IInventory> {
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return null;
+        return serializer;
     }
 
     @Override
@@ -102,6 +107,8 @@ public class FruitPressingRecipe implements IRecipe<IInventory> {
             int fluidAmount = JSONUtils.getInt(json.get("result").getAsJsonObject(), "amount", 0);
             recipe.result = new FluidStack(ForgeRegistries.FLUIDS.getValue(fluidResourceLocation), fluidAmount);
 
+            recipe.processTime = JSONUtils.getInt(json, "processTime", 200);;
+
             return recipe;
         }
 
@@ -112,6 +119,7 @@ public class FruitPressingRecipe implements IRecipe<IInventory> {
             recipe.ingredient = Ingredient.read(buffer);
             recipe.ingredientCount = buffer.readByte();
             recipe.result = buffer.readFluidStack();
+            recipe.processTime = buffer.readInt();
             return recipe;
         }
 
@@ -120,6 +128,7 @@ public class FruitPressingRecipe implements IRecipe<IInventory> {
             recipe.ingredient.write(buffer);
             buffer.writeByte(recipe.getIngredientCount());
             buffer.writeFluidStack(recipe.getResult());
+            buffer.writeInt(recipe.getProcessTime());
         }
     }
 }

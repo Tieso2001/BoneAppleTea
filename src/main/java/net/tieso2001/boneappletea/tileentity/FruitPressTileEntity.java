@@ -78,8 +78,8 @@ public class FruitPressTileEntity extends TileEntity implements ITickableTileEnt
     private final LazyOptional<IItemHandlerModifiable> inventoryCapabilityDown = LazyOptional.of(() -> new RangedWrapper(this.inventory, FLUID_SLOT, FLUID_SLOT + 1));
     private final LazyOptional<IFluidHandler> tankCapability = LazyOptional.of(() -> tank);
 
+    public short maxProcessTime = -1;
     public short processTimeLeft = -1;
-    public short maxProcessTime = 200;
 
     public FruitPressTileEntity() {
         super(ModTileEntityTypes.FRUIT_PRESS.get());
@@ -116,7 +116,8 @@ public class FruitPressTileEntity extends TileEntity implements ITickableTileEnt
 
         FruitPressingRecipe recipe = getRecipe(inventory.getStackInSlot(INPUT_SLOT));
         if (this.canProcess(recipe)) {
-            if (processTimeLeft == -1) {
+            if (processTimeLeft == -1 || maxProcessTime == -1) {
+                maxProcessTime = (short) recipe.getProcessTime();
                 processTimeLeft = maxProcessTime;
             } else {
                 processTimeLeft--;
@@ -125,10 +126,12 @@ public class FruitPressTileEntity extends TileEntity implements ITickableTileEnt
                     OutputFluidTank fluidTank = (OutputFluidTank) this.tank;
                     fluidTank.fillInternal(recipe.getResult().copy(), IFluidHandler.FluidAction.EXECUTE);
                     world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_HIT, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.25F + 0.6F);
+                    maxProcessTime = -1;
                     processTimeLeft = -1;
                 }
             }
         } else {
+            maxProcessTime = -1;
             processTimeLeft = -1;
         }
         this.markDirty();

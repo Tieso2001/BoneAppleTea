@@ -7,5 +7,6 @@
   "result": {
     "fluid": "minecraft:water",
     "amount": 250
-  }
+  },
+  "processTime": 40
 }
