@@ -1,135 +1,190 @@
 package net.tieso2001.boneappletea.tileentity;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.tieso2001.boneappletea.BoneAppleTea;
+import net.tieso2001.boneappletea.fluid.capability.OutputFluidTank;
 import net.tieso2001.boneappletea.init.ModTileEntityTypes;
-import net.tieso2001.boneappletea.network.ModPackets;
-import net.tieso2001.boneappletea.network.packet.setFluidInTankPacket;
-import net.tieso2001.boneappletea.network.packet.setStackInSlotPacket;
+import net.tieso2001.boneappletea.inventory.container.FruitPressContainer;
 import net.tieso2001.boneappletea.recipe.FruitPressingRecipe;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.function.Supplier;
 
-public class FruitPressTileEntity extends TileEntity implements ITickableTileEntity {
+public class FruitPressTileEntity extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
-    private boolean poweredPrevious = true;
+    public static final int INPUT_SLOT = 0;
+    public static final int FLUID_SLOT = 1;
 
-    public ItemStackHandler slot;
-    private final LazyOptional<IItemHandler> itemHolder = LazyOptional.of(() -> slot);
-
-    private ItemStackHandler createItemStackHandler() {
-        return new ItemStackHandler() {
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return FruitPressingRecipe.serializer.ingredientList.contains(stack.getItem());
+    public final ItemStackHandler inventory = new ItemStackHandler(2) {
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+            switch (slot) {
+                case INPUT_SLOT:
+                    return isInputSlotItem(stack);
+                case FLUID_SLOT:
+                    return isFluidSlotItem(stack);
+                default:
+                    return false;
             }
+        }
 
-            @Override
-            public int getSlotLimit(int slot) {
-                return 3;
-            }
+        @Override
+        protected void onContentsChanged(int slot) {
+            super.onContentsChanged(slot);
+            FruitPressTileEntity.this.markDirty();
+        }
+    };
 
-            @Override
-            protected void onContentsChanged(int slot) {
-                super.onContentsChanged(slot);
-                markDirty();
-            }
-        };
-    }
+    public final FluidTank tank = new OutputFluidTank(1000);
 
-    public FluidTank tank;
-    private final LazyOptional<IFluidHandler> fluidHolder = LazyOptional.of(() -> tank);
+    private final LazyOptional<ItemStackHandler> inventoryCapability = LazyOptional.of(() -> this.inventory);
+    private final LazyOptional<IFluidHandler> tankCapability = LazyOptional.of(() -> tank);
 
-    private RecipeWrapper recipeWrapper;
+    public short processTimeLeft = -1;
+    public short maxProcessTime = 200;
 
     public FruitPressTileEntity() {
         super(ModTileEntityTypes.FRUIT_PRESS.get());
-        slot = createItemStackHandler();
-        tank = new FluidTank(1000);
-        recipeWrapper = new RecipeWrapper(slot);
+    }
+
+    private boolean isInputSlotItem(ItemStack stack) {
+        return FruitPressingRecipe.serializer.ingredientList.contains(stack.getItem());
+    }
+
+    private boolean isFluidSlotItem(ItemStack stack) {
+        ResourceLocation tag = new ResourceLocation(BoneAppleTea.MOD_ID, "fruit_press_fluid_slot_items");
+        return ItemTags.getCollection().getOrCreate(tag).contains(stack.getItem());
+    }
+
+    private FruitPressingRecipe getRecipe(final ItemStack input) {
+        return getRecipe(new Inventory(input));
+    }
+
+    private FruitPressingRecipe getRecipe(final IInventory inventory) {
+        return world == null ? null : world.getRecipeManager().getRecipe(FruitPressingRecipe.recipeType, inventory, world).orElse(null);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        super.write(compound);
-        compound.put("slot", slot.serializeNBT());
-        tank.writeToNBT(compound);
-        return compound;
+    public void tick() {
+        if (world == null || world.isRemote) {
+            return;
+        }
+
+        FluidActionResult testTransfer = FluidUtil.tryFillContainer(inventory.getStackInSlot(1), tank, Integer.MAX_VALUE, null, false);
+        if (testTransfer.isSuccess()) {
+            FluidActionResult realTransfer = FluidUtil.tryFillContainer(inventory.getStackInSlot(1), tank, Integer.MAX_VALUE, null, true);
+            inventory.setStackInSlot(1, realTransfer.getResult().copy());
+        }
+
+        FruitPressingRecipe recipe = getRecipe(inventory.getStackInSlot(0));
+        if (this.canProcess(recipe)) {
+            if (processTimeLeft == -1) {
+                processTimeLeft = maxProcessTime;
+            } else {
+                processTimeLeft--;
+                if (processTimeLeft == 0) {
+                    inventory.extractItem(0, recipe.getIngredientCount(), false);
+                    OutputFluidTank fluidTank = (OutputFluidTank) this.tank;
+                    fluidTank.fillInternal(recipe.getResult().copy(), IFluidHandler.FluidAction.EXECUTE);
+                    world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_HIT, SoundCategory.BLOCKS, 2.0F, world.rand.nextFloat() * 0.25F + 0.6F);
+                    processTimeLeft = -1;
+                }
+            }
+        } else {
+            processTimeLeft = -1;
+        }
+        this.markDirty();
+        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+    }
+
+    private boolean canProcess(FruitPressingRecipe recipe) {
+        if (recipe == null) {
+            return false;
+        }
+        OutputFluidTank fluidTank = (OutputFluidTank) this.tank;
+        return fluidTank.fillInternal(recipe.getResult().copy(), IFluidHandler.FluidAction.SIMULATE) > 0;
     }
 
     @Override
     public void read(CompoundNBT compound) {
         super.read(compound);
-        slot.deserializeNBT(compound.getCompound("slot"));
-        tank.readFromNBT(compound);
+        this.inventory.deserializeNBT(compound.getCompound("inventory"));
+        this.tank.readFromNBT(compound);
+        this.maxProcessTime = compound.getShort("max_process_time");
+        this.processTimeLeft = compound.getShort("process_time_left");
     }
 
     @Override
-    public void tick() {
-
-       if (world.isRemote) return;
-
-       FruitPressingRecipe recipe = world.getRecipeManager().getRecipe(FruitPressingRecipe.recipeType, recipeWrapper, world).orElse(null);
-       boolean powered = this.getBlockState().get(BlockStateProperties.POWERED);
-
-       if (canProcess(recipe) && !poweredPrevious && powered) {
-           slot.extractItem(0, recipe.getIngredientCount(), false);
-           FluidStack fluidstack = new FluidStack(recipe.getResult().getFluid(), tank.getFluidAmount() + recipe.getResult().getAmount());
-           tank.setFluid(fluidstack);
-           world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_HIT, SoundCategory.BLOCKS, 2.0F, world.rand.nextFloat() * 0.25F + 0.6F);
-           markDirty();
-       }
-
-       poweredPrevious = this.getBlockState().get(BlockStateProperties.POWERED);
-       if (world.isBlockLoaded(pos)) synchronizeClient();
+    public CompoundNBT write(CompoundNBT compound) {
+        super.write(compound);
+        compound.put("inventory", this.inventory.serializeNBT());
+        tank.writeToNBT(compound);
+        compound.putShort("max_process_time", this.maxProcessTime);
+        compound.putShort("process_time_left", this.processTimeLeft);
+        return compound;
     }
 
-    private boolean canProcess(FruitPressingRecipe recipe) {
-        if (recipe == null) return false;
-
-        FluidStack recipeFluid = recipe.getResult().copy();
-        boolean empty = tank.isEmpty() && tank.getCapacity() >= recipeFluid.getAmount();
-        boolean fluid = tank.getFluid().isFluidEqual(recipeFluid) && ((tank.getFluidAmount() + recipeFluid.getAmount()) <= tank.getCapacity());
-        return empty || fluid;
+    @Nullable
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
     }
 
-    private void synchronizeClient() {
-        BlockPos pos = this.getPos();
-        double r2 = 1024.0D; // radius of 2 chunks (32 blocks)
-        Supplier<PacketDistributor.TargetPoint> targetPoint = PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), r2, world.getDimension().getType());
-
-        ItemStack stack = slot.getStackInSlot(0).copy();
-        ModPackets.INSTANCE.send(PacketDistributor.NEAR.with(targetPoint), new setStackInSlotPacket(stack, pos));
-
-        FluidStack fluid = tank.getFluid();
-        ModPackets.INSTANCE.send(PacketDistributor.NEAR.with(targetPoint), new setFluidInTankPacket(fluid, pos));
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return this.write(new CompoundNBT());
     }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        this.read(pkt.getNbtCompound());
+    }
+
+    // TODO: empty bucket should not be extracted
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return itemHolder.cast();
-        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return fluidHolder.cast();
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return inventoryCapability.cast();
+        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return tankCapability.cast();
         return super.getCapability(cap, side);
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new StringTextComponent("Fruit Press");
+    }
+
+    @Nullable
+    @Override
+    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+        return new FruitPressContainer(id, world, pos, playerInventory, playerEntity);
     }
 }

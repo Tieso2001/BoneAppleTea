@@ -1,13 +1,9 @@
 package net.tieso2001.boneappletea;
 
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.tieso2001.boneappletea.init.ModBlocks;
+import net.tieso2001.boneappletea.init.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.tieso2001.boneappletea.init.ModItems;
-import net.tieso2001.boneappletea.init.ModRecipeSerializers;
-import net.tieso2001.boneappletea.init.ModTileEntityTypes;
-import net.tieso2001.boneappletea.network.ModPackets;
 
 @Mod(BoneAppleTea.MOD_ID)
 public final class BoneAppleTea {
@@ -19,9 +15,8 @@ public final class BoneAppleTea {
 
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        ModContainerTypes.CONTAINER_TYPES.register(modEventBus);
         ModTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
-
-        ModPackets.register();
     }
 }

@@ -13,12 +13,11 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.tieso2001.boneappletea.tileentity.FruitPressTileEntity;
+import net.tieso2001.boneappletea.util.RenderUtil;
 
 public class FruitPressTileEntityRenderer extends TileEntityRenderer<FruitPressTileEntity> {
 
@@ -45,8 +44,7 @@ public class FruitPressTileEntityRenderer extends TileEntityRenderer<FruitPressT
 
         if (!fluid.isEmpty()) {
 
-            ResourceLocation stillFluid = fluid.getFluid().getAttributes().getStillTexture(fluid);
-            TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(stillFluid);
+            TextureAtlasSprite sprite = RenderUtil.getFluidTexture(fluid);
 
             int heightMultiplier = 0;
             if (fluid.getAmount() == 1000) heightMultiplier = 3;
@@ -79,8 +77,9 @@ public class FruitPressTileEntityRenderer extends TileEntityRenderer<FruitPressT
             matrixStackIn.pop();
         }
 
+        // TODO: 1+ items, 32+ items, 64 items
         // RENDER FOR ITEMSTACK
-        ItemStack stack = tileEntityIn.slot.getStackInSlot(0).copy().getStack();
+        ItemStack stack = tileEntityIn.inventory.getStackInSlot(0).copy().getStack();
 
         if (!stack.isEmpty()) {
 

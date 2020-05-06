@@ -1,16 +1,20 @@
 package net.tieso2001.boneappletea.client;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.tieso2001.boneappletea.BoneAppleTea;
+import net.tieso2001.boneappletea.client.gui.screen.inventory.FruitPressScreen;
 import net.tieso2001.boneappletea.client.render.tileentity.FruitPressTileEntityRenderer;
 import net.tieso2001.boneappletea.init.ModBlocks;
+import net.tieso2001.boneappletea.init.ModContainerTypes;
 import net.tieso2001.boneappletea.init.ModTileEntityTypes;
 
 @Mod.EventBusSubscriber(modid = BoneAppleTea.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -39,5 +43,9 @@ public final class ClientModEventSubscriber {
         }
 
         ClientRegistry.bindTileEntityRenderer(ModTileEntityTypes.FRUIT_PRESS.get(), FruitPressTileEntityRenderer::new);
+
+        DeferredWorkQueue.runLater(() -> {
+            ScreenManager.registerFactory(ModContainerTypes.FRUIT_PRESS.get(), FruitPressScreen::new);
+        });
     }
 }
