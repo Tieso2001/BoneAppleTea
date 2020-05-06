@@ -27,7 +27,9 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.RangedWrapper;
 import net.tieso2001.boneappletea.BoneAppleTea;
 import net.tieso2001.boneappletea.fluid.capability.OutputFluidTank;
 import net.tieso2001.boneappletea.init.ModTileEntityTypes;
@@ -56,6 +58,14 @@ public class FruitPressTileEntity extends TileEntity implements ITickableTileEnt
         }
 
         @Override
+        protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
+            if (slot == FLUID_SLOT) {
+                return 1;
+            }
+            return super.getStackLimit(slot, stack);
+        }
+
+        @Override
         protected void onContentsChanged(int slot) {
             super.onContentsChanged(slot);
             FruitPressTileEntity.this.markDirty();
@@ -65,6 +75,7 @@ public class FruitPressTileEntity extends TileEntity implements ITickableTileEnt
     public final FluidTank tank = new OutputFluidTank(1000);
 
     private final LazyOptional<ItemStackHandler> inventoryCapability = LazyOptional.of(() -> this.inventory);
+    private final LazyOptional<IItemHandlerModifiable> inventoryCapabilityDown = LazyOptional.of(() -> new RangedWrapper(this.inventory, FLUID_SLOT, FLUID_SLOT + 1));
     private final LazyOptional<IFluidHandler> tankCapability = LazyOptional.of(() -> tank);
 
     public short processTimeLeft = -1;
@@ -97,23 +108,23 @@ public class FruitPressTileEntity extends TileEntity implements ITickableTileEnt
             return;
         }
 
-        FluidActionResult testTransfer = FluidUtil.tryFillContainer(inventory.getStackInSlot(1), tank, Integer.MAX_VALUE, null, false);
+        FluidActionResult testTransfer = FluidUtil.tryFillContainer(inventory.getStackInSlot(FLUID_SLOT), tank, Integer.MAX_VALUE, null, false);
         if (testTransfer.isSuccess()) {
-            FluidActionResult realTransfer = FluidUtil.tryFillContainer(inventory.getStackInSlot(1), tank, Integer.MAX_VALUE, null, true);
-            inventory.setStackInSlot(1, realTransfer.getResult().copy());
+            FluidActionResult realTransfer = FluidUtil.tryFillContainer(inventory.getStackInSlot(FLUID_SLOT), tank, Integer.MAX_VALUE, null, true);
+            inventory.setStackInSlot(FLUID_SLOT, realTransfer.getResult().copy());
         }
 
-        FruitPressingRecipe recipe = getRecipe(inventory.getStackInSlot(0));
+        FruitPressingRecipe recipe = getRecipe(inventory.getStackInSlot(INPUT_SLOT));
         if (this.canProcess(recipe)) {
             if (processTimeLeft == -1) {
                 processTimeLeft = maxProcessTime;
             } else {
                 processTimeLeft--;
                 if (processTimeLeft == 0) {
-                    inventory.extractItem(0, recipe.getIngredientCount(), false);
+                    inventory.extractItem(INPUT_SLOT, recipe.getIngredientCount(), false);
                     OutputFluidTank fluidTank = (OutputFluidTank) this.tank;
                     fluidTank.fillInternal(recipe.getResult().copy(), IFluidHandler.FluidAction.EXECUTE);
-                    world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_HIT, SoundCategory.BLOCKS, 2.0F, world.rand.nextFloat() * 0.25F + 0.6F);
+                    world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_HIT, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.25F + 0.6F);
                     processTimeLeft = -1;
                 }
             }
@@ -167,13 +178,21 @@ public class FruitPressTileEntity extends TileEntity implements ITickableTileEnt
         this.read(pkt.getNbtCompound());
     }
 
-    // TODO: empty bucket should not be extracted
-
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return inventoryCapability.cast();
-        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return tankCapability.cast();
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (side == Direction.DOWN) {
+                if (!isFluidSlotItem(this.inventory.getStackInSlot(FLUID_SLOT))) {
+                    return inventoryCapabilityDown.cast();
+                }
+                return super.getCapability(cap, side);
+            }
+            return inventoryCapability.cast();
+        }
+        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return tankCapability.cast();
+        }
         return super.getCapability(cap, side);
     }
 

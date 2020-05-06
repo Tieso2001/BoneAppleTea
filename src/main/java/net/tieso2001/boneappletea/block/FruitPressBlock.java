@@ -167,7 +167,7 @@ public class FruitPressBlock extends Block {
             if (tileEntity instanceof FruitPressTileEntity) {
                 final ItemStackHandler inventory = ((FruitPressTileEntity) tileEntity).inventory;
                 for (int slot = 0; slot < inventory.getSlots(); ++slot) {
-                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(0));
+                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(slot));
                 }
             }
         }
