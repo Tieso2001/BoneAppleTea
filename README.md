@@ -1,4 +1,8 @@
 # Bone Apple Tea
-This project is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Internation License.
-More information about this license:
-https://creativecommons.org/licenses/by-nc-sa/4.0/
+A mod for Minecraft which adds on to the farming and food systems of the game.
+
+## Download
+Download only on CurseForge: https://www.curseforge.com/minecraft/mc-mods/boneappletea
+
+## License
+This project is licensed under the terms of the MIT license.
