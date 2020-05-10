@@ -40,7 +40,7 @@ public class FruitPressTileEntityRenderer extends TileEntityRenderer<FruitPressT
         Direction FACING = tileEntityIn.getBlockState().get(HorizontalBlock.HORIZONTAL_FACING);
 
         // RENDER FOR FLUIDSTACK
-        FluidStack fluid = tileEntityIn.tank.getFluid();
+        FluidStack fluid = tileEntityIn.getFluidInTank(0);
 
         if (!fluid.isEmpty()) {
 

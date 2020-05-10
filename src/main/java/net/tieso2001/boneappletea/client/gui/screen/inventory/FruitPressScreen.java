@@ -40,7 +40,7 @@ public class FruitPressScreen extends ContainerScreen<FruitPressContainer> {
     @Override
     protected void renderHoveredToolTip(int mouseX, int mouseY) {
         if (isPointInRegion(GUI_TANK.x, GUI_TANK.y, GUI_TANK.width, GUI_TANK.height, mouseX, mouseY)) {
-            renderTooltip(TextUtil.fluidTankContent(tileEntity.tank), mouseX, mouseY);
+            renderTooltip(TextUtil.fluidTankContent(tileEntity.getTank(0)), mouseX, mouseY);
         }
         super.renderHoveredToolTip(mouseX, mouseY);
     }
@@ -63,7 +63,7 @@ public class FruitPressScreen extends ContainerScreen<FruitPressContainer> {
         this.blit(this.guiLeft + 72, this.guiTop + 35, GUI_ARROW.x, GUI_ARROW.y, this.getProgressArrowWidth(), GUI_ARROW.height);
 
         // fluid
-        RenderUtil.renderGuiTank(tileEntity.tank.getFluid(), tileEntity.tank.getCapacity(), this.guiLeft + GUI_TANK.x, this.guiTop + GUI_TANK.y, GUI_TANK.width, GUI_TANK.height);
+        RenderUtil.renderGuiTank(tileEntity.getFluidInTank(0), tileEntity.getTankCapacity(0), this.guiLeft + GUI_TANK.x, this.guiTop + GUI_TANK.y, GUI_TANK.width, GUI_TANK.height);
     }
 
     private int getProgressArrowWidth() {
