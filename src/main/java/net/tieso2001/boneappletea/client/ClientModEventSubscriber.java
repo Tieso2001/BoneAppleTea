@@ -11,6 +11,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.tieso2001.boneappletea.BoneAppleTea;
+import net.tieso2001.boneappletea.client.gui.screen.inventory.CaskScreen;
 import net.tieso2001.boneappletea.client.gui.screen.inventory.FruitPressScreen;
 import net.tieso2001.boneappletea.client.render.tileentity.FruitPressTileEntityRenderer;
 import net.tieso2001.boneappletea.init.ModBlocks;
@@ -45,6 +46,7 @@ public final class ClientModEventSubscriber {
         ClientRegistry.bindTileEntityRenderer(ModTileEntityTypes.FRUIT_PRESS.get(), FruitPressTileEntityRenderer::new);
 
         DeferredWorkQueue.runLater(() -> {
+            ScreenManager.registerFactory(ModContainerTypes.CASK.get(), CaskScreen::new);
             ScreenManager.registerFactory(ModContainerTypes.FRUIT_PRESS.get(), FruitPressScreen::new);
         });
     }

@@ -6,22 +6,23 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.tieso2001.boneappletea.BoneAppleTea;
-import net.tieso2001.boneappletea.inventory.container.FruitPressContainer;
-import net.tieso2001.boneappletea.tileentity.FruitPressTileEntity;
+import net.tieso2001.boneappletea.inventory.container.CaskContainer;
+import net.tieso2001.boneappletea.tileentity.CaskTileEntity;
 import net.tieso2001.boneappletea.util.RenderUtil;
 import net.tieso2001.boneappletea.util.TextUtil;
 
 import java.awt.*;
 
-public class FruitPressScreen extends ContainerScreen<FruitPressContainer> {
+public class CaskScreen extends ContainerScreen<CaskContainer> {
 
-    private FruitPressTileEntity tileEntity = this.container.tileEntity;
+    private CaskTileEntity tileEntity = this.container.tileEntity;
 
-    public static ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BoneAppleTea.MOD_ID, "textures/gui/container/fruit_press.png");
-    private Rectangle GUI_ARROW = new Rectangle(176, 0, 32, 16);
-    private Rectangle GUI_TANK = new Rectangle(117, 19, 16, 48);
+    public static ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BoneAppleTea.MOD_ID, "textures/gui/container/cask.png");
+    private Rectangle GUI_ARROW = new Rectangle(176, 0, 25, 16);
+    private Rectangle GUI_INPUT_TANK = new Rectangle(38, 19, 16, 48);
+    private Rectangle GUI_OUTPUT_TANK = new Rectangle(122, 19, 16, 48);
 
-    public FruitPressScreen(FruitPressContainer container, PlayerInventory inv, ITextComponent name) {
+    public CaskScreen(CaskContainer container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name);
     }
 
@@ -39,8 +40,11 @@ public class FruitPressScreen extends ContainerScreen<FruitPressContainer> {
 
     @Override
     protected void renderHoveredToolTip(int mouseX, int mouseY) {
-        if (isPointInRegion(GUI_TANK.x, GUI_TANK.y, GUI_TANK.width, GUI_TANK.height, mouseX, mouseY)) {
+        if (isPointInRegion(GUI_INPUT_TANK.x, GUI_INPUT_TANK.y, GUI_INPUT_TANK.width, GUI_INPUT_TANK.height, mouseX, mouseY)) {
             renderTooltip(TextUtil.fluidTankContent(tileEntity.getTank(0)), mouseX, mouseY);
+        }
+        if (isPointInRegion(GUI_OUTPUT_TANK.x, GUI_OUTPUT_TANK.y, GUI_OUTPUT_TANK.width, GUI_OUTPUT_TANK.height, mouseX, mouseY)) {
+            renderTooltip(TextUtil.fluidTankContent(tileEntity.getTank(1)), mouseX, mouseY);
         }
         super.renderHoveredToolTip(mouseX, mouseY);
     }
@@ -60,10 +64,13 @@ public class FruitPressScreen extends ContainerScreen<FruitPressContainer> {
         this.blit(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
         // arrow
-        this.blit(this.guiLeft + 72, this.guiTop + 35, GUI_ARROW.x, GUI_ARROW.y, this.getProgressArrowWidth(), GUI_ARROW.height);
+        this.blit(this.guiLeft + 87, this.guiTop + 35, GUI_ARROW.x, GUI_ARROW.y, this.getProgressArrowWidth(), GUI_ARROW.height);
 
-        // fluid
-        RenderUtil.renderGuiTank(tileEntity.getFluidInTank(0), tileEntity.getTankCapacity(0), this.guiLeft + GUI_TANK.x, this.guiTop + GUI_TANK.y, GUI_TANK.width, GUI_TANK.height);
+        // input fluid
+        RenderUtil.renderGuiTank(tileEntity.getFluidInTank(0), tileEntity.getTankCapacity(0), this.guiLeft + GUI_INPUT_TANK.x, this.guiTop + GUI_INPUT_TANK.y, GUI_INPUT_TANK.width, GUI_INPUT_TANK.height);
+
+        // output fluid
+        RenderUtil.renderGuiTank(tileEntity.getFluidInTank(1), tileEntity.getTankCapacity(1), this.guiLeft + GUI_OUTPUT_TANK.x, this.guiTop + GUI_OUTPUT_TANK.y, GUI_OUTPUT_TANK.width, GUI_OUTPUT_TANK.height);
     }
 
     private int getProgressArrowWidth() {

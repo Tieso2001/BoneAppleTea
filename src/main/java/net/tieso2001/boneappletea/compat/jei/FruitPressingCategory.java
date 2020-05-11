@@ -11,7 +11,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.tieso2001.boneappletea.BoneAppleTea;
+import net.tieso2001.boneappletea.client.gui.screen.inventory.FruitPressScreen;
 import net.tieso2001.boneappletea.init.ModBlocks;
 import net.tieso2001.boneappletea.recipe.FruitPressingRecipe;
 
@@ -28,11 +28,10 @@ public class FruitPressingCategory implements IRecipeCategory<FruitPressingRecip
     private IDrawable arrow;
 
     public FruitPressingCategory(IGuiHelper guiHelper) {
-        ResourceLocation location = new ResourceLocation(BoneAppleTea.MOD_ID, "textures/gui/container/fruit_press.png");
-        background = guiHelper.drawableBuilder(location, 43, 18, 91, 50).build();
+        background = guiHelper.drawableBuilder(FruitPressScreen.BACKGROUND_TEXTURE, 43, 18, 91, 50).build();
         icon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.OAK_FRUIT_PRESS.get()));
         slotDrawable = guiHelper.getSlotDrawable();
-        arrow = guiHelper.drawableBuilder(location, 176, 0, 32, 16)
+        arrow = guiHelper.drawableBuilder(FruitPressScreen.BACKGROUND_TEXTURE, 176, 0, 32, 16)
                 .buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
@@ -59,6 +58,11 @@ public class FruitPressingCategory implements IRecipeCategory<FruitPressingRecip
     @Override
     public IDrawable getIcon() {
         return icon;
+    }
+
+    @Override
+    public void draw(FruitPressingRecipe recipe, double mouseX, double mouseY) {
+        arrow.draw(29, 17);
     }
 
     @Override

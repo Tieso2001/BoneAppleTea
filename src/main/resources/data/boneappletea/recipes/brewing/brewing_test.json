@@ -1,0 +1,21 @@
+{
+  "type": "boneappletea:brewing",
+  "ingredients": [
+    {
+      "item": "boneappletea:barley_grains"
+    },
+    {
+      "item": "boneappletea:wheat_grains",
+      "count": 3
+    }
+  ],
+  "ingredientFluid": {
+    "fluid": "minecraft:water",
+    "amount": 250
+  },
+  "result": {
+    "fluid": "minecraft:water",
+    "amount": 500
+  },
+  "processTime": 40
+}

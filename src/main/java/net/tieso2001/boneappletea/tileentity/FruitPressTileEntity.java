@@ -15,7 +15,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.RangedWrapper;
@@ -80,8 +79,8 @@ public class FruitPressTileEntity extends AbstractFluidMachineTileEntity<FruitPr
 
     @Override
     public FruitPressingRecipe getRecipe() {
-        Inventory inventory = new Inventory(this.inventory.getStackInSlot(INPUT_SLOT));
-        return world == null ? null : world.getRecipeManager().getRecipe(FruitPressingRecipe.recipeType, inventory, world).orElse(null);
+        Inventory recipeInventory = new Inventory(this.inventory.getStackInSlot(INPUT_SLOT));
+        return world == null ? null : world.getRecipeManager().getRecipe(FruitPressingRecipe.recipeType, recipeInventory, world).orElse(null);
     }
 
     @Override
@@ -94,15 +93,13 @@ public class FruitPressTileEntity extends AbstractFluidMachineTileEntity<FruitPr
         if (recipe == null) {
             return false;
         }
-        //OutputFluidTank fluidTank = (OutputFluidTank) getTank(OUTPUT_TANK);
-        return getTank(OUTPUT_TANK).fill(recipe.getResult().copy(), IFluidHandler.FluidAction.SIMULATE) > 0;
+        return getTank(OUTPUT_TANK).fill(recipe.getResult().copy(), FluidAction.SIMULATE) > 0;
     }
 
     @Override
     public void finishProcess(FruitPressingRecipe recipe) {
         inventory.extractItem(INPUT_SLOT, recipe.getIngredientCount(), false);
-        //OutputFluidTank fluidTank = (OutputFluidTank) getTank(OUTPUT_TANK);
-        getTank(OUTPUT_TANK).fill(recipe.getResult().copy(), IFluidHandler.FluidAction.EXECUTE);
+        getTank(OUTPUT_TANK).fill(recipe.getResult().copy(), FluidAction.EXECUTE);
         world.playSound(null, pos, SoundEvents.BLOCK_HONEY_BLOCK_HIT, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.25F + 0.6F);
     }
 

@@ -2,160 +2,132 @@ package net.tieso2001.boneappletea.tileentity;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.RangedWrapper;
 import net.tieso2001.boneappletea.init.ModTileEntityTypes;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.tieso2001.boneappletea.inventory.container.CaskContainer;
+import net.tieso2001.boneappletea.recipe.BrewingRecipe;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import java.util.stream.IntStream;
-/*
-public class CaskTileEntity extends TileEntity implements ITickableTileEntity, INamedContainerProvider, IFluidHandler {
+public class CaskTileEntity extends AbstractFluidMachineTileEntity<BrewingRecipe> {
 
     public static final int INPUT_1_SLOT = 0;
     public static final int INPUT_2_SLOT = 1;
     public static final int INPUT_TANK_INPUT_SLOT = 2;
     public static final int INPUT_TANK_OUTPUT_SLOT = 3;
-    public static final int OUTPUT_TANK_INPUT_SLOT = 4;
+    public static final int OUTPUT_TANK_OUTPUT_SLOT = 4;
+    public static final int INPUT_TANK = 0;
+    public static final int OUTPUT_TANK = 1;
 
-    public final ItemStackHandler inventory = new ItemStackHandler(5) {
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            switch (slot) {
-                case INPUT_1_SLOT:
-                case INPUT_2_SLOT:
-                    return isInputSlotItem(stack);
-                case INPUT_TANK_INPUT_SLOT:
-                    return isFluidInputSlotItem(stack);
-                case INPUT_TANK_OUTPUT_SLOT:
-                case OUTPUT_TANK_INPUT_SLOT:
-                    return isFluidOutputSlotItem(stack);
-                default:
-                    return false;
-            }
-        }
-
-        @Override
-        protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
-            switch (slot) {
-                case INPUT_1_SLOT:
-                    return super.getStackLimit(slot, stack);;
-                case INPUT_2_SLOT:
-                    return super.getStackLimit(slot, stack);;
-                case INPUT_TANK_INPUT_SLOT:
-                    return 1;
-                case INPUT_TANK_OUTPUT_SLOT:
-                case OUTPUT_TANK_INPUT_SLOT:
-                    return 1;
-                default:
-                    return super.getStackLimit(slot, stack);;
-            };
-        }
-
-        @Override
-        protected void onContentsChanged(int slot) {
-            super.onContentsChanged(slot);
-            CaskTileEntity.this.markDirty();
-        }
-    };
-
-    protected final FluidTank[] tanks;
-
-    private final LazyOptional<ItemStackHandler> inventoryCapability = LazyOptional.of(() -> this.inventory);
-    private final LazyOptional<IItemHandlerModifiable> inventoryCapabilityDown = LazyOptional.of(() -> new RangedWrapper(this.inventory, OUTPUT_TANK_INPUT_SLOT, OUTPUT_TANK_INPUT_SLOT + 1));
-    private final LazyOptional<IFluidHandler> tankCapability;
-
-    public short maxProcessTime = -1;
-    public short processTimeLeft = -1;
+    private final LazyOptional<IItemHandlerModifiable> inventoryCapabilityDown = LazyOptional.of(() -> new RangedWrapper(this.inventory, OUTPUT_TANK_OUTPUT_SLOT, OUTPUT_TANK_OUTPUT_SLOT + 1));
 
     public CaskTileEntity() {
-        super(ModTileEntityTypes.CASK.get());
-        this.tanks = IntStream.range(0, 2).mapToObj(k -> new FluidTank(8000)).toArray(FluidTank[]::new);
-        this.tankCapability = LazyOptional.of(() -> this);
+        super(ModTileEntityTypes.CASK.get(), "Cask", 5, 2, 8000);
     }
 
-    private boolean isInputSlotItem(ItemStack stack) {
-
+    @Override
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+        switch (slot) {
+            case INPUT_1_SLOT:
+            case INPUT_2_SLOT:
+                return BrewingRecipe.serializer.ingredients.contains(stack.getItem());
+            case INPUT_TANK_INPUT_SLOT:
+            case OUTPUT_TANK_OUTPUT_SLOT:
+            case INPUT_TANK_OUTPUT_SLOT:
+                return FluidUtil.getFluidHandler(stack).isPresent();
+            default:
+                return false;
+        }
     }
 
-    private boolean isFluidInputSlotItem(ItemStack stack) {
-
+    @Override
+    public int getLimitForSlot(int slot) {
+        switch (slot) {
+            case INPUT_TANK_INPUT_SLOT:
+            case INPUT_TANK_OUTPUT_SLOT:
+            case OUTPUT_TANK_OUTPUT_SLOT:
+                return 1;
+            default:
+                return super.getLimitForSlot(slot);
+        }
     }
 
-    private boolean isFluidOutputSlotItem(ItemStack stack) {
-
+    @Override
+    protected int getInputTanks() {
+        return 1;
     }
 
-    private BrewingRecipe getRecipe(final ItemStack input) {
-        return getRecipe(new Inventory(input));
+    @Override
+    protected int getOutputTanks() {
+        return 1;
     }
 
-    private BrewingRecipe getRecipe(final IInventory inventory) {
-        return world == null ? null : world.getRecipeManager().getRecipe(BrewingRecipe.recipeType, inventory, world).orElse(null);
+    @Override
+    public BrewingRecipe getRecipe() {
+        Inventory recipeInventory = new Inventory(this.inventory.getStackInSlot(INPUT_1_SLOT), this.inventory.getStackInSlot(INPUT_2_SLOT));
+        return world == null ? null : world.getRecipeManager().getRecipe(BrewingRecipe.recipeType, recipeInventory, world).orElse(null);
+    }
+
+    @Override
+    public short getMaxProcessTime() {
+        return (short) getRecipe().getProcessTime();
+    }
+
+    @Override
+    public boolean canProcess(BrewingRecipe recipe) {
+        if (recipe == null) {
+            return false;
+        }
+        boolean inputTank = !getTank(INPUT_TANK).drain(recipe.getIngredientFluid().copy(), FluidAction.SIMULATE).isEmpty();
+        boolean outputTank = getTank(OUTPUT_TANK).fill(recipe.getResult().copy(), FluidAction.SIMULATE) > 0;
+        return inputTank && outputTank;
+    }
+
+    @Override
+    public void finishProcess(BrewingRecipe recipe) {
+        Inventory recipeInventory = new Inventory(this.inventory.getStackInSlot(INPUT_1_SLOT), this.inventory.getStackInSlot(INPUT_2_SLOT));
+        recipe.consumeIngredients(recipeInventory);
+        getTank(INPUT_TANK).drain(recipe.getIngredientFluid().copy(), FluidAction.EXECUTE);
+        getTank(OUTPUT_TANK).fill(recipe.getResult().copy(), FluidAction.EXECUTE);
     }
 
     @Override
     public void tick() {
+
         if (world == null || world.isRemote) {
             return;
         }
-    }
 
-    @Override
-    public void read(CompoundNBT compound) {
-        super.read(compound);
-        this.inventory.deserializeNBT(compound.getCompound("inventory"));
-        this.inputTank.readFromNBT(compound);
-        this.outputTank.readFromNBT(compound);
-        this.maxProcessTime = compound.getShort("max_process_time");
-        this.processTimeLeft = compound.getShort("process_time_left");
-    }
+        FluidActionResult fillInputTank = FluidUtil.tryEmptyContainer(inventory.getStackInSlot(INPUT_TANK_INPUT_SLOT), getTank(INPUT_TANK), Integer.MAX_VALUE, null, true);
+        if (fillInputTank.isSuccess()) {
+            inventory.setStackInSlot(INPUT_TANK_INPUT_SLOT, fillInputTank.getResult().copy());
+        }
 
-    @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        super.write(compound);
-        compound.put("inventory", this.inventory.serializeNBT());
-        inputTank.writeToNBT(compound);
-        outputTank.writeToNBT(compound);
-        compound.putShort("max_process_time", this.maxProcessTime);
-        compound.putShort("process_time_left", this.processTimeLeft);
-        return compound;
-    }
+        FluidActionResult testEmptyInputTank = FluidUtil.tryFillContainer(inventory.getStackInSlot(INPUT_TANK_OUTPUT_SLOT), getTank(INPUT_TANK), Integer.MAX_VALUE, null, false);
+        if (testEmptyInputTank.isSuccess()) {
+            FluidActionResult realEmptyInputTank = FluidUtil.tryFillContainer(inventory.getStackInSlot(INPUT_TANK_OUTPUT_SLOT), getTank(INPUT_TANK), Integer.MAX_VALUE, null, true);
+            inventory.setStackInSlot(INPUT_TANK_OUTPUT_SLOT, realEmptyInputTank.getResult().copy());
+        }
 
-    @Nullable
-    @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
-    }
+        FluidActionResult testEmptyOutputTank = FluidUtil.tryFillContainer(inventory.getStackInSlot(OUTPUT_TANK_OUTPUT_SLOT), getTank(OUTPUT_TANK), Integer.MAX_VALUE, null, false);
+        if (testEmptyOutputTank.isSuccess()) {
+            FluidActionResult realEmptyOutputTank = FluidUtil.tryFillContainer(inventory.getStackInSlot(OUTPUT_TANK_OUTPUT_SLOT), getTank(OUTPUT_TANK), Integer.MAX_VALUE, null, true);
+            inventory.setStackInSlot(OUTPUT_TANK_OUTPUT_SLOT, realEmptyOutputTank.getResult().copy());
+        }
 
-    @Override
-    public CompoundNBT getUpdateTag() {
-        return this.write(new CompoundNBT());
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.read(pkt.getNbtCompound());
+        super.tick();
     }
 
     @Nonnull
@@ -168,32 +140,9 @@ public class CaskTileEntity extends TileEntity implements ITickableTileEntity, I
             return inventoryCapability.cast();
         }
         if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return inputTankCapability.cast();
+            return tankCapability.cast();
         }
         return super.getCapability(cap, side);
-    }
-
-    @Override
-    public int getTanks() {
-        return tanks.length;
-    }
-
-    @Nonnull
-    @Override
-    public FluidStack getFluidInTank(int tank) {
-        if (tank < 0 || tank >= this.getTanks()) {
-            return FluidStack.EMPTY;
-        }
-        return this.tanks.;
-    }
-
-    public LazyOptional<IFluidHandler> getTankCapability() {
-        return tankCapability;
-    }
-
-    @Override
-    public ITextComponent getDisplayName() {
-        return new StringTextComponent("Cask");
     }
 
     @Nullable
@@ -202,4 +151,3 @@ public class CaskTileEntity extends TileEntity implements ITickableTileEntity, I
         return new CaskContainer(id, world, pos, playerInventory, playerEntity);
     }
 }
- */
