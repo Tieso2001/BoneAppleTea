@@ -26,7 +26,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -141,37 +140,10 @@ public class FruitPressBlock extends Block {
         return ModTileEntityTypes.FRUIT_PRESS.get().create();
     }
 
-    @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-
-        DoubleBlockHalf half = state.get(HALF);
-        BlockPos blockpos = half == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
-        BlockState blockstate = worldIn.getBlockState(blockpos);
-
-        if (blockstate.getBlock() == this && blockstate.get(HALF) != half) {
-
-            worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
-            worldIn.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
-        }
-        super.onBlockHarvested(worldIn, pos, state, player);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
-            BlockPos lowerPos = pos;
-            if (state.get(HALF) == DoubleBlockHalf.UPPER) lowerPos = pos.down();
-
-            TileEntity tileEntity = worldIn.getTileEntity(lowerPos);
-            if (tileEntity instanceof FruitPressTileEntity) {
-                final ItemStackHandler inventory = ((FruitPressTileEntity) tileEntity).inventory;
-                for (int slot = 0; slot < inventory.getSlots(); ++slot) {
-                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(slot));
-                }
-            }
-        }
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+    @Nullable
+    private FruitPressTileEntity getTileEntity(World world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        return tileEntity instanceof FruitPressTileEntity ? (FruitPressTileEntity) tileEntity : null;
     }
 
     @SuppressWarnings("deprecation")
@@ -194,8 +166,47 @@ public class FruitPressBlock extends Block {
                 return ActionResultType.CONSUME;
             }
         }
-        if (state.get(HALF) == DoubleBlockHalf.UPPER) return ActionResultType.PASS;
+        if (state.get(HALF) == DoubleBlockHalf.UPPER) {
+            return ActionResultType.PASS;
+        }
         return ActionResultType.CONSUME;
+    }
+
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+
+        DoubleBlockHalf half = state.get(HALF);
+        BlockPos blockpos = half == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
+        BlockState blockstate = worldIn.getBlockState(blockpos);
+
+        if (blockstate.getBlock() == this && blockstate.get(HALF) != half) {
+            worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
+            worldIn.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
+        }
+        super.onBlockHarvested(worldIn, pos, state, player);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+
+        if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
+
+            BlockPos lowerPos = pos;
+            if (state.get(HALF) == DoubleBlockHalf.UPPER) {
+                lowerPos = pos.down();
+            }
+
+            TileEntity tileEntity = worldIn.getTileEntity(lowerPos);
+
+            if (tileEntity instanceof FruitPressTileEntity) {
+                final ItemStackHandler inventory = ((FruitPressTileEntity) tileEntity).inventory;
+                for (int slot = 0; slot < inventory.getSlots(); ++slot) {
+                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(slot));
+                }
+            }
+        }
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
@@ -226,8 +237,10 @@ public class FruitPressBlock extends Block {
     @SuppressWarnings("deprecation")
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+
         BlockPos blockpos = pos.down();
         BlockState blockstate = worldIn.getBlockState(blockpos);
+
         if (state.get(HALF) == DoubleBlockHalf.LOWER) {
             return super.isValidPosition(state, worldIn, pos);
         } else {
@@ -239,11 +252,6 @@ public class FruitPressBlock extends Block {
     @Override
     public PushReaction getPushReaction(BlockState state) {
         return PushReaction.BLOCK;
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction) {
-        return state.with(FACING, direction.rotate(state.get(FACING)));
     }
 
     @Override

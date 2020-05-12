@@ -34,7 +34,7 @@ public class CaskTileEntity extends AbstractFluidMachineTileEntity<BrewingRecipe
     private final LazyOptional<IItemHandlerModifiable> inventoryCapabilityDown = LazyOptional.of(() -> new RangedWrapper(this.inventory, OUTPUT_TANK_OUTPUT_SLOT, OUTPUT_TANK_OUTPUT_SLOT + 1));
 
     public CaskTileEntity() {
-        super(ModTileEntityTypes.CASK.get(), "Cask", 5, 2, 8000);
+        super(ModTileEntityTypes.CASK.get(), "Cask", 5, 2, 4000);
     }
 
     @Override

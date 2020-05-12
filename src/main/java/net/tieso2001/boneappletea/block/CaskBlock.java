@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -13,9 +14,9 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.ItemStackHandler;
 import net.tieso2001.boneappletea.init.ModTileEntityTypes;
 import net.tieso2001.boneappletea.tileentity.CaskTileEntity;
 
@@ -35,29 +36,42 @@ public class CaskBlock extends Block {
         return true;
     }
 
-    @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public CaskTileEntity createTileEntity(BlockState state, IBlockReader world) {
         return ModTileEntityTypes.CASK.get().create();
     }
 
+    @Nullable
+    private CaskTileEntity getTileEntity(World world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        return tileEntity instanceof CaskTileEntity ? (CaskTileEntity) tileEntity : null;
+    }
+
+    @SuppressWarnings("deprecation")
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (!worldIn.isRemote) {
-            CaskTileEntity tileEntity = (CaskTileEntity) worldIn.getTileEntity(pos);
+
+        CaskTileEntity tileEntity = getTileEntity(worldIn, pos);
+
+        if (tileEntity != null && !worldIn.isRemote) {
             NetworkHooks.openGui((ServerPlayerEntity) player, tileEntity, pos);
         }
-        return ActionResultType.CONSUME;
+        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction) {
-        return state.with(FACING, direction.rotate(state.get(FACING)));
-    }
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 
-    @Override
-    public BlockState mirror(BlockState state, Mirror mirrorIn) {
-        return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+        CaskTileEntity tileEntity = getTileEntity(worldIn, pos);
+
+        if (tileEntity != null) {
+            final ItemStackHandler inventory = tileEntity.inventory;
+            for (int slot = 0; slot < inventory.getSlots(); ++slot) {
+                InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(slot));
+            }
+        }
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override

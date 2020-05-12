@@ -80,8 +80,8 @@ public class BrewingCategory implements IRecipeCategory<BrewingRecipe> {
         itemStacks.init(1, true, 24, 28);
 
         IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
-        fluidStacks.init(0, true, 1, 1, 16, 48, 8000, true, null);
-        fluidStacks.init(1, false, 85, 1, 16, 48, 8000, true, null);
+        fluidStacks.init(0, true, 1, 1, 16, 48, 4000, true, null);
+        fluidStacks.init(1, false, 85, 1, 16, 48, 4000, true, null);
 
         int i = 0;
         for (Map.Entry<Ingredient, Integer> entry : recipe.getIngredientMap().entrySet()) {
