@@ -15,13 +15,13 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.tieso2001.boneappletea.inventory.container.CaskContainer;
+import net.tieso2001.boneappletea.inventory.container.BreweryCaskContainer;
 import net.tieso2001.boneappletea.recipe.BrewingRecipe;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CaskTileEntity extends AbstractFluidMachineTileEntity<BrewingRecipe> {
+public class BreweryCaskTileEntity extends AbstractFluidMachineTileEntity<BrewingRecipe> {
 
     public static final int INPUT_1_SLOT = 0;
     public static final int INPUT_2_SLOT = 1;
@@ -33,8 +33,8 @@ public class CaskTileEntity extends AbstractFluidMachineTileEntity<BrewingRecipe
 
     private final LazyOptional<IItemHandlerModifiable> inventoryCapabilityDown = LazyOptional.of(() -> new RangedWrapper(this.inventory, OUTPUT_TANK_OUTPUT_SLOT, OUTPUT_TANK_OUTPUT_SLOT + 1));
 
-    public CaskTileEntity() {
-        super(ModTileEntityTypes.CASK.get(), "Cask", 5, 2, 4000);
+    public BreweryCaskTileEntity() {
+        super(ModTileEntityTypes.BREWERY_CASK.get(), "Brewery Cask", 5, 2, 4000);
     }
 
     @Override
@@ -148,6 +148,6 @@ public class CaskTileEntity extends AbstractFluidMachineTileEntity<BrewingRecipe
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new CaskContainer(id, world, pos, playerInventory, playerEntity);
+        return new BreweryCaskContainer(id, world, pos, playerInventory, playerEntity);
     }
 }

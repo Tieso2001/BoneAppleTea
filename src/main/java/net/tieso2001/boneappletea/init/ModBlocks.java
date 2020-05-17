@@ -10,6 +10,7 @@ import net.tieso2001.boneappletea.BoneAppleTea;
 import net.minecraft.block.Block;
 import net.tieso2001.boneappletea.block.BarleyBlock;
 import net.tieso2001.boneappletea.block.CaskBlock;
+import net.tieso2001.boneappletea.block.BreweryCaskBlock;
 import net.tieso2001.boneappletea.block.FruitPressBlock;
 
 import java.util.function.Supplier;
@@ -26,6 +27,23 @@ public final class ModBlocks {
                     .hardnessAndResistance(0.0F)
                     .sound(SoundType.CROP)
             ));
+
+    private static final Supplier<? extends Block> breweryCaskSupplier = () ->
+            new BreweryCaskBlock(Block.Properties
+                    .create(Material.WOOD)
+                    .notSolid()
+                    .hardnessAndResistance(2.0F)
+                    .sound(SoundType.WOOD)
+                    .harvestTool(ToolType.AXE)
+                    .harvestLevel(0)
+            );
+
+    public static final RegistryObject<Block> OAK_BREWERY_CASK = BLOCKS.register("oak_brewery_cask", breweryCaskSupplier);
+    public static final RegistryObject<Block> SPRUCE_BREWERY_CASK = BLOCKS.register("spruce_brewery_cask", breweryCaskSupplier);
+    public static final RegistryObject<Block> BIRCH_BREWERY_CASK = BLOCKS.register("birch_brewery_cask", breweryCaskSupplier);
+    public static final RegistryObject<Block> JUNGLE_BREWERY_CASK = BLOCKS.register("jungle_brewery_cask", breweryCaskSupplier);
+    public static final RegistryObject<Block> ACACIA_BREWERY_CASK = BLOCKS.register("acacia_brewery_cask", breweryCaskSupplier);
+    public static final RegistryObject<Block> DARK_OAK_BREWERY_CASK = BLOCKS.register("dark_oak_brewery_cask", breweryCaskSupplier);
 
     private static final Supplier<? extends Block> caskSupplier = () ->
             new CaskBlock(Block.Properties

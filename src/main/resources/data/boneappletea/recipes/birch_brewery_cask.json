@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "P P",
+    "LSL"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:birch_wood"
+    },
+    "P": {
+      "item": "minecraft:birch_planks"
+    },
+    "L": {
+      "item": "minecraft:birch_log"
+    },
+    "S": {
+      "item": "minecraft:birch_slab"
+    }
+  },
+  "result": {
+    "item": "boneappletea:birch_brewery_cask"
+  }
+}

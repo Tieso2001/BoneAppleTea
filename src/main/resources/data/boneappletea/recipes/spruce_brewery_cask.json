@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "P P",
+    "LSL"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:spruce_wood"
+    },
+    "P": {
+      "item": "minecraft:spruce_planks"
+    },
+    "L": {
+      "item": "minecraft:spruce_log"
+    },
+    "S": {
+      "item": "minecraft:spruce_slab"
+    }
+  },
+  "result": {
+    "item": "boneappletea:spruce_brewery_cask"
+  }
+}

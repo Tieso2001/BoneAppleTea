@@ -11,7 +11,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.tieso2001.boneappletea.BoneAppleTea;
-import net.tieso2001.boneappletea.client.gui.screen.inventory.CaskScreen;
+import net.tieso2001.boneappletea.client.gui.screen.inventory.BreweryCaskScreen;
 import net.tieso2001.boneappletea.client.gui.screen.inventory.FruitPressScreen;
 import net.tieso2001.boneappletea.client.render.tileentity.FruitPressTileEntityRenderer;
 import net.tieso2001.boneappletea.init.ModBlocks;
@@ -25,6 +25,12 @@ public final class ClientModEventSubscriber {
     public static void onFMLClientSetupEvent(final FMLClientSetupEvent event) {
         Block[] cutout_blocks = {
                 ModBlocks.BARLEY.get(),
+                ModBlocks.OAK_BREWERY_CASK.get(),
+                ModBlocks.SPRUCE_BREWERY_CASK.get(),
+                ModBlocks.BIRCH_BREWERY_CASK.get(),
+                ModBlocks.JUNGLE_BREWERY_CASK.get(),
+                ModBlocks.ACACIA_BREWERY_CASK.get(),
+                ModBlocks.DARK_OAK_BREWERY_CASK.get(),
                 ModBlocks.OAK_CASK.get(),
                 ModBlocks.SPRUCE_CASK.get(),
                 ModBlocks.BIRCH_CASK.get(),
@@ -46,7 +52,7 @@ public final class ClientModEventSubscriber {
         ClientRegistry.bindTileEntityRenderer(ModTileEntityTypes.FRUIT_PRESS.get(), FruitPressTileEntityRenderer::new);
 
         DeferredWorkQueue.runLater(() -> {
-            ScreenManager.registerFactory(ModContainerTypes.CASK.get(), CaskScreen::new);
+            ScreenManager.registerFactory(ModContainerTypes.BREWERY_CASK.get(), BreweryCaskScreen::new);
             ScreenManager.registerFactory(ModContainerTypes.FRUIT_PRESS.get(), FruitPressScreen::new);
         });
     }

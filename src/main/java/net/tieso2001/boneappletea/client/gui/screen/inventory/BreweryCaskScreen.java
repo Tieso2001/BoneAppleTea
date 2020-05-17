@@ -6,23 +6,23 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.tieso2001.boneappletea.BoneAppleTea;
-import net.tieso2001.boneappletea.inventory.container.CaskContainer;
-import net.tieso2001.boneappletea.tileentity.CaskTileEntity;
+import net.tieso2001.boneappletea.inventory.container.BreweryCaskContainer;
+import net.tieso2001.boneappletea.tileentity.BreweryCaskTileEntity;
 import net.tieso2001.boneappletea.util.RenderUtil;
 import net.tieso2001.boneappletea.util.TextUtil;
 
 import java.awt.*;
 
-public class CaskScreen extends ContainerScreen<CaskContainer> {
+public class BreweryCaskScreen extends ContainerScreen<BreweryCaskContainer> {
 
-    private CaskTileEntity tileEntity = this.container.tileEntity;
+    private BreweryCaskTileEntity tileEntity = this.container.tileEntity;
 
-    public static ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BoneAppleTea.MOD_ID, "textures/gui/container/cask.png");
+    public static ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BoneAppleTea.MOD_ID, "textures/gui/container/brewery_cask.png");
     private Rectangle GUI_ARROW = new Rectangle(176, 0, 25, 16);
     private Rectangle GUI_INPUT_TANK = new Rectangle(38, 19, 16, 48);
     private Rectangle GUI_OUTPUT_TANK = new Rectangle(122, 19, 16, 48);
 
-    public CaskScreen(CaskContainer container, PlayerInventory inv, ITextComponent name) {
+    public BreweryCaskScreen(BreweryCaskContainer container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name);
     }
 

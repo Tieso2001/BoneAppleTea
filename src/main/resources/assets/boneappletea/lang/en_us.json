@@ -1,5 +1,11 @@
 {
   "block.boneappletea.barley": "Barley",
+  "block.boneappletea.oak_brewery_cask": "Oak Brewery Cask",
+  "block.boneappletea.spruce_brewery_cask": "Spruce Brewery Cask",
+  "block.boneappletea.birch_brewery_cask": "Birch Brewery Cask",
+  "block.boneappletea.jungle_brewery_cask": "Jungle Brewery Cask",
+  "block.boneappletea.acacia_brewery_cask": "Acacia Brewery Cask",
+  "block.boneappletea.dark_oak_brewery_cask": "Dark Oak Brewery Cask",
   "block.boneappletea.oak_cask": "Oak Cask",
   "block.boneappletea.spruce_cask": "Spruce Cask",
   "block.boneappletea.birch_cask": "Birch Cask",

@@ -60,7 +60,6 @@ public class BrewingRecipe implements IRecipe<IInventory> {
         return ImmutableMap.copyOf(ingredients);
     }
 
-
     @Override
     public boolean matches(IInventory inv, World worldIn) {
 

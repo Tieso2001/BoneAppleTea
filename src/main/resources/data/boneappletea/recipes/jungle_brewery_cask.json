@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "P P",
+    "LSL"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:jungle_wood"
+    },
+    "P": {
+      "item": "minecraft:jungle_planks"
+    },
+    "L": {
+      "item": "minecraft:jungle_log"
+    },
+    "S": {
+      "item": "minecraft:jungle_slab"
+    }
+  },
+  "result": {
+    "item": "boneappletea:jungle_brewery_cask"
+  }
+}

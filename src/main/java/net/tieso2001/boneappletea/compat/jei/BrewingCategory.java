@@ -12,7 +12,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import net.tieso2001.boneappletea.client.gui.screen.inventory.CaskScreen;
+import net.tieso2001.boneappletea.client.gui.screen.inventory.BreweryCaskScreen;
 import net.tieso2001.boneappletea.init.ModBlocks;
 import net.tieso2001.boneappletea.recipe.BrewingRecipe;
 
@@ -27,10 +27,10 @@ public class BrewingCategory implements IRecipeCategory<BrewingRecipe> {
     private IDrawable arrow;
 
     public BrewingCategory(IGuiHelper guiHelper) {
-        background = guiHelper.drawableBuilder(CaskScreen.BACKGROUND_TEXTURE, 37, 18, 102, 50).build();
-        icon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.OAK_CASK.get()));
+        background = guiHelper.drawableBuilder(BreweryCaskScreen.BACKGROUND_TEXTURE, 37, 18, 102, 50).build();
+        icon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.OAK_BREWERY_CASK.get()));
         slotDrawable = guiHelper.getSlotDrawable();
-        arrow = guiHelper.drawableBuilder(CaskScreen.BACKGROUND_TEXTURE, 176, 0, 25, 16)
+        arrow = guiHelper.drawableBuilder(BreweryCaskScreen.BACKGROUND_TEXTURE, 176, 0, 25, 16)
                 .buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
     }
 

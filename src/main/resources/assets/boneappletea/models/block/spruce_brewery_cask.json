@@ -1,0 +1,8 @@
+{
+    "parent": "boneappletea:block/brewery_cask",
+    "textures": {
+        "planks": "block/spruce_planks",
+        "log": "block/spruce_log",
+        "log_top": "block/spruce_log_top"
+    }
+}

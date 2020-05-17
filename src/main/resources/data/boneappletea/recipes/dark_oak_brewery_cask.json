@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "P P",
+    "LSL"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:dark_oak_wood"
+    },
+    "P": {
+      "item": "minecraft:dark_oak_planks"
+    },
+    "L": {
+      "item": "minecraft:dark_oak_log"
+    },
+    "S": {
+      "item": "minecraft:dark_oak_slab"
+    }
+  },
+  "result": {
+    "item": "boneappletea:dark_oak_brewery_cask"
+  }
+}

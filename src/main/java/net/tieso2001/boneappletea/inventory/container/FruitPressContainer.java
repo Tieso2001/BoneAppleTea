@@ -69,12 +69,12 @@ public class FruitPressContainer extends Container {
 
     @Override
     public boolean canInteractWith(PlayerEntity player) {
-        return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), player, ModBlocks.OAK_FRUIT_PRESS.get()) ||
+        return (isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), player, ModBlocks.OAK_FRUIT_PRESS.get()) ||
                 isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), player, ModBlocks.SPRUCE_FRUIT_PRESS.get()) ||
                 isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), player, ModBlocks.BIRCH_FRUIT_PRESS.get()) ||
                 isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), player, ModBlocks.JUNGLE_FRUIT_PRESS.get()) ||
                 isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), player, ModBlocks.ACACIA_FRUIT_PRESS.get()) ||
-                isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), player, ModBlocks.DARK_OAK_FRUIT_PRESS.get());
+                isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), player, ModBlocks.DARK_OAK_FRUIT_PRESS.get()));
     }
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {

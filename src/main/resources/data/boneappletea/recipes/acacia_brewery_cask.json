@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "P P",
+    "LSL"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:acacia_wood"
+    },
+    "P": {
+      "item": "minecraft:acacia_planks"
+    },
+    "L": {
+      "item": "minecraft:acacia_log"
+    },
+    "S": {
+      "item": "minecraft:acacia_slab"
+    }
+  },
+  "result": {
+    "item": "boneappletea:acacia_brewery_cask"
+  }
+}
