@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TextUtil {
 
-    public static List<String> fluidTankContent(FluidTank tank) {
+    public static List<String> fluidTankContentList(FluidTank tank) {
         List<String> stringList = new ArrayList<>();
 
         FluidStack stack = tank.getFluid();
@@ -23,6 +23,23 @@ public class TextUtil {
         }
         stringList.add(TextFormatting.GRAY + reformatInt(amount) + " / " + reformatInt(capacity) + " mB");
         return stringList;
+    }
+
+    public static String fluidTankContentString(FluidTank tank) {
+        FluidStack stack = tank.getFluid();
+        int tankCapacity = tank.getCapacity();
+        return fluidTankContentString(stack, tankCapacity);
+    }
+
+    public static String fluidTankContentString(FluidStack stack, int tankCapacity) {
+        ITextComponent name = stack.getDisplayName();
+        int amount = stack.getAmount();
+
+        String string = reformatInt(amount) + " / " + reformatInt(tankCapacity) + " mB";
+        if (!stack.isEmpty()) {
+            string = name.getFormattedText() + ": " + string;
+        }
+        return string;
     }
 
     public static String reformatInt(int integer) {

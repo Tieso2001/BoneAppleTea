@@ -6,6 +6,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.tieso2001.boneappletea.BoneAppleTea;
 import net.minecraft.tileentity.TileEntityType;
 import net.tieso2001.boneappletea.tileentity.BreweryCaskTileEntity;
+import net.tieso2001.boneappletea.tileentity.CaskTileEntity;
 import net.tieso2001.boneappletea.tileentity.FruitPressTileEntity;
 
 public final class ModTileEntityTypes {
@@ -23,7 +24,6 @@ public final class ModTileEntityTypes {
                     ModBlocks.DARK_OAK_BREWERY_CASK.get()
             ).build(null));
 
-    /*
     public static final RegistryObject<TileEntityType<CaskTileEntity>> CASK = TILE_ENTITY_TYPES.register("cask", () ->
             TileEntityType.Builder.create(
                     CaskTileEntity::new,
@@ -34,7 +34,6 @@ public final class ModTileEntityTypes {
                     ModBlocks.ACACIA_CASK.get(),
                     ModBlocks.DARK_OAK_CASK.get()
             ).build(null));
-     */
 
     public static final RegistryObject<TileEntityType<FruitPressTileEntity>> FRUIT_PRESS = TILE_ENTITY_TYPES.register("fruit_press", () ->
             TileEntityType.Builder.create(

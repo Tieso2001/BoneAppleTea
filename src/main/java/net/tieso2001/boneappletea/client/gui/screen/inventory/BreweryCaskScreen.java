@@ -41,10 +41,10 @@ public class BreweryCaskScreen extends ContainerScreen<BreweryCaskContainer> {
     @Override
     protected void renderHoveredToolTip(int mouseX, int mouseY) {
         if (isPointInRegion(GUI_INPUT_TANK.x, GUI_INPUT_TANK.y, GUI_INPUT_TANK.width, GUI_INPUT_TANK.height, mouseX, mouseY)) {
-            renderTooltip(TextUtil.fluidTankContent(tileEntity.getTank(0)), mouseX, mouseY);
+            renderTooltip(TextUtil.fluidTankContentList(tileEntity.getTank(0)), mouseX, mouseY);
         }
         if (isPointInRegion(GUI_OUTPUT_TANK.x, GUI_OUTPUT_TANK.y, GUI_OUTPUT_TANK.width, GUI_OUTPUT_TANK.height, mouseX, mouseY)) {
-            renderTooltip(TextUtil.fluidTankContent(tileEntity.getTank(1)), mouseX, mouseY);
+            renderTooltip(TextUtil.fluidTankContentList(tileEntity.getTank(1)), mouseX, mouseY);
         }
         super.renderHoveredToolTip(mouseX, mouseY);
     }

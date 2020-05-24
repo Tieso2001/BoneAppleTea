@@ -40,7 +40,7 @@ public class FruitPressScreen extends ContainerScreen<FruitPressContainer> {
     @Override
     protected void renderHoveredToolTip(int mouseX, int mouseY) {
         if (isPointInRegion(GUI_TANK.x, GUI_TANK.y, GUI_TANK.width, GUI_TANK.height, mouseX, mouseY)) {
-            renderTooltip(TextUtil.fluidTankContent(tileEntity.getTank(0)), mouseX, mouseY);
+            renderTooltip(TextUtil.fluidTankContentList(tileEntity.getTank(0)), mouseX, mouseY);
         }
         super.renderHoveredToolTip(mouseX, mouseY);
     }
