@@ -12,27 +12,22 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.15.2-0.1'
-group = 'net.tieso2001.boneappletea' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'boneappletea'
+archivesBaseName = "${project.mod_id}"
+group = "${project.group}"
+version = "${project.mc_version}-${project.boneappletea_version}"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200503-1.15.1'
+    mappings channel: "${project.mcp_channel}", version: "${project.mcp_mappings}"
 
     runs {
         client {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-
             mods {
-                examplemod {
+                boneappletea {
                     source sourceSets.main
                 }
             }
@@ -40,15 +35,10 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-
             mods {
-                examplemod {
+                boneappletea {
                     source sourceSets.main
                 }
             }
@@ -56,17 +46,11 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/')
-
+            args '--mod', 'boneappletea', '--all', '--output', file('src/generated/resources/')
             mods {
-                examplemod {
+                boneappletea {
                     source sourceSets.main
                 }
             }
@@ -88,23 +72,19 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.1.0'
-
-    // compile against the JEI API but do not include it at runtime
-    compileOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.3:api")
-    // at runtime, use the full JEI jar
-    runtimeOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.3")
+    minecraft "net.minecraftforge:forge:${project.forge_version}"
+    compileOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
 }
 
-// Example for how to get properties into the manifest for reading by the runtime..
 jar {
     manifest {
         attributes([
-            "Specification-Title": "boneappletea",
+            "Specification-Title": "${project.name}",
             "Specification-Vendor": "Tieso2001",
-            "Specification-Version": "1", // We are version 1 of ourselves
+            "Specification-Version": "${project.version}",
             "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
+            "Implementation-Version": "${project.version}",
             "Implementation-Vendor" :"Tieso2001",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
