@@ -1,0 +1,13 @@
+{
+  "type": "boneappletea:brewing",
+  "ingredients": [],
+  "ingredientFluid": {
+    "fluid": "boneappletea:apple_juice",
+    "amount": 250
+  },
+  "result": {
+    "fluid": "boneappletea:cider",
+    "amount": 250
+  },
+  "processTime": 800
+}

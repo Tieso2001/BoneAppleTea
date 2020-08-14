@@ -4,11 +4,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.*;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class DrinkBucketItem extends BucketItem {
 
@@ -23,6 +25,11 @@ public class DrinkBucketItem extends BucketItem {
         if (getFood() != null) {
             foodStats.setFoodLevel(foodStats.getFoodLevel() + getFood().getHealing());
             foodStats.setFoodSaturationLevel(foodStats.getSaturationLevel() + getFood().getSaturation());
+            for(Pair<EffectInstance, Float> pair : getFood().getEffects()) {
+                if (!worldIn.isRemote && pair.getLeft() != null && worldIn.rand.nextFloat() < pair.getRight()) {
+                    entityLiving.addPotionEffect(new EffectInstance(pair.getLeft()));
+                }
+            }
         }
         if (!((PlayerEntity)entityLiving).abilities.isCreativeMode) {
             stack.shrink(1);

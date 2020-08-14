@@ -1,6 +1,11 @@
 package net.tieso2001.boneappletea.init;
 
-import net.minecraft.item.*;
+import net.minecraft.item.BlockNamedItem;
+import net.minecraft.item.Food;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -35,6 +40,13 @@ public final class ModItems {
             new DrinkBucketItem(() -> ModFluids.APPLE_JUICE.get(), new Item.Properties()
                     .group(ModItemGroups.BONE_APPLE_TEA_GROUP)
                     .food(new Food.Builder().hunger(0).saturation(1.0F).build())
+                    .maxStackSize(1)
+                    .containerItem(Items.BUCKET)));
+
+    public static final RegistryObject<Item> CIDER_BUCKET = ITEMS.register("cider_bucket", () ->
+            new DrinkBucketItem(() -> ModFluids.CIDER.get(), new Item.Properties()
+                    .group(ModItemGroups.BONE_APPLE_TEA_GROUP)
+                    .food(new Food.Builder().hunger(0).saturation(1.0F).effect(new EffectInstance(Effects.SPEED, 600, 0), 1.0F).build())
                     .maxStackSize(1)
                     .containerItem(Items.BUCKET)));
 }
