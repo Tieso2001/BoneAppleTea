@@ -5,7 +5,7 @@
     "count": 3
   },
   "result": {
-    "fluid": "minecraft:water",
+    "fluid": "boneappletea:apple_juice",
     "amount": 250
   },
   "processTime": 40

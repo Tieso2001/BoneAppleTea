@@ -1,11 +1,11 @@
 package net.tieso2001.boneappletea.init;
 
-import net.minecraft.item.BlockNamedItem;
+import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tieso2001.boneappletea.BoneAppleTea;
-import net.minecraft.item.Item;
+import net.tieso2001.boneappletea.item.DrinkBucketItem;
 
 public final class ModItems {
 
@@ -30,4 +30,11 @@ public final class ModItems {
             new Item(new Item.Properties()
                     .group(ModItemGroups.BONE_APPLE_TEA_GROUP)
             ));
+
+    public static final RegistryObject<Item> APPLE_JUICE_BUCKET = ITEMS.register("apple_juice_bucket", () ->
+            new DrinkBucketItem(() -> ModFluids.APPLE_JUICE.get(), new Item.Properties()
+                    .group(ModItemGroups.BONE_APPLE_TEA_GROUP)
+                    .food(new Food.Builder().hunger(0).saturation(1.0F).build())
+                    .maxStackSize(1)
+                    .containerItem(Items.BUCKET)));
 }

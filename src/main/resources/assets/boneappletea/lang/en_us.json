@@ -1,4 +1,6 @@
 {
+  "fluid.boneappletea.apple_juice": "Apple Juice",
+
   "block.boneappletea.barley": "Barley",
   "block.boneappletea.oak_brewery_cask": "Oak Brewery Cask",
   "block.boneappletea.spruce_brewery_cask": "Spruce Brewery Cask",
@@ -23,6 +25,7 @@
   "item.boneappletea.barley_grains": "Barley Grains",
   "item.boneappletea.barley_seeds": "Barley Seeds",
   "item.boneappletea.wheat_grains": "Wheat Grains",
+  "item.boneappletea.apple_juice_bucket": "Apple Juice Bucket",
 
   "itemGroup.boneappletea": "Bone Apple Tea"
 }
